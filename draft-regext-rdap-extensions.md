@@ -28,13 +28,6 @@ organization="ARIN"
 [author.address]
 email = "jasdips@arin.net"
 
-[[author]]
-initials="S."
-surname="Hollenbeck"
-fullname="Scott Hollenbeck"
-organization="Verisign Labs"
-[author.address]
-email = "shollenbeck@verisign.com"
 %%%
 
 .# Abstract
