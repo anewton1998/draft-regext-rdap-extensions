@@ -77,8 +77,9 @@ extension might take the following form:
 
 Though [@!RFC9082] does describe the use of URI query strings, it does not define
 their use with extensions. [@!RFC7480] does instruct servers to ignore unknown query
-parameters. Despite this, there are several extensions that do specify query
-parameters.
+parameters. Therefore, the use of query parameters, prefixed or not with an
+extension identifier, is undefined. Despite this, there are several extensions 
+that do specify query parameters.
 
 # Usage in JSON
 
