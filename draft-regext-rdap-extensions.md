@@ -10,7 +10,7 @@ name = "Internet-Draft"
 value = "draft-newton-regext-rdap-extensions-00"
 stream = "IETF"
 status = "info"
-date = 2023-05-16T00:00:00Z
+date = 2023-06-23T00:00:00Z
 
 [[author]]
 initials="A."
@@ -77,7 +77,9 @@ extension might take the following form:
 
 Though [@!RFC9082] does describe the use of URI query strings, it does not define
 their use with extensions. [@!RFC7480] does instruct servers to ignore unknown query
-parameters.
+parameters. Therefore, the use of query parameters, prefixed or not with an
+extension identifier, is undefined. Despite this, there are several extensions 
+that do specify query parameters.
 
 # Usage in JSON
 
@@ -159,13 +161,14 @@ created by the IETF and extensions not created by the IETF.
 In the perspective of how extensions identifiers are used as namespace
 separators, extensions created by the IETF are not required to be prefixed
 with an extension identifier as the IETF can coordinate its own activities
-to avoid name collisions.
+to avoid name collisions. In practice, extensions owned by the IETF do use
+extension identifiers.
 
 # Extension Versioning
 
 Because RDAP extensions are opaque, they posses no explicit version despite
 the fact that some extension identifiers include trailing numbers. That
-is, RDAP extensions are opaguely versioned.
+is, RDAP extensions are opaquely versioned.
 
 For example, `fizzbuzz_1` may be the successor to `fizzbuzz_0`, but it
 may also be an extension for a completely separate purpose. Only consultation
@@ -174,7 +177,7 @@ of the definition of `fizzbuzz_1` will determine its relationship with
 
 # Extension Definitions
 
-Extensions must be must be documented in an RFC or in some other permanent and readily
+Extensions must be documented in an RFC or in some other permanent and readily
 available reference, in sufficient detail that interoperability between independent 
 implementations is possible.
 
@@ -187,5 +190,5 @@ as to how to interpret the response. This wording does not intentionally restric
 the extension to defining only JSON values within the extensions namespace.
 Therefore, an extension may define the use of its own JSON values together
 with the use of JSON values from other extensions or RDAP specifications. As with
-the ICANN extensions, the extension may simply signal policy applied to already
-defined RDAP structures.
+the ICANN profile or RIR profile extensions, the extension may simply signal 
+policy applied to already defined RDAP structures.
