@@ -9,7 +9,7 @@ ipr= "trust200902"
 name = "Internet-Draft"
 value = "draft-newton-regext-rdap-extensions-00"
 stream = "IETF"
-status = "info"
+status = "informational"
 date = 2023-06-23T00:00:00Z
 
 [[author]]
