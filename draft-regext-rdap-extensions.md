@@ -66,8 +66,8 @@ preventing collisions between extension elements.
 # Usage in Queries
 
 [@!RFC9082, section 5] describes the use of extension identifiers in formulating
-URIs to query RDAP servers. The extension identifiers are to be prepended to
-path segments used by the identifiers. For example, if an extension uses the identifier
+URIs to query RDAP servers. The extension identifiers are to be prepended to the
+path segments they use. For example, if an extension uses the identifier
 `foobar`, then the path segments used in that extension are prepended with `foobar_`.
 If the `foobar` extension defines paths `fizz` and `fazz`, the URIs for this
 extension might take the following form:
@@ -75,8 +75,8 @@ extension might take the following form:
     https://base.example/foobar_fizz
     https://base.example/foobar_fazz
 
-Though [@!RFC9082] does describe the use of URI query strings, it does not define
-their use with extensions. [@!RFC7480] does instruct servers to ignore unknown query
+Although [@!RFC9082] describes the use of URI query strings, it does not define
+their use with extensions. [@!RFC7480] instructs servers to ignore unknown query
 parameters. Therefore, the use of query parameters, prefixed or not with an
 extension identifier, is undefined. Despite this, there are several extensions 
 that do specify query parameters.
@@ -144,9 +144,9 @@ is avoided by "lunarNIC_author".
 
 The styling convention used in [@!RFC9083] for JSON names is often called
 "camel casing", in reference to the hump of a camel. In this style, the 
-first letter of every word but the first composing a name is capitalized.
+first letter of every word, except the first word, composing a name is capitalized.
 This convention was adopted to visually separate the namespace from the
-name, which uses an underscore.
+name, with an underscore between them.
 
 Though there is no explicit guidance to use camel case names, extensions would
 be wise to continue the style.
