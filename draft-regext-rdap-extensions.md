@@ -188,9 +188,12 @@ newer version of the extension can check for the new conformance code
 in the response.
 
 This approach can be used for an arbitrary number of new
-backwards-compatible versions, with each successor version requiring
-the inclusion of all of the conformance codes required by the previous
-version.
+backwards-compatible versions of a given extension.  For an extension
+with a large number of backwards-compatible successor versions, this
+may lead to a large number of conformance codes being included in
+responses.  An extension author may consider excluding older
+conformance codes from the set required by new successor versions,
+based on data about client use/support or similar.
 
 ## Backwards-Incompatible Changes
 
@@ -204,7 +207,9 @@ following:
    support both during a transition period;
  - whether some sort of client signalling should be supported, so that
    clients can opt for the old or new version of the extension in
-   responses that they receive; and
+   responses that they receive (see
+   [@!I-D.newton-regext-rdap-x-media-type] for an example of how this
+   might work); and
  - whether the extension itself should define how versioning is
    handled within the extension documentation.
 
