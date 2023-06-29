@@ -175,6 +175,52 @@ may also be an extension for a completely separate purpose. Only consultation
 of the definition of `fizzbuzz_1` will determine its relationship with
 `fizzbuzz_0`. Additionally, `fizzbuzz_99` may be the predecessor of `fizzbuzz_0`.
 
+## Backwards-Compatible Changes
+
+If an RDAP extension author wants to publish a new version of an
+extension that is backwards-compatible with the previous version, then
+one option is for the new version of the extension to define a new
+identifier, as well as requiring that both the previous conformance
+code and the new conformance code be included in responses.  That way,
+clients relying on the previous version of the extension will continue
+to function as intended, while clients wanting to make use of the
+newer version of the extension can check for the new conformance code
+in the response.
+
+This approach can be used for an arbitrary number of new
+backwards-compatible versions of a given extension.  For an extension
+with a large number of backwards-compatible successor versions, this
+may lead to a large number of conformance codes being included in
+responses.  An extension author may consider excluding older
+conformance codes from the set required by new successor versions,
+based on data about client use/support or similar.
+
+## Backwards-Incompatible Changes
+
+With the current extension model, an extension with a
+backwards-incompatible change is indistinguishable from a new,
+unrelated extension.  Implementors of such changes should consider the
+following:
+
+ - whether the new version of the extension can be provided alongside
+   the old version of the extension, so that a service can simply
+   support both during a transition period;
+ - whether some sort of client signalling should be supported, so that
+   clients can opt for the old or new version of the extension in
+   responses that they receive (see
+   [@!I-D.newton-regext-rdap-x-media-type] for an example of how this
+   might work); and
+ - whether the extension itself should define how versioning is
+   handled within the extension documentation.
+
+## Other
+
+[@!I-D.gould-regext-rdap-versioning] is an extension that provides a
+more full-featured approach to versioning of RDAP extensions than that
+supported by the base RDAP specifications.  Depending on an extension
+author's use case, the approach set out in this document may be
+preferable to one that relies on the base specifications alone.
+
 # Extension Definitions
 
 Extensions must be documented in an RFC or in some other permanent and readily
@@ -192,5 +238,37 @@ Therefore, an extension may define the use of its own JSON values together
 with the use of JSON values from other extensions or RDAP specifications. As with
 the ICANN profile or RIR profile extensions, the extension may simply signal 
 policy applied to already defined RDAP structures.
+
+# Existing Extension Registrations
+
+The following extensions have been registered with IANA, but do not
+comply with the requirements set out in the base specifications, as
+clarified by this document:
+
+ - Extension identifier: fred
+    - RDAP conformance value: fred\_version\_0
+    - Field/path prefix: fred
+
+ - Extension identifier: artRecord
+    - RDAP conformance value: artRecord\_level\_0
+    - Field/path prefix: artRecord
+
+ - Extension identifier: platformNS
+    - RDAP conformance value: platformNS\_level\_0
+    - Field/path prefix: platformNS
+
+ - Extension identifier: regType
+    - RDAP conformance value: regType\_level\_0
+    - Field/path prefix: regType
+
+Client authors should be aware that responses that make use of these
+extensions may require special handling on the part of the client.
+Also, while these extensions will be retained in the registry, future
+extensions that are similarly noncompliant will not be registered.
+
+To avoid any confusion with the operation of the existing entries, an
+extension registration that attempts to use one of the RDAP
+conformance values given in this section as an extension identifier
+(and so as an RDAP conformance value also) will be rejected.
 
 {backmatter}
