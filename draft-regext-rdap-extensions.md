@@ -54,7 +54,7 @@ Internet Number Registries (INRs). The queries for DNRs and INRs are defined in
 
 RDAP contains a means to define extensions for queries not found in [@!RFC9082] and
 responses not found in [@!RFC9083]. RDAP extensions are also described in [@!RFC7480].
-This document uniformally describes RDAP extensions, clarifies their usage, and
+This document uniformly describes RDAP extensions, clarifies their usage, and
 defines additional semantics that were previously undefined.
 
 # The RDAP Extension Identifier {#extension_identifer}
@@ -107,12 +107,17 @@ extension identifier, is undefined as defined in [@!RFC9082] and [@!RFC7480].
 
 Despite this, there are several extensions that do specify query parameters.
 This document updates [@!RFC9082] with regard to the use of RDAP extension
-identifiers in URL query parameters. When RDAP extensions define query
-parameters, those query parameter names are to be constructed in the same manner
-as URL path segments (that is, extensions ID + '_' + paramenter name).
+identifiers in URL query parameters. 
 
-See section (#extension_classes) regarding when usage of an extension identifier
-is required.
+When an RDAP extension define query parameters to be used with a URL path
+that is not defined by that RDAP extension, those query parameter names SHOULD BE 
+constructed in the same manner as URL path segments (that is, extensions ID + '_' 
++ parameter name). See section (#extension_classes) regarding when usage of an 
+extension identifier is required.
+
+When an RDAP extension define query parameters to be used with a URL path defined
+by that RDAP extension, prefixing of query parameters is not required.
+
 
 # Usage in JSON {#usage_in_json}
 
@@ -243,10 +248,10 @@ guidance MUST describe the necessity to do so.
 # Profile Extensions
 
 While the RDAP extension mechanism was created to extend RDAP queries
-and/or responses, some RDAP extensions do neither but instead signal
-server policy (for example, specifying the conditions of use for existing
-response structures). These types of RDAP extensions are often called
-"profiles".
+and/or responses, extensions can also be used to signal server policy 
+(for example, specifying the conditions of use for existing
+response structures). Extensions that are primarily about signalling
+server policy are often called "profiles".
 
 # Extension Versioning
 
