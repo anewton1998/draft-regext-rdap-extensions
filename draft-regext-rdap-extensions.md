@@ -114,7 +114,7 @@ as URL path segments (that is, extensions ID + '_' + paramenter name).
 See section (#extension_classes) regarding when usage of an extension identifier
 is required.
 
-# Usage in JSON
+# Usage in JSON {#usage_in_json}
 
 [@!RFC9083, section 2] describes the use of extension identifiers in the JSON
 returned by RDAP servers. Just as in URIs, the extension identifier is prepended
@@ -147,6 +147,11 @@ The example given in [@!RFC9083] is as follows:
 In this example, the extension identified by `lunarNIC` is prepended
 to the names of both a JSON string and a JSON array.
 
+## Child JSON Values {#child_json_values}
+
+Prefixing of the extension identifier is not required of children of a prefixed
+JSON object defined by an RDAP extension.
+
 The following example shows this use with a JSON object.
 
     {
@@ -173,6 +178,37 @@ extensions that may have an "author" structure. But the JSON contained
 within "lunarNIC_author" need not be prepended as the extension collision
 is avoided by "lunarNIC_author".
 
+## Suffixless Prefixes #{suffixless_prefixes}
+
+Some RDAP extensions define only one JSON value and do not prefix it with their
+RDAP extension identifier instead using the extension identifier as the JSON name
+for that JSON value. This is a "suffixless prefix".
+
+Consider the example in (#child_json_values). Using the "suffixless prefix" pattern,
+that example could be written as:
+
+    {
+      "handle" : "ABC123",
+      "remarks" :
+      [
+        {
+          "description" :
+          [
+            "She sells sea shells down by the sea shore.",
+            "Originally written by Terry Sullivan."
+          ]
+        }
+      ],
+      "lunarNIC" :
+      {
+        "firstInitial": "J",
+        "lastName": "Heinlein"
+      }
+    }
+
+The use of a "suffixless prefix" is not in accordance with the guidance given
+in [@!RFC9083] and is NOT RECOMMENDED.
+
 # Camel Casing
 
 The styling convention used in [@!RFC9083] for JSON names is often called
@@ -194,13 +230,14 @@ created by the IETF and extensions not created by the IETF.
 In the perspective of how extensions identifiers are used as namespace
 separators, extensions created by the IETF are not required to be prefixed
 with an extension identifier as the IETF can coordinate its own activities
-to avoid name collisions. In practice, extensions owned by the IETF do use
+to avoid name collisions. In practice, most extensions owned by the IETF do use
 extension identifiers.
 
 RDAP extensions not defined by the IETF MUST use the extension identifier
 as a prefix in accordance with this document, [@!RFC7480], [@!RFC9082], and
 [@!RFC9083]. And RDAP extensions defined by the IETF SHOULD use the extension
-identifier as a prefix. IETF defined RDAP extensions that do not follow this
+identifier as a prefix, and SHOULD NOT define any "suffixless prefix" values
+as defined in (#suffixless_prefix). IETF defined RDAP extensions that do not follow this
 guidance MUST describe the necessity to do so.
 
 # Profile Extensions
@@ -314,5 +351,11 @@ To avoid any confusion with the operation of the existing entries, an
 extension registration that attempts to use one of the RDAP
 conformance values given in this section as an extension identifier
 (and so as an RDAP conformance value also) will be rejected.
+
+# Acknowledgements
+
+The following individuals have provided feedback and contributions to the
+content and direction of this document: James Gould, Daniel Keathley, and
+Ties de Kock.
 
 {backmatter}
