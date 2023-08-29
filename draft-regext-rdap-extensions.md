@@ -83,10 +83,16 @@ as to define a versioning scheme). That is, RDAP extensions MUST NOT define
 an identifier with two consecutive underscore characters ("__") unless explicitly
 adhering to an RFC describing such usage.
 
-RDAP extensions MUST NOT define an extension identifier in which the identifier
-is a prefix of another RDAP extension identifier. For example, if there were
-a pre-existing identifier of "foo_bar", another RDAP extension could not
-define the identifier "foo".
+RDAP extensions MUST NOT define an extension identifier that when prepended to
+an underscore character may collide with an existing extension identifier.
+For example, if there were a pre-existing identifier of "foo_bar", another extension 
+could not define the identifier "foo". Likewise, if there were a pre-existing
+identifier of "foo_bar", another extension could not define the identifier "foo_bar_buzz".
+However, an extension could define "foo" if "foobar" pre-existed and vice versa.
+
+For this reason, usage of an underscore character in RDAP extension identifiers
+is NOT RECOMMENDED. Implementers should be aware that many existing extension
+identifiers do contain underscore characters.
 
 # Usage in Queries
 
@@ -109,13 +115,13 @@ Despite this, there are several extensions that do specify query parameters.
 This document updates [@!RFC9082] with regard to the use of RDAP extension
 identifiers in URL query parameters. 
 
-When an RDAP extension define query parameters to be used with a URL path
-that is not defined by that RDAP extension, those query parameter names SHOULD BE 
+When an RDAP extension defines query parameters to be used with a URL path
+that is not defined by that RDAP extension, those query parameter names SHOULD be 
 constructed in the same manner as URL path segments (that is, extensions ID + '_' 
 + parameter name). See section (#extension_classes) regarding when usage of an 
 extension identifier is required.
 
-When an RDAP extension define query parameters to be used with a URL path defined
+When an RDAP extension defines query parameters to be used with a URL path defined
 by that RDAP extension, prefixing of query parameters is not required.
 
 
@@ -183,13 +189,14 @@ extensions that may have an "author" structure. But the JSON contained
 within "lunarNIC_author" need not be prepended as the extension collision
 is avoided by "lunarNIC_author".
 
-## Suffixless Prefixes #{suffixless_prefixes}
+## Bare Extension Identifiers #{bare_extension}
 
 Some RDAP extensions define only one JSON value and do not prefix it with their
 RDAP extension identifier instead using the extension identifier as the JSON name
-for that JSON value. This is a "suffixless prefix".
+for that JSON value. That is, the extension identifier is used "bare" and not appended
+with an underscore character and subsequent names.
 
-Consider the example in (#child_json_values). Using the "suffixless prefix" pattern,
+Consider the example in (#child_json_values). Using the bare extension identifier pattern,
 that example could be written as:
 
     {
@@ -211,8 +218,8 @@ that example could be written as:
       }
     }
 
-The use of a "suffixless prefix" is not in accordance with the guidance given
-in [@!RFC9083] and is NOT RECOMMENDED.
+Usage of a bare extension identifier contravenes the guidance in [@!RFC9083].
+This document updates [@!RFC9083] to explicitly allow this pattern.
 
 # Camel Casing
 
@@ -241,9 +248,9 @@ extension identifiers.
 RDAP extensions not defined by the IETF MUST use the extension identifier
 as a prefix in accordance with this document, [@!RFC7480], [@!RFC9082], and
 [@!RFC9083]. And RDAP extensions defined by the IETF SHOULD use the extension
-identifier as a prefix, and SHOULD NOT define any "suffixless prefix" values
-as defined in (#suffixless_prefix). IETF defined RDAP extensions that do not follow this
-guidance MUST describe the necessity to do so.
+identifier as a prefix or as a bare extension identifier (see (#bare_extension))
+IETF defined RDAP extensions that do not follow this guidance MUST describe 
+the necessity to do so.
 
 # Profile Extensions
 
