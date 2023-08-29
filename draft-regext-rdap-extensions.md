@@ -252,13 +252,28 @@ identifier as a prefix or as a bare extension identifier (see (#bare_extension))
 IETF defined RDAP extensions that do not follow this guidance MUST describe 
 the necessity to do so.
 
-# Profile Extensions
+# Profile and Marker Extensions
+
+Extensions are not required to extend the JSON or URL components of RDAP.
 
 While the RDAP extension mechanism was created to extend RDAP queries
 and/or responses, extensions can also be used to signal server policy 
 (for example, specifying the conditions of use for existing
 response structures). Extensions that are primarily about signalling
 server policy are often called "profiles".
+
+Some extensions exist to denote the usage of values placed into an
+IANA registry, such as the IANA RDAP registries, or the usage of extensions
+to technologies used by RDAP such as extended vCard/jCard properties.
+Such extensions exist to "mark" these usages and are often called "marker"
+extensions.
+
+Regardless of the category of these extensions, their usage may also
+leverage the appearance of their identifiers in the `rdapConformance` array.
+Clients may use the `/help` query as defined in [@!RFC9082] to discover
+the extensions available. This document updates the guidance of [@!RFC9083]
+with respect to `/help` queries: servers SHOULD place an `rdapConformance`
+array in the response to a `/help` query.
 
 # Extension Versioning
 
