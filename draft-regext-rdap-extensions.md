@@ -8,10 +8,10 @@ updates = [7480, 9082, 9083]
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-newton-regext-rdap-extensions-00"
+value = "draft-newton-regext-rdap-extensions-01"
 stream = "IETF"
 status = "standard"
-date = 2023-08-22T00:00:00Z
+date = 2023-08-31T00:00:00Z
 
 [[author]]
 initials="A."
@@ -57,7 +57,7 @@ responses not found in [@!RFC9083]. RDAP extensions are also described in [@!RFC
 This document uniformly describes RDAP extensions, clarifies their usage, and
 defines additional semantics that were previously undefined.
 
-# The RDAP Extension Identifier {#extension_identifer}
+# The RDAP Extension Identifier {#extension_identifier}
 
 [@!RFC7480, section 6] describes the identifier used to signify RDAP extensions
 and the IANA registry into which RDAP extensions are to be registered.
@@ -189,7 +189,7 @@ extensions that may have an "author" structure. But the JSON contained
 within "lunarNIC_author" need not be prepended as the extension collision
 is avoided by "lunarNIC_author".
 
-## Bare Extension Identifiers #{bare_extension}
+## Bare Extension Identifiers {#bare_extension}
 
 Some RDAP extensions define only one JSON value and do not prefix it with their
 RDAP extension identifier instead using the extension identifier as the JSON name
