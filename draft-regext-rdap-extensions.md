@@ -4,13 +4,14 @@ area = "Applications and Real-Time Area (ART)"
 workgroup = "Registration Protocols Extensions (regext)"
 abbrev = "rdap-extensions"
 ipr= "trust200902"
+updates = [7480, 9082, 9083]
 
 [seriesInfo]
 name = "Internet-Draft"
 value = "draft-newton-regext-rdap-extensions-00"
 stream = "IETF"
-status = "informational"
-date = 2023-06-23T00:00:00Z
+status = "standard"
+date = 2023-08-22T00:00:00Z
 
 [[author]]
 initials="A."
@@ -28,11 +29,19 @@ organization="ARIN"
 [author.address]
 email = "jasdips@arin.net"
 
+[[author]]
+initials="T."
+surname="Harrison"
+fullname="Tom Harrison"
+organization="APNIC"
+[author.address]
+email = "tomh@apnic.net"
+
 %%%
 
 .# Abstract
 
-This document describes the usage of extensions in RDAP.
+This document describes and clarifies the usage of extensions in RDAP.
 
 {mainmatter}
 
@@ -44,9 +53,11 @@ Internet Number Registries (INRs). The queries for DNRs and INRs are defined in
 [@!RFC9082] and the responses for DNRs and INRs are defined in [@!RFC9083].
 
 RDAP contains a means to define extensions for queries not found in [@!RFC9082] and
-responses not found in [@!RFC9083].
+responses not found in [@!RFC9083]. RDAP extensions are also described in [@!RFC7480].
+This document uniformly describes RDAP extensions, clarifies their usage, and
+defines additional semantics that were previously undefined.
 
-# The RDAP Extension Identifier
+# The RDAP Extension Identifier {#extension_identifer}
 
 [@!RFC7480, section 6] describes the identifier used to signify RDAP extensions
 and the IANA registry into which RDAP extensions are to be registered.
@@ -56,12 +67,32 @@ contain alphanumeric characters and "_" (underscore) characters. This formulatio
 was explicitly chosen to allow compatibility with variable names in programming
 languages and transliteration with XML.
 
-RDAP extension identifiers have no explicit structure and are opaque in that no
-inner-meaning can be "seen" in them.
-
-When in use in RDAP, extension identifiers are prepended to both URL path segments
-and JSON attribute names. In both cases, the extension identifier acts as a namespace
+When in use in RDAP, extension identifiers are prepended to URL path segments,
+URL query parameters, and JSON object member names (herein further referred to 
+as "JSON names").  In all cases, the extension identifier acts as a namespace
 preventing collisions between extension elements.
+
+Additionally, implementers and operators can use the extension identifiers
+to find an extensions definition (via the IANA registry).
+
+RDAP extension identifiers have no explicit structure and are opaque in that no
+inner-meaning can be "seen" in them. This document restricts the syntax
+of RDAP extension identifiers from containing two consecutive "_" (underscore)
+characters and reserves their use for the future definition of structure (such
+as to define a versioning scheme). That is, RDAP extensions MUST NOT define
+an identifier with two consecutive underscore characters ("__") unless explicitly
+adhering to an RFC describing such usage.
+
+RDAP extensions MUST NOT define an extension identifier that when prepended to
+an underscore character may collide with an existing extension identifier.
+For example, if there were a pre-existing identifier of "foo_bar", another extension 
+could not define the identifier "foo". Likewise, if there were a pre-existing
+identifier of "foo_bar", another extension could not define the identifier "foo_bar_buzz".
+However, an extension could define "foo" if "foobar" pre-existed and vice versa.
+
+For this reason, usage of an underscore character in RDAP extension identifiers
+is NOT RECOMMENDED. Implementers should be aware that many existing extension
+identifiers do contain underscore characters.
 
 # Usage in Queries
 
@@ -78,10 +109,23 @@ extension might take the following form:
 Although [@!RFC9082] describes the use of URI query strings, it does not define
 their use with extensions. [@!RFC7480] instructs servers to ignore unknown query
 parameters. Therefore, the use of query parameters, prefixed or not with an
-extension identifier, is undefined. Despite this, there are several extensions 
-that do specify query parameters.
+extension identifier, is undefined as defined in [@!RFC9082] and [@!RFC7480]. 
 
-# Usage in JSON
+Despite this, there are several extensions that do specify query parameters.
+This document updates [@!RFC9082] with regard to the use of RDAP extension
+identifiers in URL query parameters. 
+
+When an RDAP extension defines query parameters to be used with a URL path
+that is not defined by that RDAP extension, those query parameter names SHOULD be 
+constructed in the same manner as URL path segments (that is, extensions ID + '_' 
++ parameter name). See section (#extension_classes) regarding when usage of an 
+extension identifier is required.
+
+When an RDAP extension defines query parameters to be used with a URL path defined
+by that RDAP extension, prefixing of query parameters is not required.
+
+
+# Usage in JSON {#usage_in_json}
 
 [@!RFC9083, section 2] describes the use of extension identifiers in the JSON
 returned by RDAP servers. Just as in URIs, the extension identifier is prepended
@@ -114,6 +158,11 @@ The example given in [@!RFC9083] is as follows:
 In this example, the extension identified by `lunarNIC` is prepended
 to the names of both a JSON string and a JSON array.
 
+## Child JSON Values {#child_json_values}
+
+Prefixing of the extension identifier is not required of children of a prefixed
+JSON object defined by an RDAP extension.
+
 The following example shows this use with a JSON object.
 
     {
@@ -140,6 +189,38 @@ extensions that may have an "author" structure. But the JSON contained
 within "lunarNIC_author" need not be prepended as the extension collision
 is avoided by "lunarNIC_author".
 
+## Bare Extension Identifiers #{bare_extension}
+
+Some RDAP extensions define only one JSON value and do not prefix it with their
+RDAP extension identifier instead using the extension identifier as the JSON name
+for that JSON value. That is, the extension identifier is used "bare" and not appended
+with an underscore character and subsequent names.
+
+Consider the example in (#child_json_values). Using the bare extension identifier pattern,
+that example could be written as:
+
+    {
+      "handle" : "ABC123",
+      "remarks" :
+      [
+        {
+          "description" :
+          [
+            "She sells sea shells down by the sea shore.",
+            "Originally written by Terry Sullivan."
+          ]
+        }
+      ],
+      "lunarNIC" :
+      {
+        "firstInitial": "J",
+        "lastName": "Heinlein"
+      }
+    }
+
+Usage of a bare extension identifier contravenes the guidance in [@!RFC9083].
+This document updates [@!RFC9083] to explicitly allow this pattern.
+
 # Camel Casing
 
 The styling convention used in [@!RFC9083] for JSON names is often called
@@ -151,7 +232,7 @@ name, with an underscore between them.
 Though there is no explicit guidance to use camel case names, extensions would
 be wise to continue the style.
 
-# Two Classes of Extensions
+# Two Classes of Extensions {#extension_classes}
 
 Though all RDAP extensions are to be registered in the IANA RDAP extensions
 registry, there is an implicit two-class system of extensions that comes from
@@ -161,38 +242,73 @@ created by the IETF and extensions not created by the IETF.
 In the perspective of how extensions identifiers are used as namespace
 separators, extensions created by the IETF are not required to be prefixed
 with an extension identifier as the IETF can coordinate its own activities
-to avoid name collisions. In practice, extensions owned by the IETF do use
+to avoid name collisions. In practice, most extensions owned by the IETF do use
 extension identifiers.
+
+RDAP extensions not defined by the IETF MUST use the extension identifier
+as a prefix in accordance with this document, [@!RFC7480], [@!RFC9082], and
+[@!RFC9083]. And RDAP extensions defined by the IETF SHOULD use the extension
+identifier as a prefix or as a bare extension identifier (see (#bare_extension))
+IETF defined RDAP extensions that do not follow this guidance MUST describe 
+the necessity to do so.
+
+# Profile and Marker Extensions
+
+Extensions are not required to extend the JSON or URL components of RDAP.
+
+While the RDAP extension mechanism was created to extend RDAP queries
+and/or responses, extensions can also be used to signal server policy 
+(for example, specifying the conditions of use for existing
+response structures). Extensions that are primarily about signalling
+server policy are often called "profiles".
+
+Some extensions exist to denote the usage of values placed into an
+IANA registry, such as the IANA RDAP registries, or the usage of extensions
+to technologies used by RDAP such as extended vCard/jCard properties.
+Such extensions exist to "mark" these usages and are often called "marker"
+extensions.
+
+Regardless of the category of these extensions, their usage may also
+leverage the appearance of their identifiers in the `rdapConformance` array.
+Clients may use the `/help` query as defined in [@!RFC9082] to discover
+the extensions available. This document updates the guidance of [@!RFC9083]
+with respect to `/help` queries: servers SHOULD place an `rdapConformance`
+array in the response to a `/help` query.
 
 # Extension Versioning
 
-Because RDAP extensions are opaque, they posses no explicit version despite
-the fact that some extension identifiers include trailing numbers. That
-is, RDAP extensions are opaquely versioned.
+As stated in (#extension_identifier), RDAP extensions are opaque and 
+they posses no explicit version despite the fact that some extension 
+identifiers include trailing numbers. That is, RDAP extensions without
+an explicitly defined versioning scheme are opaquely versioned.
 
 For example, `fizzbuzz_1` may be the successor to `fizzbuzz_0`, but it
 may also be an extension for a completely separate purpose. Only consultation
 of the definition of `fizzbuzz_1` will determine its relationship with
 `fizzbuzz_0`. Additionally, `fizzbuzz_99` may be the predecessor of `fizzbuzz_0`.
 
+If a future RFC defines a versioning scheme (such as using the
+mechanims defined in section (#extension_identifier)), an RDAP extension
+definition MUST explicitly denote this compliance.
+
 ## Backwards-Compatible Changes
 
 If an RDAP extension author wants to publish a new version of an
 extension that is backwards-compatible with the previous version, then
 one option is for the new version of the extension to define a new
-identifier, as well as requiring that both the previous conformance
-code and the new conformance code be included in responses.  That way,
-clients relying on the previous version of the extension will continue
-to function as intended, while clients wanting to make use of the
-newer version of the extension can check for the new conformance code
-in the response.
+identifier, as well as requiring that both the previous identifier
+and the new identifier be included in the "rdapConformance" array of 
+responses.  That way, clients relying on the previous version of the 
+extension will continue to function as intended, while clients wanting 
+to make use of the newer version of the extension can check for the new 
+identifier in the response.
 
 This approach can be used for an arbitrary number of new
 backwards-compatible versions of a given extension.  For an extension
 with a large number of backwards-compatible successor versions, this
-may lead to a large number of conformance codes being included in
+may lead to a large number of identifiers being included in
 responses.  An extension author may consider excluding older
-conformance codes from the set required by new successor versions,
+identifiers from the set required by new successor versions,
 based on data about client use/support or similar.
 
 ## Backwards-Incompatible Changes
@@ -212,14 +328,6 @@ following:
    might work); and
  - whether the extension itself should define how versioning is
    handled within the extension documentation.
-
-## Other
-
-[@!I-D.gould-regext-rdap-versioning] is an extension that provides a
-more full-featured approach to versioning of RDAP extensions than that
-supported by the base RDAP specifications.  Depending on an extension
-author's use case, the approach set out in this document may be
-preferable to one that relies on the base specifications alone.
 
 # Extension Definitions
 
@@ -270,5 +378,11 @@ To avoid any confusion with the operation of the existing entries, an
 extension registration that attempts to use one of the RDAP
 conformance values given in this section as an extension identifier
 (and so as an RDAP conformance value also) will be rejected.
+
+# Acknowledgements
+
+The following individuals have provided feedback and contributions to the
+content and direction of this document: James Gould, Daniel Keathley, and
+Ties de Kock.
 
 {backmatter}
