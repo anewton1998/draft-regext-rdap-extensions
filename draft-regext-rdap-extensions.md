@@ -8,10 +8,10 @@ updates = [7480, 9082, 9083]
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-newton-regext-rdap-extensions-01"
+value = "draft-newton-regext-rdap-extensions-02"
 stream = "IETF"
 status = "standard"
-date = 2023-08-31T00:00:00Z
+date = 2024-01-11T00:00:00Z
 
 [[author]]
 initials="A."
@@ -124,6 +124,8 @@ extension identifier is required.
 When an RDAP extension defines query parameters to be used with a URL path defined
 by that RDAP extension, prefixing of query parameters is not required.
 
+See (#redirects) and (#referrals) for other guidance on the use of query
+parameters. 
 
 # Usage in JSON {#usage_in_json}
 
@@ -378,6 +380,59 @@ To avoid any confusion with the operation of the existing entries, an
 extension registration that attempts to use one of the RDAP
 conformance values given in this section as an extension identifier
 (and so as an RDAP conformance value also) will be rejected.
+
+# Redirects {#redirects}
+
+[@!RFC7480] describes the use of redirects in RDAP. Redirects are prominent
+in the discovery of authoritative INR servers as the process outlined in
+[@?RFC9224], which uses IANA allocations, does not account for transfers of
+resources between INRs. [@!RFC7480, Section 4.3] instructs servers to ignore
+unknown query parameters. As it relates to issuing URLs for redirects, servers
+MUST NOT blindly copy query parameters from a request to a redirect URL as
+query parameters may contain sensitive information, such as security credentials,
+not relevant to the target server of the URL. Following the advice in [@!RFC7480],
+servers SHOULD only place query paramters in redirect URLs when it is known
+by the origin server (the server issuing the redirect) that the target server
+(the server referenced by the redirect) can process the query parameter and the
+contents of the query parameter are appropriate to be received by the target.
+
+As it unlikely that every server in a cross-authority, redirect scenario will be upgraded to process
+every new extension, extensions should not solely rely on query parameters to convey
+information as query parameters are not guaranteed to survive a redirect.
+
+This does not mean extensions are prohibited from using query parameters, but
+rather that the use of query parameters must be applied for the scenarioss appropriate
+for the use of the extension. Therefore, extensions MUST NOT rely on query paramters
+when the extension is to be used in scenarios requiring clients to find authoritative
+servers, such as that described above, or other scenarios using redirects among 
+servers of differing authorities.
+
+Extensions MAY use query parameters parameters
+in scenarios where the client has an a priori knowledge of the authoritative
+server to which queries are to be sent. Such scenarios are generally queries
+intended to yield multiple results, authentication or authorization,
+and other scenarios where the behavior of requests across multiple authorities 
+is undefined.
+
+# Referrals {#referrals}
+
+It is common in the RDAP ecosystem to link from one RDAP resource to another, 
+such as can be found in domain registrations in gTLD DNRs.
+These are typically conveyed in the link structure defined in 
+[@?RFC9083, section 4.2] and use the "application/rdap+json"
+media type.
+
+    {
+      "value" : "https://regy.example/domain/foo.example",
+      "rel" : "related",
+      "href" : "https://regr.example/domain/foo.example",
+      "type" : "application/rdap+json"
+    }
+
+Extensions MUST explicitly define any required behavioral changes to the
+processing of referrals, otherwise clients MUST assume the information
+provided by referrals requires no additional processing or modification to
+use in the dereferencing of the referral.
 
 # Acknowledgements
 
