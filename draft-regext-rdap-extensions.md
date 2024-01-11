@@ -396,12 +396,12 @@ by the origin server (the server issuing the redirect) that the target server
 (the server referenced by the redirect) can process the query parameter and the
 contents of the query parameter are appropriate to be received by the target.
 
-As it unlikely that every server in a cross-authority, redirect scenario will be upgraded to process
+As it is unlikely that every server in a cross-authority, redirect scenario will be upgraded to process
 every new extension, extensions should not solely rely on query parameters to convey
-information as query parameters are not guaranteed to survive a redirect.
+information about a resource as query parameters are not guaranteed to survive a redirect.
 
 This does not mean extensions are prohibited from using query parameters, but
-rather that the use of query parameters must be applied for the scenarioss appropriate
+rather that the use of query parameters must be applied for the scenarios appropriate
 for the use of the extension. Therefore, extensions MUST NOT rely on query paramters
 when the extension is to be used in scenarios requiring clients to find authoritative
 servers, such as that described above, or other scenarios using redirects among 
