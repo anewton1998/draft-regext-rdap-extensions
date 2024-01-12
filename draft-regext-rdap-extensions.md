@@ -391,7 +391,7 @@ unknown query parameters. As it relates to issuing URLs for redirects, servers
 MUST NOT blindly copy query parameters from a request to a redirect URL as
 query parameters may contain sensitive information, such as security credentials,
 not relevant to the target server of the URL. Following the advice in [@!RFC7480],
-servers SHOULD only place query paramters in redirect URLs when it is known
+servers SHOULD only place query parameters in redirect URLs when it is known
 by the origin server (the server issuing the redirect) that the target server
 (the server referenced by the redirect) can process the query parameter and the
 contents of the query parameter are appropriate to be received by the target.
@@ -413,6 +413,14 @@ server to which queries are to be sent. Such scenarios are generally queries
 intended to yield multiple results, authentication or authorization,
 and other scenarios where the behavior of requests across multiple authorities 
 is undefined.
+
+In general, extension authors should be mindful of situations requiring clients
+to directly handle redirects at the RDAP layer. Some clients may not be utilizing
+HTTP libraries that provide such an option, and many HTTP client libraries that
+do provide the option do not provide it as a default behavior. Additionally,
+requiring clients to handle redirects at the RDAP layer adds complexity to the
+client in that additional logic must be implemented to handle redirect loops,
+parameter deconfliction, and URL encoding.
 
 # Referrals {#referrals}
 
