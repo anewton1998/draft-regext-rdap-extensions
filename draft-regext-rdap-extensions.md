@@ -407,7 +407,7 @@ when the extension is to be used in scenarios requiring clients to find authorit
 servers, such as that described above, or other scenarios using redirects among 
 servers of differing authorities.
 
-Extensions MAY use query parameters parameters
+Extensions MAY use query parameters
 in scenarios where the client has an a priori knowledge of the authoritative
 server to which queries are to be sent. Such scenarios are generally queries
 intended to yield multiple results, authentication or authorization,
