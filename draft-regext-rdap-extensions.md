@@ -402,7 +402,7 @@ information about a resource as query parameters are not guaranteed to survive a
 
 This does not mean extensions are prohibited from using query parameters, but
 rather that the use of query parameters must be applied for the scenarios appropriate
-for the use of the extension. Therefore, extensions MUST NOT rely on query paramters
+for the use of the extension. Therefore, extensions MUST NOT rely on query parameters
 when the extension is to be used in scenarios requiring clients to find authoritative
 servers, such as that described above, or other scenarios using redirects among 
 servers of differing authorities.
