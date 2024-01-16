@@ -402,7 +402,7 @@ information about a resource as query parameters are not guaranteed to survive a
 
 This does not mean extensions are prohibited from using query parameters, but
 rather that the use of query parameters must be applied for the scenarios appropriate
-for the use of the extension. Therefore, extensions MUST NOT rely on query parameters
+for the use of the extension. Therefore, extensions SHOULD NOT rely on query parameters
 when the extension is to be used in scenarios requiring clients to find authoritative
 servers, such as that described above, or other scenarios using redirects among 
 servers of differing authorities.
@@ -420,7 +420,9 @@ HTTP libraries that provide such an option, and many HTTP client libraries that
 do provide the option do not provide it as a default behavior. Additionally,
 requiring clients to handle redirects at the RDAP layer adds complexity to the
 client in that additional logic must be implemented to handle redirect loops,
-parameter deconfliction, and URL encoding.
+parameter deconfliction, and URL encoding. The guidance given in [@!RFC7480, Section 5.2]
+exists to simplify clients, especially those contructed with shell scripts
+and HTTP command-line utilities.
 
 # Referrals {#referrals}
 
