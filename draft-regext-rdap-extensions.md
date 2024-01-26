@@ -254,7 +254,7 @@ identifier as a prefix or as a bare extension identifier (see (#bare_extension))
 IETF defined RDAP extensions that do not follow this guidance MUST describe 
 the necessity to do so.
 
-# Profile and Marker Extensions
+# Profile and Marker Extensions {#profiles_and_markers}
 
 Extensions are not required to extend the JSON or URL components of RDAP.
 
@@ -330,6 +330,35 @@ following:
    might work); and
  - whether the extension itself should define how versioning is
    handled within the extension documentation.
+
+# Multiple Extension Identifiers
+
+Extension specifications have customarily defined only one extension identifier. However,
+there is no explicit limit on the number of extension identifiers that may be defined in
+a single extension specification. One example is [@?I-D.ietf-regext-rdap-rir-search].
+
+[@!RFC9083, Section 4.1] offers the following guidance on using the extension identifiers
+in RDAP responses:
+
+    A response to a "help" request will include identifiers for all of the specifications
+    supported by the server. A response to any other request will include only identifiers 
+    for the specifications used in the construction of the response.
+
+A strict interpretation of this wording where "construction of the response" only refers
+to the JSON syntax would rule out the usage of (#profiles_and_markers) extension IDs which
+are in common use in RDAP. This document updates the guidance. For responses to queries
+other than "help", a response MUST include in the `rdapConformance` array only those extension
+identifiers necessary for a client to deserialize the JSON and understand the semantic meaning
+of the content within the JSON, and all extensions identifiers MUST be free from conflict in
+both their syntactic and semantic meaning. If an extensions specification defines multiple
+extension identifiers, the extension definition MAY specify that one or more of the identifiers
+may be returned in non-"help" responses so long as the identifiers do not conflict.
+
+Note that this document does not update the guidance from [@!RFC9083, Section 4.1] regarding
+"help" responses and the `rdapConformance` array.
+
+When a server implementation supports multiple extensions, it is RECOMMENDED that the server
+also support and return versioning information as defined by [@!I-D.gould-regext-rdap-versioning].
 
 # Extension Definitions
 
@@ -421,7 +450,7 @@ do provide the option do not provide it as a default behavior. Additionally,
 requiring clients to handle redirects at the RDAP layer adds complexity to the
 client in that additional logic must be implemented to handle redirect loops,
 parameter deconfliction, and URL encoding. The guidance given in [@!RFC7480, Section 5.2]
-exists to simplify clients, especially those contructed with shell scripts
+exists to simplify clients, especially those constructed with shell scripts
 and HTTP command-line utilities.
 
 # Referrals {#referrals}
