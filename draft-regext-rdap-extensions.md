@@ -350,9 +350,7 @@ are in common use in RDAP. This document updates the guidance. For responses to 
 other than "help", a response MUST include in the `rdapConformance` array only those extension
 identifiers necessary for a client to deserialize the JSON and understand the semantic meaning
 of the content within the JSON, and all extensions identifiers MUST be free from conflict in
-both their syntactic and semantic meaning. If an extensions specification defines multiple
-extension identifiers, the extension definition MAY specify that one or more of the identifiers
-may be returned in non-"help" responses so long as the identifiers do not conflict.
+both their syntactic and semantic meaning.
 
 Note that this document does not update the guidance from [@!RFC9083, Section 4.1] regarding
 "help" responses and the `rdapConformance` array.
