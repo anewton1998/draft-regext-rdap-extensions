@@ -8,10 +8,10 @@ updates = [7480, 9082, 9083]
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-newton-regext-rdap-extensions-02"
+value = "draft-ietf-regext-rdap-extensions-00"
 stream = "IETF"
 status = "standard"
-date = 2024-01-11T00:00:00Z
+date = 2024-02-27T00:00:00Z
 
 [[author]]
 initials="A."
@@ -273,9 +273,7 @@ extensions.
 Regardless of the category of these extensions, their usage may also
 leverage the appearance of their identifiers in the `rdapConformance` array.
 Clients may use the `/help` query as defined in [@!RFC9082] to discover
-the extensions available. This document updates the guidance of [@!RFC9083]
-with respect to `/help` queries: servers SHOULD place an `rdapConformance`
-array in the response to a `/help` query.
+the extensions available. 
 
 # Extension Versioning
 
@@ -331,7 +329,7 @@ following:
  - whether the extension itself should define how versioning is
    handled within the extension documentation.
 
-# Multiple Extension Identifiers
+# Extension Identifiers in a Response
 
 Extension specifications have customarily defined only one extension identifier. However,
 there is no explicit limit on the number of extension identifiers that may be defined in
@@ -373,7 +371,7 @@ as to how to interpret the response. This wording does not intentionally restric
 the extension to defining only JSON values within the extensions namespace.
 Therefore, an extension may define the use of its own JSON values together
 with the use of JSON values from other extensions or RDAP specifications. As with
-the ICANN profile or RIR profile extensions, the extension may simply signal 
+the ICANN profile or NRO profile extensions, the extension may simply signal 
 policy applied to already defined RDAP structures.
 
 # Existing Extension Registrations
