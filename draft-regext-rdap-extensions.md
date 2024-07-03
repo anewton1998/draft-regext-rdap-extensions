@@ -95,7 +95,7 @@ is NOT RECOMMENDED. Implementers should be aware that many existing extension
 identifiers do contain underscore characters.
 
 [@!RFC7480] does not explicitly state that extension identifiers are case sensitive.
-This document updates the formulation in [@!RFC7480] to explicitly not that extension
+This document updates the formulation in [@!RFC7480] to explicitly note that extension
 identifiers are case sensitive, and extension identifiers MUST NOT be registered
 where a new identifier is a mixed-case version of an existing identifier. For example,
 if `lunarNIC` is already registered as an identifier, a new registration with `lunarNic`
@@ -194,6 +194,7 @@ the complete example from above would be:
       ],
       "objectClassName" : "domain",
       "handle" : "ABC123",
+      "ldhName" : "example.com",
       "lunarNIC_beforeOneSmallStep" : "TRUE THAT!",
       "remarks" :
       [
@@ -225,7 +226,7 @@ The following example shows this use with a JSON object.
         "lunarNIC"  
       ],
       "objectClassName" : "domain",
-      "handle" : "ABC123",
+      "ldhName" : "example.com",
       "remarks" :
       [
         {
@@ -254,8 +255,10 @@ As described in [@!RFC9082] and #(usage_in_queries), an extension may define new
 If the extension describes the behavior of an RDAP query using that path to return a new RDAP
 object classs, the JSON names are not required to be prepended with the extension identifier
 as described in (#child_json_values). However, the extension MUST define the value for the
-`objectClassName` string, and that value MUST be prepended with the extension identifier in
-the same manner as would be required for JSON names.
+`objectClassName` string (which is used by clients to evaluate the type of the response), 
+and that value MUST be prepended with the extension identifier in
+the same manner as would be required for JSON names (to avoid collisions with object classes 
+defined in other extensions).
 
     {
       "rdapConformance" : [
@@ -274,7 +277,8 @@ the same manner as would be required for JSON names.
 
 As described in [@!RFC9082] and #(usage_in_queries), an extension may define new paths in URIs.
 If the extension describes the behavior of an RDAP query using the path to return a new RDAP
-search result, the JSON name of the search result MUST be prepended with the extension identifier.
+search result, the JSON name of the search result MUST be prepended with the extension identifier
+(to avoid collision with search results defined in other extensions).
 If the search result contains object classes instances defined by the extension, each instance
 must have an `objectClassName` string as defined in (#object_classes_in_extensions).
 
@@ -319,7 +323,7 @@ that example could be written as:
         "lunarNIC"  
       ],
       "objectClassName" : "domain",
-      "handle" : "ABC123",
+      "ldhName": "example.com",
       "remarks" :
       [
         {
@@ -391,13 +395,25 @@ For example, an extension may be used to signal desired processing of
 a `rel` attribute in a "links" array, where the `rel` value is registered in
 the Link Relations Registry (<https://www.iana.org/assignments/link-relations/link-relations.xhtml>).
 
-    "links": [
-      {
-        "value": "https://example.com/foo_bar",
-        "href" : "https://example.com/foo_baz",
-        "rel": "sideways"
-      }
-    ]
+    {
+      "rdapConformance" : [
+        "rdap_level_0",
+        "lunarNIC"  
+      ],
+      "objectClassName" : "domain",
+      "ldhName": "example.com",
+      "links": [
+        {
+          "value": "https://example.com/domain/example.com",
+          "href" : "https://example.com/sideways_href",
+          "rel": "sideways",
+          "type": "application/rdap+json"
+        }
+      ]
+    }
+
+When defining the usage link relations, extensions SHOULD specify the
+media types expected to be used with those link relations.
 
 Regardless of the category of these extensions, their usage may also
 leverage the appearance of their identifiers in the `rdapConformance` array.
