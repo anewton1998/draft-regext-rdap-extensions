@@ -255,17 +255,17 @@ As described in [@!RFC9082] and #(usage_in_queries), an extension may define new
 If the extension describes the behavior of an RDAP query using that path to return a new RDAP
 object classs, the JSON names are not required to be prepended with the extension identifier
 as described in (#child_json_values). However, the extension MUST define the value for the
-`objectClassName` string (which is used by clients to evaluate the type of the response), 
-and that value MUST be prepended with the extension identifier in
-the same manner as would be required for JSON names (to avoid collisions with object classes 
-defined in other extensions).
+`objectClassName` string which is used by clients to evaluate the type of the response., 
+To avoid collisions with object classes defined in other extensions, the value for the 
+`objectClassName` MUST either be prepended with the extension identifier or
+be the extension identifier in cases where the extension defines only one object class.
 
     {
       "rdapConformance" : [
         "rdap_level_0",
         "lunarNIC"  
       ],
-      "objectClassName" : "lunarNIC_author",
+      "objectClassName" : "lunarNIC author",
       "author" :
       {
         "firstInitial": "R",
@@ -273,13 +273,18 @@ defined in other extensions).
       }
     }
 
+Because the `objectClassName` is a string and [@!RFC9083] sets the precedent of using
+spaces in object class names (i.e. "ip network"), extensions may follow the same
+convention. It is RECOMMENDED that object class names be lower cased, ASCII characters
+that use the space character as a word separator.
+
 ## Search Results in Extensions {#search_results_in_extensions}
 
 As described in [@!RFC9082] and #(usage_in_queries), an extension may define new paths in URIs.
 If the extension describes the behavior of an RDAP query using the path to return a new RDAP
 search result, the JSON name of the search result MUST be prepended with the extension identifier
 (to avoid collision with search results defined in other extensions).
-If the search result contains object classes instances defined by the extension, each instance
+If the search result contains object class instances defined by the extension, each instance
 must have an `objectClassName` string as defined in (#object_classes_in_extensions).
 
     {
@@ -412,7 +417,7 @@ the Link Relations Registry (<https://www.iana.org/assignments/link-relations/li
       ]
     }
 
-When defining the usage link relations, extensions SHOULD specify the
+When defining the usage link relations, extensions should specify the
 media types expected to be used with those link relations.
 
 Regardless of the category of these extensions, their usage may also
@@ -614,6 +619,21 @@ processing of referrals, otherwise clients MUST assume the information
 provided by referrals requires no additional processing or modification to
 use in the dereferencing of the referral.
 
+# Extension Specification Content
+
+The primary purpose of an RDAP extension specification is to aid in
+the implementation of RDAP clients. These specifications should consider
+the following content guidelines:
+
+1. Examples of RDAP JSON should be generously given, especially in
+areas of the specification which may be complex or difficult to describe
+with prose.
+2. Normative references, i.e. references to materials that are
+required for the interoperability of the extension, should be stable
+and non-changing.
+3. Extension specifications should strongly consider making the use
+of HTTPS with RDAP mandatory if appropriate.
+
 # IANA Considerations
 
 [@!RFC7480] defines the RDAP Extensions Registry. This document does not
@@ -628,7 +648,7 @@ submitted registration.
 Expert reviewers are to use the following criteria for extensions defined
 in this document, which include but are not limited to:
 
-1. Does the extension define an extension identifier follow the naming
+1. Does the extension define an extension identifier following the naming
 conventions described in (#extension_identifier) and (#camel_casing)? For
 any recommendations regarding naming conventions (guidance given using
 RECOMMENDED, SHOULD, etc...), does the extension describe the need for
