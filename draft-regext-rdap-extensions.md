@@ -8,10 +8,10 @@ updates = [7480, 9082, 9083]
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-ietf-regext-rdap-extensions-00"
+value = "draft-ietf-regext-rdap-extensions-01"
 stream = "IETF"
 status = "standard"
-date = 2024-02-27T00:00:00Z
+date = 2024-07-23T00:00:00Z
 
 [[author]]
 initials="A."
