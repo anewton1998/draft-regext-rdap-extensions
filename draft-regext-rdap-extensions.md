@@ -441,7 +441,7 @@ If a future RFC defines a versioning scheme (such as using the
 mechanism defined in section (#extension_identifier)), an RDAP extension
 definition MUST explicitly denote this compliance.
 
-## Backwards-Compatible Changes #{backwards_compatible_changes}
+## Backwards-Compatible Changes {#backwards_compatible_changes}
 
 If an RDAP extension author wants to publish a new version of an
 extension that is backwards-compatible with the previous version, then
@@ -461,7 +461,7 @@ responses.  An extension author may consider excluding older
 identifiers from the set required by new successor versions,
 based on data about client use/support or similar.
 
-## Backwards-Incompatible Changes #{backwards_incompatible_changes}
+## Backwards-Incompatible Changes {#backwards_incompatible_changes}
 
 With the current extension model, an extension with a
 backwards-incompatible change is indistinguishable from a new,
