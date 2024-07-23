@@ -251,7 +251,7 @@ is avoided by "lunarNIC_author".
 
 ## Object Classes in Extensions {#object_classes_in_extensions}
 
-As described in [@!RFC9082] and #(usage_in_queries), an extension may define new paths in URIs.
+As described in [@!RFC9082] and (#usage_in_queries), an extension may define new paths in URIs.
 If the extension describes the behavior of an RDAP query using that path to return a new RDAP
 object classs, the JSON names are not required to be prepended with the extension identifier
 as described in (#child_json_values). However, the extension MUST define the value for the
