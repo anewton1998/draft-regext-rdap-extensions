@@ -8,10 +8,10 @@ updates = [7480, 9082, 9083]
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-ietf-regext-rdap-extensions-01"
+value = "draft-ietf-regext-rdap-extensions-02"
 stream = "IETF"
 status = "standard"
-date = 2024-07-23T00:00:00Z
+date = 2024-07-26T00:00:00Z
 
 [[author]]
 initials="A."
@@ -49,8 +49,8 @@ This document describes and clarifies the usage of extensions in RDAP.
 
 The Registration Data Access Protocol (RDAP) defines a uniform means to access data
 from Internet operations registries, specifically Domain Name Registries (DNRs) and
-Internet Number Registries (INRs). The queries for DNRs and INRs are defined in
-[@!RFC9082] and the responses for DNRs and INRs are defined in [@!RFC9083].
+Internet Number Resource Registries (INRRs). The queries for DNRs and INRRs are defined in
+[@!RFC9082] and the responses for DNRs and INRRs are defined in [@!RFC9083].
 
 RDAP contains a means to define extensions for queries not found in [@!RFC9082] and
 responses not found in [@!RFC9083]. RDAP extensions are also described in [@!RFC7480].
@@ -94,11 +94,11 @@ For this reason, usage of an underscore character in RDAP extension identifiers
 is NOT RECOMMENDED. Implementers should be aware that many existing extension
 identifiers do contain underscore characters.
 
-[@!RFC7480] does not explicitly state that extension identifiers are case sensitive.
+[@!RFC7480] does not explicitly state that extension identifiers are case-sensitive.
 This document updates the formulation in [@!RFC7480] to explicitly note that extension
-identifiers are case sensitive, and extension identifiers MUST NOT be registered
+identifiers are case-sensitive, and extension identifiers MUST NOT be registered
 where a new identifier is a mixed-case version of an existing identifier. For example,
-if `lunarNIC` is already registered as an identifier, a new registration with `lunarNic`
+if "lunarNIC" is already registered as an identifier, a new registration with "lunarNic"
 (note the lowercase if "ic" in "Nic") is not allowed.
 
 # Usage in Queries {#usage_in_queries}
@@ -106,8 +106,8 @@ if `lunarNIC` is already registered as an identifier, a new registration with `l
 [@!RFC9082, section 5] describes the use of extension identifiers in formulating
 URIs to query RDAP servers. The extension identifiers are to be prepended to the
 path segments they use. For example, if an extension uses the identifier
-`foobar`, then the path segments used in that extension are prepended with `foobar_`.
-If the `foobar` extension defines paths `fizz` and `fazz`, the URIs for this
+"foobar", then the path segments used in that extension are prepended with "foobar_".
+If the "foobar" extension defines paths "fizz" and "fazz", the URIs for this
 extension might take the following form:
 
     https://base.example/foobar_fizz
@@ -117,8 +117,8 @@ While [@!RFC9082] describes the extension identifier as a prepended string to a
 path segment, it does not describe the usage of the extension identifier as path
 segment which may have child path segments. This document updates [@!RFC9082] to
 allow the usage of extension identifiers as path segments which may have child path
-segments. For example, if the `foobar` extension defines the child paths `fizz` and `fazz`,
-the URIs for this extension would take the the following forms:
+segments. For example, if the "foobar" extension defines the child paths "fizz" and "fazz",
+the URIs for this extension would take the following forms:
 
     https://base.example/foobar/fizz
     https://base.example/foobar/fazz
@@ -126,7 +126,7 @@ the URIs for this extension would take the the following forms:
 Extensions defining new URI paths MUST explicitly define the expected response
 to each new URI path. New URI paths may return existing object classes or search
 results as defined in [@!RFC9083], object classes or search results defined by
-the extension (see #(object_classes_in_extensions) and (#search_results_in_extensions)
+the extension (see (#object_classes_in_extensions) and (#search_results_in_extensions)
 below), or object classes or search results from other extensions.
 
 Although [@!RFC9082] describes the use of URI query strings, it does not define
@@ -156,31 +156,31 @@ parameters.
 returned by RDAP servers. Just as in URIs, the extension identifier is prepended
 to JSON names to create a namespace so that the JSON name from one extension
 will not collide with the JSON name of another extension. And just as with
-URIs, clients are to ignore unknown JSON names.
+unknown query parameters in URIs, clients are to ignore unknown JSON names.
 
 The example given in [@!RFC9083] is as follows:
 
     {
-      "handle" : "ABC123",
-      "lunarNIC_beforeOneSmallStep" : "TRUE THAT!",
-      "remarks" :
+      "handle": "ABC123",
+      "lunarNIC_beforeOneSmallStep": "TRUE THAT!",
+      "remarks":
       [
         {
-          "description" :
+          "description":
           [
             "She sells sea shells down by the sea shore.",
             "Originally written by Terry Sullivan."
           ]
         }
       ],
-      "lunarNIC_harshMistressNotes" :
+      "lunarNIC_harshMistressNotes":
       [
         "In space,",
         "nobody can hear you scream."
       ]
     }
 
-In this example, the extension identified by `lunarNIC` is prepended
+In this example, the extension identified by "lunarNIC" is prepended
 to the names of both a JSON string and a JSON array.
 
 As [@!RFC9083, section 4.1] requires the use of the `rdapConformance` data structure
@@ -188,25 +188,25 @@ and the `objectClassName` string is required of all object class instances,
 the complete example from above would be:
 
     {
-      "rdapConformance" : [
+      "rdapConformance": [
         "rdap_level_0",
         "lunarNIC"  
       ],
-      "objectClassName" : "domain",
-      "handle" : "ABC123",
-      "ldhName" : "example.com",
-      "lunarNIC_beforeOneSmallStep" : "TRUE THAT!",
-      "remarks" :
+      "objectClassName": "domain",
+      "handle": "ABC123",
+      "ldhName": "example.com",
+      "lunarNIC_beforeOneSmallStep": "TRUE THAT!",
+      "remarks":
       [
         {
-          "description" :
+          "description":
           [
             "She sells sea shells down by the sea shore.",
             "Originally written by Terry Sullivan."
           ]
         }
       ],
-      "lunarNIC_harshMistressNotes" :
+      "lunarNIC_harshMistressNotes":
       [
         "In space,",
         "nobody can hear you scream."
@@ -221,23 +221,23 @@ JSON object defined by an RDAP extension.
 The following example shows this use with a JSON object.
 
     {
-      "rdapConformance" : [
+      "rdapConformance": [
         "rdap_level_0",
         "lunarNIC"  
       ],
-      "objectClassName" : "domain",
-      "ldhName" : "example.com",
-      "remarks" :
+      "objectClassName": "domain",
+      "ldhName": "example.com",
+      "remarks":
       [
         {
-          "description" :
+          "description":
           [
             "She sells sea shells down by the sea shore.",
             "Originally written by Terry Sullivan."
           ]
         }
       ],
-      "lunarNIC_author" :
+      "lunarNIC_author":
       {
         "firstInitial": "R",
         "lastName": "Heinlein"
@@ -253,7 +253,7 @@ is avoided by "lunarNIC_author".
 
 As described in [@!RFC9082] and (#usage_in_queries), an extension may define new paths in URIs.
 If the extension describes the behavior of an RDAP query using that path to return a new RDAP
-object classs, the JSON names are not required to be prepended with the extension identifier
+object class, the JSON names are not required to be prepended with the extension identifier
 as described in (#child_json_values). However, the extension MUST define the value for the
 `objectClassName` string which is used by clients to evaluate the type of the response., 
 To avoid collisions with object classes defined in other extensions, the value for the 
@@ -261,12 +261,12 @@ To avoid collisions with object classes defined in other extensions, the value f
 be the extension identifier in cases where the extension defines only one object class.
 
     {
-      "rdapConformance" : [
+      "rdapConformance": [
         "rdap_level_0",
         "lunarNIC"  
       ],
-      "objectClassName" : "lunarNIC author",
-      "author" :
+      "objectClassName": "lunarNIC author",
+      "author":
       {
         "firstInitial": "R",
         "lastName": "Heinlein"
@@ -280,7 +280,7 @@ that use the space character as a word separator.
 
 ## Search Results in Extensions {#search_results_in_extensions}
 
-As described in [@!RFC9082] and #(usage_in_queries), an extension may define new paths in URIs.
+As described in [@!RFC9082] and (#usage_in_queries), an extension may define new paths in URIs.
 If the extension describes the behavior of an RDAP query using the path to return a new RDAP
 search result, the JSON name of the search result MUST be prepended with the extension identifier
 (to avoid collision with search results defined in other extensions).
@@ -288,22 +288,22 @@ If the search result contains object class instances defined by the extension, e
 must have an `objectClassName` string as defined in (#object_classes_in_extensions).
 
     {
-      "rdapConformance" : [
+      "rdapConformance": [
         "rdap_level_0",
         "lunarNIC"  
       ],
       "lunarNIC_authorSearchResult": [
         {
-          "objectClassName" : "lunarNIC_author",
-          "author" :
+          "objectClassName": "lunarNIC_author",
+          "author":
           {
             "firstInitial": "R",
             "lastName": "Heinlein"
           }
         },
         {
-          "objectClassName" : "lunarNIC_author",
-          "author" :
+          "objectClassName": "lunarNIC_author",
+          "author":
           {
             "firstInitial": "J",
             "lastName": "Pournelle"
@@ -315,7 +315,7 @@ must have an `objectClassName` string as defined in (#object_classes_in_extensio
 ## Bare Extension Identifiers {#bare_extension}
 
 Some RDAP extensions define only one JSON value and do not prefix it with their
-RDAP extension identifier instead using the extension identifier as the JSON name
+RDAP extension identifier; instead using the extension identifier as the JSON name
 for that JSON value. That is, the extension identifier is used "bare" and not appended
 with an underscore character and subsequent names.
 
@@ -323,23 +323,23 @@ Consider the example in (#child_json_values). Using the bare extension identifie
 that example could be written as:
 
     {
-      "rdapConformance" : [
+      "rdapConformance": [
         "rdap_level_0",
         "lunarNIC"  
       ],
-      "objectClassName" : "domain",
+      "objectClassName": "domain",
       "ldhName": "example.com",
-      "remarks" :
+      "remarks":
       [
         {
-          "description" :
+          "description":
           [
             "She sells sea shells down by the sea shore.",
             "Originally written by Terry Sullivan."
           ]
         }
       ],
-      "lunarNIC" :
+      "lunarNIC":
       {
         "firstInitial": "R",
         "lastName": "Heinlein"
@@ -376,8 +376,8 @@ extension identifiers.
 RDAP extensions not defined by the IETF MUST use the extension identifier
 as a prefix in accordance with this document, [@!RFC7480], [@!RFC9082], and
 [@!RFC9083]. And RDAP extensions defined by the IETF SHOULD use the extension
-identifier as a prefix or as a bare extension identifier (see (#bare_extension))
-IETF defined RDAP extensions that do not follow this guidance MUST describe 
+identifier as a prefix or as a bare extension identifier (see (#bare_extension)).
+IETF-defined RDAP extensions that do not follow this guidance MUST describe
 the necessity to do so.
 
 # Profile and Marker Extensions {#profiles_and_markers}
@@ -401,16 +401,16 @@ a `rel` attribute in a "links" array, where the `rel` value is registered in
 the Link Relations Registry (<https://www.iana.org/assignments/link-relations/link-relations.xhtml>).
 
     {
-      "rdapConformance" : [
+      "rdapConformance": [
         "rdap_level_0",
         "lunarNIC"  
       ],
-      "objectClassName" : "domain",
+      "objectClassName": "domain",
       "ldhName": "example.com",
       "links": [
         {
           "value": "https://example.com/domain/example.com",
-          "href" : "https://example.com/sideways_href",
+          "href": "https://example.com/sideways_href",
           "rel": "sideways",
           "type": "application/rdap+json"
         }
@@ -427,8 +427,8 @@ the extensions available.
 
 # Extension Versioning
 
-As stated in (#extension_identifier), RDAP extensions are opaque and 
-they posses no explicit version despite the fact that some extension 
+As stated in (#extension_identifier), RDAP extensions are opaque, and
+they possess no explicit version despite the fact that some extension
 identifiers include trailing numbers. That is, RDAP extensions without
 an explicitly defined versioning scheme are opaquely versioned.
 
@@ -438,7 +438,7 @@ of the definition of `fizzbuzz_1` will determine its relationship with
 `fizzbuzz_0`. Additionally, `fizzbuzz_99` may be the predecessor of `fizzbuzz_0`.
 
 If a future RFC defines a versioning scheme (such as using the
-mechanism defined in section (#extension_identifier)), an RDAP extension
+mechanism defined in (#extension_identifier)), an RDAP extension
 definition MUST explicitly denote this compliance.
 
 ## Backwards-Compatible Changes {#backwards_compatible_changes}
@@ -559,9 +559,9 @@ conformance values given in this section as an extension identifier
 # Redirects {#redirects}
 
 [@!RFC7480] describes the use of redirects in RDAP. Redirects are prominent
-in the discovery of authoritative INR servers as the process outlined in
+in the discovery of authoritative INRR servers as the process outlined in
 [@?RFC9224], which uses IANA allocations, does not account for transfers of
-resources between INRs. [@!RFC7480, Section 4.3] instructs servers to ignore
+resources between INRRs. [@!RFC7480, Section 4.3] instructs servers to ignore
 unknown query parameters. As it relates to issuing URLs for redirects, servers
 MUST NOT blindly copy query parameters from a request to a redirect URL as
 query parameters may contain sensitive information, such as security credentials,
@@ -583,7 +583,7 @@ servers, such as that described above, or other scenarios using redirects among
 servers of differing authorities.
 
 Extensions MAY use query parameters
-in scenarios where the client has an a priori knowledge of the authoritative
+in scenarios where the client has a priori knowledge of the authoritative
 server to which queries are to be sent. Such scenarios are generally queries
 intended to yield multiple results, authentication or authorization,
 and other scenarios where the behavior of requests across multiple authorities 
@@ -595,7 +595,7 @@ HTTP libraries that provide such an option, and many HTTP client libraries that
 do provide the option do not provide it as a default behavior. Additionally,
 requiring clients to handle redirects at the RDAP layer adds complexity to the
 client in that additional logic must be implemented to handle redirect loops,
-parameter deconfliction, and URL encoding. The guidance given in [@!RFC7480, Section 5.2]
+parameter deconfliction, and URL encoding. The guidance given in [@!RFC7480, section 5.2]
 exists to simplify clients, especially those constructed with shell scripts
 and HTTP command-line utilities.
 
@@ -608,10 +608,10 @@ These are typically conveyed in the link structure defined in
 media type.
 
     {
-      "value" : "https://regy.example/domain/foo.example",
-      "rel" : "related",
-      "href" : "https://regr.example/domain/foo.example",
-      "type" : "application/rdap+json"
+      "value": "https://regy.example/domain/foo.example",
+      "rel": "related",
+      "href": "https://regr.example/domain/foo.example",
+      "type": "application/rdap+json"
     }
 
 Extensions MUST explicitly define any required behavioral changes to the
@@ -636,8 +636,8 @@ of HTTPS with RDAP mandatory if appropriate.
 
 # IANA Considerations
 
-[@!RFC7480] defines the RDAP Extensions Registry. This document does not
-change the RDAP extensions registry nor its purpose. However, this
+[@!RFC7480] defines the RDAP Extensions Registry (<https://www.iana.org/assignments/rdap-extensions/rdap-extensions.xhtml>).
+This document does not change the RDAP Extensions Registry nor its purpose. However, this
 document does update the procedures to be used by its expert reviewers.
 
 The RDAP Extensions Registry should have as a minimum three expert reviewers
@@ -651,14 +651,14 @@ in this document, which include but are not limited to:
 1. Does the extension define an extension identifier following the naming
 conventions described in (#extension_identifier) and (#camel_casing)? For
 any recommendations regarding naming conventions (guidance given using
-RECOMMENDED, SHOULD, etc...), does the extension describe the need for
+RECOMMENDED, SHOULD, etc.), does the extension describe the need for
 departing from the established convention?
 2. If the extension defines new queries, does it clearly describe the
 expected results of each new query?
 3. Does the extension follow the JSON naming as described in (#usage_in_json)?
 4. If the extension is a newer version of an older extension, does
-the extension specification clearly describe if it is backwards compatible
-(see (#backwards_compatible_changes) or backwards incompatible
+the extension specification clearly describe if it is backwards-compatible
+(see (#backwards_compatible_changes)) or backwards-incompatible
 (see (#backwards_incompatible_changes)).
 5. If the extension registers new values in an IANA registry used by RDAP,
 does it describe how a client is to use those values?
