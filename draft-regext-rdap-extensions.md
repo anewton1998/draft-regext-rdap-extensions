@@ -55,7 +55,15 @@ Internet Number Resource Registries (INRRs). The queries for DNRs and INRRs are 
 RDAP contains a means to define extensions for queries not found in [@!RFC9082] and
 responses not found in [@!RFC9083]. RDAP extensions are also described in [@!RFC7480].
 This document uniformly describes RDAP extensions, clarifies their usage, and
-defines additional semantics that were previously undefined.
+defines additional semantics that were previously undefined or ambiguous.
+
+## Document Terms
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", 
+"SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+"MAY", and "OPTIONAL" in this document are to be interpreted as
+described in [@!BCP14] when, and only when, they
+appear in all capitals, as shown here.
 
 # The RDAP Extension Identifier {#extension_identifier}
 
@@ -114,7 +122,7 @@ extension might take the following form:
     https://base.example/foobar_fazz
 
 While [@!RFC9082] describes the extension identifier as a prepended string to a
-path segment, it does not describe the usage of the extension identifier as path
+path segment, it does not describe the usage of the extension identifier as a path
 segment which may have child path segments. This document updates [@!RFC9082] to
 allow the usage of extension identifiers as path segments which may have child path
 segments. For example, if the "foobar" extension defines the child paths "fizz" and "fazz",
@@ -148,7 +156,8 @@ When an RDAP extension defines query parameters to be used with a URL path defin
 by that RDAP extension, prefixing of query parameters is not required.
 
 See (#redirects) and (#referrals) for other guidance on the use of query
-parameters. 
+parameters, and see #(security_considerations) and (#privacy_considerations)
+regarding the constraints on the usage of query parameters. 
 
 # Usage in JSON {#usage_in_json}
 
@@ -255,7 +264,7 @@ As described in [@!RFC9082] and (#usage_in_queries), an extension may define new
 If the extension describes the behavior of an RDAP query using that path to return a new RDAP
 object class, the JSON names are not required to be prepended with the extension identifier
 as described in (#child_json_values). However, the extension MUST define the value for the
-`objectClassName` string which is used by clients to evaluate the type of the response., 
+`objectClassName` string which is used by clients to evaluate the type of the response. 
 To avoid collisions with object classes defined in other extensions, the value for the 
 `objectClassName` MUST either be prepended with the extension identifier or
 be the extension identifier in cases where the extension defines only one object class.
@@ -276,7 +285,11 @@ be the extension identifier in cases where the extension defines only one object
 Because the `objectClassName` is a string and [@!RFC9083] sets the precedent of using
 spaces in object class names (i.e. "ip network"), extensions may follow the same
 convention. It is RECOMMENDED that object class names be lower cased, ASCII characters
-that use the space character as a word separator.
+that use either the space character or the "\_" (underscore) character as a word separator.
+Usage of the space character as a word separator follows existing convention, but usage
+of the "\_" (underscore) character may be preferred when the name is also used in URI paths.
+When object class names are also used in URIs, extensions MUST specify that the name
+is to be URL-encoded as defined in [@!RFC3986].
 
 ## Search Results in Extensions {#search_results_in_extensions}
 
@@ -392,7 +405,7 @@ server policy are often called "profiles".
 
 Some extensions exist to denote the usage of values placed into an
 IANA registry, such as the IANA RDAP registries, or the usage of extensions
-to technologies used by RDAP such as extended vCard/jCard properties.
+for specifications used in RDAP responses such as extended vCard/jCard properties.
 Such extensions exist to "mark" these usages and are often called "marker"
 extensions.
 
@@ -474,7 +487,7 @@ following:
  - whether some sort of client signaling should be supported, so that
    clients can opt for the old or new version of the extension in
    responses that they receive (see
-   [@!I-D.newton-regext-rdap-x-media-type] for an example of how this
+   [@?I-D.newton-regext-rdap-x-media-type] for an example of how this
    might work); and
  - whether the extension itself should define how versioning is
    handled within the extension documentation.
@@ -504,7 +517,7 @@ Note that this document does not update the guidance from [@!RFC9083, Section 4.
 "help" responses and the `rdapConformance` array.
 
 When a server implementation supports multiple extensions, it is RECOMMENDED that the server
-also support and return versioning information as defined by [@!I-D.gould-regext-rdap-versioning].
+also support and return versioning information such that defined by [@?I-D.gould-regext-rdap-versioning].
 
 # Extension Definitions
 
@@ -636,6 +649,8 @@ of HTTPS with RDAP mandatory if appropriate.
 
 # IANA Considerations
 
+## RDAP Extensions Registry
+
 [@!RFC7480] defines the RDAP Extensions Registry (<https://www.iana.org/assignments/rdap-extensions/rdap-extensions.xhtml>).
 This document does not change the RDAP Extensions Registry nor its purpose. However, this
 document does update the procedures to be used by its expert reviewers.
@@ -665,6 +680,69 @@ does it describe how a client is to use those values?
 
 Extension authors are encouraged but not required to seek an informal review
 of their extension by sending a request for review to regext@ietf.org.
+
+## RDAP JSON Values Registry
+
+Many extensions register values in the RDAP JSON Values Registry
+(<https://www.iana.org/assignments/rdap-json-values/rdap-json-values.xhtml>).
+This document does not change the RDAP JSON Values Registry nor its purpose.
+However, this document does update the procedures to be used by its expert reviewers.
+
+[@!RFC9083, Section 10.2] defines the criteria for the values. Of these, criteria two
+states:
+
+> Values must be strings. They should be multiple words separated by single 
+> space characters. Every character should be lowercased. If possible, every 
+> word should be given in English and each character should be US-ASCII.
+
+The current values in the registry violate these criteria:
+
+* Registry Domain ID
+* Registry Registrant ID
+* Registrant Name
+* Registrant Organization
+* Registrant Street
+* Registrant City
+* Registrant Postal Code
+* Registrant Phone
+* Registrant Phone Ext
+* Registrant Fax
+* Registrant Fax Ext
+* Registry Tech ID
+* Tech Name
+* Tech Phone
+* Tech Phone Ext
+* Tech Email
+
+The RDAP JSON Values Registry should have as a minimum three expert reviewers
+and ideally four or five. An expert reviewer assigned to the review of an RDAP
+JSON values registration must have another expert reviewer double check any
+submitted registration.
+
+Expert reviewers are to use the criteria defined [!@RFC9083, Section 10.2].
+
+# Security Considerations {#security_considerations}
+
+(#usage_in_queries) describes the usage of query parameters and (#redirects) describes
+the restrictions extensions must follow to use them. 
+[@!RFC7480, Section 4.3] instructs servers to ignore
+unknown query parameters. As it relates to issuing URLs for redirects, servers
+MUST NOT blindly copy query parameters from a request to a redirect URL as
+query parameters may contain sensitive information, such as security credentials
+or tracking information, not relevant to the target server of the URL. Following the advice in [@!RFC7480],
+servers SHOULD only place query parameters in redirect URLs when it is known
+by the origin server (the server issuing the redirect) that the target server
+(the server referenced by the redirect) can process the query parameter and the
+contents of the query parameter are appropriate to be received by the target.
+
+# Privacy Considerations
+
+(#usage_in_queries) describes the usage of query parameters and (#redirects) describes
+the restrictions extensions must follow to use them. As query parameters have been
+known to be used to subvert the privacy preferences of users in HTTP using protocols,
+server MUST NOT blindly copy query parameters from a request to a redirect URL
+as described in (#security_considerations) and extensions MUST follow the
+constraints of query parameter usage as defined in (#redirects).
 
 # Acknowledgments
 
