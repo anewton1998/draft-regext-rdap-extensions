@@ -48,9 +48,10 @@ This document describes and clarifies the usage of extensions in RDAP.
 # Background
 
 The Registration Data Access Protocol (RDAP) defines a uniform means to access data
-from Internet operations registries, specifically Domain Name Registries (DNRs) and
-Internet Number Resource Registries (INRRs). The queries for DNRs and INRRs are defined in
-[@!RFC9082] and the responses for DNRs and INRRs are defined in [@!RFC9083].
+from Internet operations registries, specifically Domain Name Registries (DNRs),
+Regional Internet Registries (RIRs), and other registries serving Internet Number
+Resources (INRs). The queries for DNRs and RIRs are defined in
+[@!RFC9082] and the responses for DNRs and RIRs are defined in [@!RFC9083].
 
 RDAP contains a means to define extensions for queries not found in [@!RFC9082] and
 responses not found in [@!RFC9083]. RDAP extensions are also described in [@!RFC7480].
@@ -156,7 +157,7 @@ When an RDAP extension defines query parameters to be used with a URL path defin
 by that RDAP extension, prefixing of query parameters is not required.
 
 See (#redirects) and (#referrals) for other guidance on the use of query
-parameters, and see #(security_considerations) and (#privacy_considerations)
+parameters, and see (#security_considerations) and (#privacy_considerations)
 regarding the constraints on the usage of query parameters. 
 
 # Usage in JSON {#usage_in_json}
@@ -274,7 +275,7 @@ be the extension identifier in cases where the extension defines only one object
         "rdap_level_0",
         "lunarNIC"  
       ],
-      "objectClassName": "lunarNIC author",
+      "objectClassName": "lunarNIC_author",
       "author":
       {
         "firstInitial": "R",
@@ -282,14 +283,15 @@ be the extension identifier in cases where the extension defines only one object
       }
     }
 
-Because the `objectClassName` is a string and [@!RFC9083] sets the precedent of using
-spaces in object class names (i.e. "ip network"), extensions may follow the same
-convention. It is RECOMMENDED that object class names be lower cased, ASCII characters
-that use either the space character or the "\_" (underscore) character as a word separator.
-Usage of the space character as a word separator follows existing convention, but usage
-of the "\_" (underscore) character may be preferred when the name is also used in URI paths.
-When object class names are also used in URIs, extensions MUST specify that the name
-is to be URL-encoded as defined in [@!RFC3986].
+
+It is RECOMMENDED that object class names be lower cased, ASCII characters
+that use the "\_" (underscore) character as a word separator.
+Though `objectClassName` is a string and [@!RFC9083] does define
+one object class name with a space separator (i.e. "ip network") usage of the space character or
+any whitespace or any other character that requires URL-encoding is NOT RECOMMENDED.
+When object class names are also used in URIs, extensions MUST specify that the names
+are to be URL-encoded as defined in [@!RFC3986] if the object class names contain any
+characters requiring URL-encoding.
 
 ## Search Results in Extensions {#search_results_in_extensions}
 
@@ -517,7 +519,7 @@ Note that this document does not update the guidance from [@!RFC9083, Section 4.
 "help" responses and the `rdapConformance` array.
 
 When a server implementation supports multiple extensions, it is RECOMMENDED that the server
-also support and return versioning information such that defined by [@?I-D.gould-regext-rdap-versioning].
+also support and return versioning information such as that defined by [@?I-D.gould-regext-rdap-versioning].
 
 # Extension Definitions
 
@@ -572,9 +574,9 @@ conformance values given in this section as an extension identifier
 # Redirects {#redirects}
 
 [@!RFC7480] describes the use of redirects in RDAP. Redirects are prominent
-in the discovery of authoritative INRR servers as the process outlined in
+in the discovery of authoritative RIR servers as the process outlined in
 [@?RFC9224], which uses IANA allocations, does not account for transfers of
-resources between INRRs. [@!RFC7480, Section 4.3] instructs servers to ignore
+resources between RIRs. [@!RFC7480, Section 4.3] instructs servers to ignore
 unknown query parameters. As it relates to issuing URLs for redirects, servers
 MUST NOT blindly copy query parameters from a request to a redirect URL as
 query parameters may contain sensitive information, such as security credentials,
