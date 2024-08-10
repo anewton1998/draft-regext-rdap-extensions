@@ -47,11 +47,12 @@ This document describes and clarifies the usage of extensions in RDAP.
 
 # Background
 
-The Registration Data Access Protocol (RDAP) defines a uniform means to access data
-from Internet operations registries, specifically Domain Name Registries (DNRs),
-Regional Internet Registries (RIRs), and other registries serving Internet Number
-Resources (INRs). The queries for DNRs and RIRs are defined in
-[@!RFC9082] and the responses for DNRs and RIRs are defined in [@!RFC9083].
+The Registration Data Access Protocol (RDAP) defines a uniform means
+to access data from Internet operations registries, specifically
+Domain Name Registries (DNRs), Regional Internet Registries
+(RIRs), and other registries serving Internet Number Resources (INRs).
+RDAP queries are defined in [@!RFC9082] and RDAP responses are defined
+in [@!RFC9083].
 
 RDAP contains a means to define extensions for queries not found in [@!RFC9082] and
 responses not found in [@!RFC9083]. RDAP extensions are also described in [@!RFC7480].
