@@ -285,10 +285,10 @@ be the extension identifier in cases where the extension defines only one object
     }
 
 
-It is RECOMMENDED that object class names be lower cased, ASCII characters
+It is RECOMMENDED that object class names be lowercased, ASCII characters
 that use the "\_" (underscore) character as a word separator.
 Though `objectClassName` is a string and [@!RFC9083] does define
-one object class name with a space separator (i.e. "ip network") usage of the space character or
+one object class name with a space separator (i.e. "ip network"), usage of the space character or
 any whitespace or any other character that requires URL-encoding is NOT RECOMMENDED.
 When object class names are also used in URIs, extensions MUST specify that the names
 are to be URL-encoded as defined in [@!RFC3986] if the object class names contain any
