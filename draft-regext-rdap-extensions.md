@@ -11,7 +11,7 @@ name = "Internet-Draft"
 value = "draft-ietf-regext-rdap-extensions-02"
 stream = "IETF"
 status = "standard"
-date = 2024-07-26T00:00:00Z
+date = 2024-08-20T00:00:00Z
 
 [[author]]
 initials="A."
@@ -722,7 +722,7 @@ and ideally four or five. An expert reviewer assigned to the review of an RDAP
 JSON values registration must have another expert reviewer double check any
 submitted registration.
 
-Expert reviewers are to use the criteria defined [!@RFC9083, Section 10.2].
+Expert reviewers are to use the criteria defined in [@!RFC9083, Section 10.2].
 
 # Security Considerations {#security_considerations}
 
@@ -738,7 +738,7 @@ by the origin server (the server issuing the redirect) that the target server
 (the server referenced by the redirect) can process the query parameter and the
 contents of the query parameter are appropriate to be received by the target.
 
-# Privacy Considerations
+# Privacy Considerations {#privacy_considerations}
 
 (#usage_in_queries) describes the usage of query parameters and (#redirects) describes
 the restrictions extensions must follow to use them. As query parameters have been
