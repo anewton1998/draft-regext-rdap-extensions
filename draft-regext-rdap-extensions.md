@@ -59,6 +59,30 @@ responses not found in [@!RFC9083]. RDAP extensions are also described in [@!RFC
 This document uniformly describes RDAP extensions, clarifies their usage, and
 defines additional semantics that were previously undefined or ambiguous.
 
+## Summary of Updates
+
+This document updates [@!RFC7480], [@!RFC9082], and [@!RFC9083] in the following
+areas:
+
+1. (#extension_identifier) provides additional guidance on RDAP extension identifiers,
+   registration of identifiers for the purpose of avoiding namespace collisions,
+   and reserves a specific syntax for future use.
+1. (#usage_in_queries) clarifies the usage of extension identifiers in RDAP URLs and formally defines
+   their usage with child path segments and query parameters.
+1. (#usage_in_json) clarifies the usage of extension identifiers in JSON.
+1. (#object_classes_in_extensions) and (#search_results_in_extensions) disambiguates the definition
+   of new object classes and search results by extensions in [@!RFC9082]. 
+1. This document describes the various styles and kinds of RDAP extensions
+   and their extension identifiers.
+1. This document describes extension versioning and changes to extensions
+   that would make them incompatible or compatible with previous versions of an extension.
+1. (#redirects) and (#referrals) discusses the uses of extensions with regard
+   to RDAP redirects and referrals, including security and privacy considerations.
+1. This document provides guidance to extension authors regarding the creation of extension specification.
+1. (#rdap_extensions_registry) and (#rdap_json_values_registry) provide further
+   guidance on registrations into the IANA RDAP registries and recommendations
+   for the expert review processes for these registries.
+
 ## Document Terms
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", 
@@ -396,6 +420,9 @@ identifier as a prefix or as a bare extension identifier (see (#bare_extension))
 IETF-defined RDAP extensions that do not follow this guidance MUST describe
 the necessity to do so.
 
+In addition, RDAP extensions defined by the IETF are allowed to define
+new types in the RDAP JSON Values Registry (see (#rdap_json_values_registry)).
+
 # Profile and Marker Extensions {#profiles_and_markers}
 
 Extensions are not required to extend the JSON or URL components of RDAP.
@@ -534,7 +561,7 @@ other properly registered extension.
 
 [@!RFC9083] notes that the extension identifiers provide a "hint" to the client
 as to how to interpret the response. This wording does not intentionally restrict
-the extension to defining only JSON values within the extensions namespace.
+the extension to defining only JSON values within the extensions' namespace.
 Therefore, an extension may define the use of its own JSON values together
 with the use of JSON values from other extensions or RDAP specifications. As with
 the ICANN profile or NRO profile extensions, the extension may simply signal 
@@ -652,7 +679,7 @@ of HTTPS with RDAP mandatory if appropriate.
 
 # IANA Considerations
 
-## RDAP Extensions Registry
+## RDAP Extensions Registry {#rdap_extensions_registry}
 
 [@!RFC7480] defines the RDAP Extensions Registry (<https://www.iana.org/assignments/rdap-extensions/rdap-extensions.xhtml>).
 This document does not change the RDAP Extensions Registry nor its purpose. However, this
@@ -684,38 +711,49 @@ does it describe how a client is to use those values?
 Extension authors are encouraged but not required to seek an informal review
 of their extension by sending a request for review to regext@ietf.org.
 
-## RDAP JSON Values Registry
+## RDAP JSON Values Registry {#rdap_json_values_registry}
 
-Many extensions register values in the RDAP JSON Values Registry
-(<https://www.iana.org/assignments/rdap-json-values/rdap-json-values.xhtml>).
+[@!RFC9083, Section 10.2] defines the [RDAP JSON Values Registry in IANA]
+(https://www.iana.org/assignments/rdap-json-values/rdap-json-values.xhtml).
+This registry contains values to be used in the JSON values of RDAP responses.
+Registrations into this registry may occur in IETF defined RDAP extensions
+or via requests to the IANA. Authors of RDAP extensions not defined by the
+IETF MAY register values in this registry via requests to the IANA.
+
 This document does not change the RDAP JSON Values Registry nor its purpose.
-However, this document does update the procedures to be used by its expert reviewers.
+However, this document does update the procedures for registrations and the
+processes to be used by its expert reviewers.
 
-[@!RFC9083, Section 10.2] defines the criteria for the values. Of these, criteria two
+In addition to the registration of values, RDAP extensions defined by the IETF
+and other IETF specifications MAY define additional value types (the "type" field), 
+however these specifications MUST describe the specific JSON field to be used 
+for each new value type. 
+
+[@!RFC9083, Section 10.2] defines the criteria for the values. Of these, criteria two (#2)
 states:
 
 > Values must be strings. They should be multiple words separated by single 
 > space characters. Every character should be lowercased. If possible, every 
 > word should be given in English and each character should be US-ASCII.
 
-The current values in the registry violate these criteria:
+All registrations SHOULD meet these requirements, however there may be scenarios
+in which it is more appropriate for the values to follow other requirements
+such as values also used in other specifications or documents. In all cases,
+it should be understood that additional registrations of RDAP JSON values occurring
+after the specification of the value's type in the registry may not be
+recognized by clients and therefore either ignored or passed on to users
+without processing.
 
-* Registry Domain ID
-* Registry Registrant ID
-* Registrant Name
-* Registrant Organization
-* Registrant Street
-* Registrant City
-* Registrant Postal Code
-* Registrant Phone
-* Registrant Phone Ext
-* Registrant Fax
-* Registrant Fax Ext
-* Registry Tech ID
-* Tech Name
-* Tech Phone
-* Tech Phone Ext
-* Tech Email
+Designated experts MUST reject any registration that is a duplicate of an
+existing registration, and all registrations are to be considered case-insensitive.
+That is, any new registration that is a case variant of an existing registration
+should be rejected.
+
+RDAP clients SHOULD match values in this registry using case-insensitive matching.
+
+Definitions of new types (see above) MAY additionally constrain the format of
+values for those new types beyond the specification of this document and [@!RFC9083]. 
+Designated experts MUST evaluate registrations with those criteria.
 
 The RDAP JSON Values Registry should have as a minimum three expert reviewers
 and ideally four or five. An expert reviewer assigned to the review of an RDAP
