@@ -420,6 +420,9 @@ identifier as a prefix or as a bare extension identifier (see (#bare_extension))
 IETF-defined RDAP extensions that do not follow this guidance MUST describe
 the necessity to do so.
 
+In addition, RDAP extensions defined by the IETF are allowed to define
+new types in the RDAP JSON Values Registry (see (#rdap_json_values_registry)).
+
 # Profile and Marker Extensions {#profiles_and_markers}
 
 Extensions are not required to extend the JSON or URL components of RDAP.
@@ -721,10 +724,10 @@ This document does not change the RDAP JSON Values Registry nor its purpose.
 However, this document does update the procedures for registrations and the
 processes to be used by its expert reviewers.
 
-In addition to the registration of values, RDAP extensions MAY define additional 
-value types (the "type" field), however extensions MUST describe the specific
-JSON field to be used for each new value type. New value types MAY be registered
-outside RDAP extensions but MUST NOT be registered without a stable reference.
+In addition to the registration of values, RDAP extensions defined by the IETF
+and other IETF specifications MAY define additional value types (the "type" field), 
+however these specifications MUST describe the specific JSON field to be used 
+for each new value type. 
 
 [@!RFC9083, Section 10.2] defines the criteria for the values. Of these, criteria two (#2)
 states:
@@ -740,6 +743,17 @@ it should be understood that additional registrations of RDAP JSON values occurr
 after the specification of the value's type in the registry may not be
 recognized by clients and therefore either ignored or passed on to users
 without processing.
+
+Designated experts MUST reject any registration that is a duplicate of an
+existing registration, and all registrations are to be considered case-insensitive.
+That is, any new registration that is a case variant of an existing registration
+should be rejected.
+
+RDAP clients SHOULD match values in this registry using case-insensitive matching.
+
+Definitions of new types (see above) MAY additionally constrain the format of
+values for those new types beyond the specification of this document and [@!RFC9083]. 
+Designated experts MUST evaluate registrations with those criteria.
 
 The RDAP JSON Values Registry should have as a minimum three expert reviewers
 and ideally four or five. An expert reviewer assigned to the review of an RDAP
