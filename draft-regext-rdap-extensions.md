@@ -8,10 +8,10 @@ updates = [7480, 9082, 9083]
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-ietf-regext-rdap-extensions-02"
+value = "draft-ietf-regext-rdap-extensions-03"
 stream = "IETF"
 status = "standard"
-date = 2024-08-20T00:00:00Z
+date = 2024-09-19T00:00:00Z
 
 [[author]]
 initials="A."
@@ -561,7 +561,7 @@ other properly registered extension.
 
 [@!RFC9083] notes that the extension identifiers provide a "hint" to the client
 as to how to interpret the response. This wording does not intentionally restrict
-the extension to defining only JSON values within the extensions' namespace.
+the extension to defining only JSON values within the extension's namespace.
 Therefore, an extension may define the use of its own JSON values together
 with the use of JSON values from other extensions or RDAP specifications. As with
 the ICANN profile or NRO profile extensions, the extension may simply signal 
@@ -716,7 +716,7 @@ of their extension by sending a request for review to regext@ietf.org.
 [@!RFC9083, Section 10.2] defines the [RDAP JSON Values Registry in IANA]
 (https://www.iana.org/assignments/rdap-json-values/rdap-json-values.xhtml).
 This registry contains values to be used in the JSON values of RDAP responses.
-Registrations into this registry may occur in IETF defined RDAP extensions
+Registrations into this registry may occur in IETF-defined RDAP extensions
 or via requests to the IANA. Authors of RDAP extensions not defined by the
 IETF MAY register values in this registry via requests to the IANA.
 
@@ -729,7 +729,7 @@ and other IETF specifications MAY define additional value types (the "type" fiel
 however these specifications MUST describe the specific JSON field to be used 
 for each new value type. 
 
-[@!RFC9083, Section 10.2] defines the criteria for the values. Of these, criteria two (#2)
+[@!RFC9083, Section 10.2] defines the criteria for the values. Of these, criteria two
 states:
 
 > Values must be strings. They should be multiple words separated by single 
