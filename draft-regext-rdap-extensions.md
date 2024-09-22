@@ -8,10 +8,10 @@ updates = [7480, 9082, 9083]
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-ietf-regext-rdap-extensions-02"
+value = "draft-ietf-regext-rdap-extensions-03"
 stream = "IETF"
 status = "standard"
-date = 2024-08-20T00:00:00Z
+date = 2024-09-19T00:00:00Z
 
 [[author]]
 initials="A."
@@ -800,7 +800,7 @@ the IETF and other IETF specifications MAY define additional value
 types (the "type" field).  These specifications MUST describe the
 specific JSON field to be used for each new value type.
 
-[@!RFC9083, Section 10.2] defines the criteria for the values. Of these, criteria two (\#2)
+[@!RFC9083, Section 10.2] defines the criteria for the values. Of these, criteria two
 states:
 
 > Values must be strings. They should be multiple words separated by single
