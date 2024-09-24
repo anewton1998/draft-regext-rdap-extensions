@@ -529,7 +529,7 @@ style, the first letter of every word, except the first word,
 composing a name is capitalized.  This convention was adopted to
 visually separate the namespace from the name, with an underscore
 between them.  Extension authors SHOULD use camel casing for JSON
-names defined in extensions. 
+names defined in extensions.
 
 ## Identifier Omission {#identifier_omission}
 
