@@ -181,13 +181,7 @@ compatibility with variable names in programming languages and
 transliteration with XML.
 
 RDAP extension identifiers have no explicit structure, and are opaque
-insofar as no inner-meaning can be "seen" in them.  This document
-restricts the syntax of RDAP extension identifiers from containing two
-consecutive "_" (underscore) characters, reserving their use for the
-future definition of structure (such as for a versioning scheme). That
-is, RDAP extensions MUST NOT define an identifier with two consecutive
-underscore characters ("__") unless explicitly adhering to an RFC
-describing such usage.
+insofar as no inner-meaning can be "seen" in them.
 
 RDAP extensions MUST NOT define an extension identifier that when
 prepended to an underscore character may collide with an existing
@@ -493,7 +487,7 @@ class, and use the extension's identifier as the object class name.
 
 ### rdapConformance Population
 
-[@!RFC9083, Section 4.1] offers the following guidance on including
+[@!RFC9083, section 4.1] offers the following guidance on including
 extension identifiers in the "rdapConformance" member of an RDAP
 response:
 
@@ -513,7 +507,7 @@ content within the JSON, and each extension identifier MUST be free
 from conflict with the other identifiers with respect to their syntax
 and semantics.
 
-Note that this document does not update the guidance from [@!RFC9083, Section 4.1]
+Note that this document does not update the guidance from [@!RFC9083, section 4.1]
 regarding "/help" responses and the "rdapConformance" array.
 
 When a server implementation supports multiple extensions, it is
@@ -565,7 +559,7 @@ new types in the RDAP JSON Values Registry (see
 [@!RFC7480] describes the use of redirects in RDAP. Redirects are prominent
 in the discovery of authoritative RIR servers, as the process outlined in
 [@!RFC9224], which uses IANA allocations, does not account for transfers of
-resources between RIRs. [@!RFC7480, Section 4.3] instructs servers to ignore
+resources between RIRs. [@!RFC7480, section 4.3] instructs servers to ignore
 unknown query parameters. As it relates to issuing URLs for redirects, servers
 MUST NOT blindly copy query parameters from a request to a redirect URL as
 query parameters may contain sensitive information, such as security credentials,
@@ -644,9 +638,8 @@ consultation of the definition of "fizzbuzz_1" will determine its
 relationship with "fizzbuzz_0". Additionally, "fizzbuzz_99" may be the
 predecessor of "fizzbuzz_0".
 
-If a future RFC defines a versioning scheme (such as using the
-mechanism defined in (#syntax)), an RDAP extension definition MUST
-explicitly denote its compliance with that scheme.
+If a future RFC defines a versioning scheme, an RDAP extension
+definition MUST explicitly denote its compliance with that scheme.
 
 ### Backwards-Compatible Changes {#backwards_compatible_changes}
 
@@ -767,7 +760,7 @@ extension registration must have another expert reviewer double-check any
 submitted registration.
 
 Expert reviewers are to use the following criteria for extensions
-defined in this document, [!@RFC7480], [!@RFC9082], and [!@RFC9083].
+defined in this document, [@!RFC7480], [@!RFC9082], and [@!RFC9083].
 The following is a summary checklist:
 
 1. Does the extension define an extension identifier following the naming
@@ -796,7 +789,7 @@ of their extension by sending a request for review to regext@ietf.org.
 
 ## RDAP JSON Values Registry {#rdap_json_values_registry}
 
-[@!RFC9083, Section 10.2] defines the [RDAP JSON Values Registry in IANA]
+[@!RFC9083, section 10.2] defines the [RDAP JSON Values Registry in IANA]
 (https://www.iana.org/assignments/rdap-json-values/rdap-json-values.xhtml).
 This registry contains values to be used in the JSON values of RDAP responses.
 Registrations into this registry may occur in IETF-defined RDAP extensions
@@ -812,7 +805,7 @@ the IETF and other IETF specifications MAY define additional value
 types (the "type" field).  These specifications MUST describe the
 specific JSON field to be used for each new value type.
 
-[@!RFC9083, Section 10.2] defines the criteria for the values. Of these, criteria two
+[@!RFC9083, section 10.2] defines the criteria for the values. Of these, criteria two
 states:
 
 > Values must be strings. They should be multiple words separated by single
@@ -843,13 +836,13 @@ and ideally four or five. An expert reviewer assigned to the review of an RDAP
 JSON values registration must have another expert reviewer double-check any
 submitted registration.
 
-Expert reviewers are to use the criteria defined in [@!RFC9083, Section 10.2].
+Expert reviewers are to use the criteria defined in [@!RFC9083, section 10.2].
 
 # Security Considerations {#security_considerations}
 
 (#usage_in_query_parameters) describes the usage of query parameters and (#redirects_author) describes
 the restrictions extensions must follow to use them.
-[@!RFC7480, Section 4.3] instructs servers to ignore
+[@!RFC7480, section 4.3] instructs servers to ignore
 unknown query parameters. As it relates to issuing URLs for redirects, servers
 MUST NOT blindly copy query parameters from a request to a redirect URL as
 query parameters may contain sensitive information, such as security credentials
