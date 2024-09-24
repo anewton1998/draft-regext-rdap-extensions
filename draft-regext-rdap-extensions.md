@@ -78,7 +78,7 @@ areas:
 1. (#extension_implementer_considerations) documents behavior
    considerations for extension implementers.
 1. (#extension_author_considerations) documents behavior
-   considerations for extension developers, covering
+   considerations for extension authors, covering
    redirects ((#redirects_author)), referrals ((#referrals)), and versioning
    ((#versioning)).
 1. (#existing_extension_registrations) documents existing extensions that
@@ -172,7 +172,7 @@ specification.  The main reason for defining multiple identifiers is
 to reserve multiple namespaces in URLs or responses: see e.g.
 [@?I-D.ietf-regext-rdap-rir-search].
 
-## Syntax
+## Syntax {#syntax}
 
 In brief, RDAP extension identifiers start with an alphabetic
 character and may contain alphanumeric characters and "_" (underscore)
@@ -421,7 +421,7 @@ an RDAP query using the path to return a new RDAP search result, the
 JSON name of the search result MUST be prepended with the extension
 identifier (to avoid collision with search results defined in other
 extensions).  If the search result contains object class instances
-defined by the extension, each instance must have an "objectClassName"
+defined by the extension, each instance MUST have an "objectClassName"
 string as defined in (#object_classes_in_extensions).  For example:
 
     {
@@ -491,7 +491,7 @@ this pattern.
 Along similar lines, an extension may define a single new object
 class, and use the extension's identifier as the object class name.
 
-### rdapConformance population
+### rdapConformance Population
 
 [@!RFC9083, Section 4.1] offers the following guidance on including
 extension identifiers in the "rdapConformance" member of an RDAP
@@ -513,9 +513,13 @@ content within the JSON, and each extension identifier MUST be free
 from conflict with the other identifiers with respect to their syntax
 and semantics.
 
-Note that this document does not update the guidance from [@!RFC9083,
-Section 4.1] regarding "/help" responses and the "rdapConformance"
-array.
+Note that this document does not update the guidance from [@!RFC9083, Section 4.1]
+regarding "/help" responses and the "rdapConformance" array.
+
+When a server implementation supports multiple extensions, it is
+RECOMMENDED that the server also support and return versioning
+information such as that defined by
+[@?I-D.gould-regext-rdap-versioning].
 
 ### Camel Casing {#camel_casing}
 
@@ -524,13 +528,13 @@ called "camel casing", in reference to the hump of a camel. In this
 style, the first letter of every word, except the first word,
 composing a name is capitalized.  This convention was adopted to
 visually separate the namespace from the name, with an underscore
-between them.  Though there is no explicit guidance to use camel case
-names, extensions would be wise to continue the style.
+between them.  Extension authors SHOULD use camel casing for JSON
+names defined in extensions. 
 
 ## Identifier Omission {#identifier_omission}
 
 Though all RDAP extensions are to be registered in the IANA RDAP
-extensions registry, there is an implicit two-class system of
+Extensions Registry, there is an implicit two-class system of
 extensions that comes from the ownership of the RDAP specifications by
 the IETF: extensions created by the IETF and extensions not created by
 the IETF.
@@ -586,8 +590,8 @@ parameters, but rather that the use of query parameters must be
 applied for the scenarios appropriate for the use of the extension.
 Therefore, extensions SHOULD NOT rely on query parameters when the
 extension is to be used in scenarios requiring clients to find
-authoritative servers, such as that described above, or other
-scenarios using redirects among servers of differing authorities.
+authoritative servers, or other scenarios using redirects among
+servers of differing authorities.
 
 Extensions MAY use query parameters in scenarios where the client has
 a priori knowledge of the authoritative server to which queries are to
@@ -641,7 +645,7 @@ relationship with "fizzbuzz_0". Additionally, "fizzbuzz_99" may be the
 predecessor of "fizzbuzz_0".
 
 If a future RFC defines a versioning scheme (such as using the
-mechanism defined in (#purpose)), an RDAP extension definition MUST
+mechanism defined in (#syntax)), an RDAP extension definition MUST
 explicitly denote its compliance with that scheme.
 
 ### Backwards-Compatible Changes {#backwards_compatible_changes}
@@ -712,8 +716,9 @@ the client as to how to interpret the response. This wording does not
 intentionally restrict the extension to defining only JSON values
 within the extension's namespace.  Therefore, an extension may define
 the use of its own JSON values together with the use of JSON values
-from other extensions or RDAP specifications. As with the ICANN
-profile or NRO profile extensions, the extension may simply signal
+from other extensions or RDAP specifications. As with the
+[@icann-profile]
+and [@nro-profile] extensions, the extension may simply signal
 policy applied to previously-defined RDAP structures.
 
 # Existing Extension Registrations {#existing_extension_registrations}
@@ -762,7 +767,8 @@ extension registration must have another expert reviewer double-check any
 submitted registration.
 
 Expert reviewers are to use the following criteria for extensions
-defined in this document, which include but are not limited to:
+defined in this document, [!@RFC7480], [!@RFC9082], and [!@RFC9083].
+The following is a summary checklist:
 
 1. Does the extension define an extension identifier following the naming
 conventions described in (#purpose) and (#camel_casing)? For
@@ -778,6 +784,12 @@ the extension specification clearly describe if it is backwards-compatible
 (see (#backwards_incompatible_changes))?
 5. If the extension registers new values in an IANA registry used by RDAP,
 does it describe how a client is to use those values?
+
+As noted in (#syntax), any new registration that is a case variant of
+an existing registration MUST be rejected.
+
+RDAP clients SHOULD match values in this registry using
+case-insensitive matching.
 
 Extension authors are encouraged but not required to seek an informal review
 of their extension by sending a request for review to regext@ietf.org.
@@ -864,3 +876,23 @@ content and direction of this document: James Gould, Daniel Keathley, and
 Ties de Kock.
 
 {backmatter}
+
+<reference anchor='icann-profile' target='https://www.icann.org/gtld-rdap-profile'>
+    <front>
+        <title>gTLD RDAP Profile</title>
+        <author>
+            <organization>ICANN</organization>
+        </author>
+        <date year='2024'/>
+    </front>
+</reference>
+
+<reference anchor='nro-profile' target='https://bitbucket.org/nroecg/nro-rdap-profile/raw/v1/nro-rdap-profile.txt'>
+    <front>
+        <title>NRO RDAP Profile</title>
+        <author>
+            <organization>NRO</organization>
+        </author>
+        <date year='2021'/>
+    </front>
+</reference>
