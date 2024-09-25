@@ -548,10 +548,6 @@ identifier (see (#bare_extension)).  IETF-defined RDAP extensions that
 do not follow this guidance MUST describe why it is not being
 followed.
 
-In addition, RDAP extensions defined by the IETF are allowed to define
-new types in the RDAP JSON Values Registry (see
-(#rdap_json_values_registry)).
-
 # Extension Implementer Considerations {#extension_implementer_considerations}
 
 ## Redirects {#redirects_implementer}
