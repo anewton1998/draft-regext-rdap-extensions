@@ -8,10 +8,10 @@ updates = [7480, 9082, 9083]
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-ietf-regext-rdap-extensions-03"
+value = "draft-ietf-regext-rdap-extensions-04"
 stream = "IETF"
 status = "standard"
-date = 2024-09-19T00:00:00Z
+date = 2024-09-30T00:00:00Z
 
 [[author]]
 initials="A."
@@ -70,7 +70,6 @@ areas:
    of RDAP extension identifiers, including their registration for the
    purpose of avoiding namespace collisions, as well as for signaling
    server policy/behavior.
-1. (#syntax) reserves a specific identifier syntax for future use.
 1. (#usage_in_requests) clarifies the usage of extension identifiers in RDAP URLs and formally defines
    their usage with child path segments and query parameters.
 1. (#usage_in_responses) clarifies the usage of extension identifiers
