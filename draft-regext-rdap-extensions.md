@@ -245,6 +245,11 @@ the difference of the underscore and backslash characters. Extension authors
 may use either approach but should rely on implementation experience.
 A> issue #34
 
+Appending a path segment to another path segment is NOT RECOMMENDED as
+this increases the likelihood of collisions between the queries defined
+by extension identifiers.
+A> issue #36
+
 ### Usage in Query Parameters {#usage_in_query_parameters}
 
 Although [@!RFC9082] describes the use of URL query strings, it does
