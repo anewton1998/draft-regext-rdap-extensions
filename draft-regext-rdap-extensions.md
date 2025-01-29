@@ -196,13 +196,14 @@ identifiers is NOT RECOMMENDED. Implementers should be aware that many
 existing extension identifiers do contain underscore characters.
 
 [@!RFC7480] does not explicitly state that extension identifiers are
-case-sensitive.  This document updates the formulation in [@!RFC7480]
+case-sensitive.  This document clarifies the formulation in [@!RFC7480]
 to explicitly note that extension identifiers are case-sensitive, and
 extension identifiers MUST NOT be registered where a new identifier is
-a mixed-case version of an existing identifier. For example, if
+a mixed-case version of an existing identifier (see (#rdap_extensions_registry)). For example, if
 "lunarNIC" is already registered as an identifier, a new registration
 with "lunarNic" (note the lowercase if "ic" in "Nic") would not be
 allowed.
+A> issue #33
 
 ## Usage in Requests {#usage_in_requests}
 
@@ -236,6 +237,13 @@ object classes or search results as defined in [@!RFC9083], object
 classes or search results defined by the extension (see
 (#object_classes_in_extensions) and (#search_results_in_extensions)
 below), or object classes or search results from other extensions.
+
+From a protocol perspective, the difference between prepending the extension ID to
+the last path segment (e.g. https://base.example/foobar_fizz) and using an
+extension ID as a path segment (e.g. https://base.example/foobar/fizz) is just
+the difference of the underscore and backslash characters. Extension authors
+may use either approach but should rely on implementation experience.
+A> issue #34
 
 ### Usage in Query Parameters {#usage_in_query_parameters}
 
@@ -772,6 +780,9 @@ the extension specification clearly describe if it is backwards-compatible
 (see (#backwards_incompatible_changes))?
 5. If the extension registers new values in an IANA registry used by RDAP,
 does it describe how a client is to use those values?
+6. If the extension is a new registration, is it a case-variant of an
+existing registration (see (#syntax)).
+A> issue #33
 
 As noted in (#syntax), any new registration that is a case variant of
 an existing registration MUST be rejected.
@@ -859,10 +870,10 @@ constraints of query parameter usage as defined in (#redirects_author).
 
 # Acknowledgments
 
-A> issue #35
 The following individuals have provided feedback and contributions to the
 content and direction of this document: James Gould, Scott Hollenbeck,
 Ties de Kock, Pawel Kowalik, Daniel Keathley, and Mario Loffredo.
+A> issue #35
 
 {backmatter}
 
