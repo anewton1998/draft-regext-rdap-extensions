@@ -167,8 +167,8 @@ the media types expected to be used with those link relations.
 
 Regardless of the category of the extension, its usage may also
 leverage the appearance of its identifier in the "rdapConformance"
-array.  Clients may use the "/help" query as defined in [@!RFC9082] to
-discover the extensions in use by the server.
+array.
+A> issue #59
 
 As described above, these characteristics are not exclusive to profile
 extensions and may be found in extensions defining new queries, JSON, etc...
