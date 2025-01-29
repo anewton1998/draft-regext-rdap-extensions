@@ -47,12 +47,13 @@ This document describes and clarifies the usage of extensions in RDAP.
 
 # Background
 
-The Registration Data Access Protocol (RDAP) defines a uniform means
+The Registration Data Access Protocol (RDAP) defines a uniform protocol
 to access data from Internet operations registries, specifically
 Domain Name Registries (DNRs), Regional Internet Registries
 (RIRs), and other registries serving Internet Number Resources (INRs).
 RDAP queries are defined in [@!RFC9082] and RDAP responses are defined
 in [@!RFC9083].
+A> issue #38
 
 RDAP contains a means to define extensions for queries not found in
 [@!RFC9082] and responses not found in [@!RFC9083]. RDAP extensions
@@ -637,10 +638,12 @@ modification to use in the dereferencing of the referral.
 
 ## Extension Versioning {#versioning}
 
-As stated in (#purpose), RDAP extensions are opaque, and
+As stated in (#purpose), RDAP extension identifiers and RDAP
+conformance strings are opaque, and
 they possess no explicit version despite the fact that some extension
 identifiers include trailing numbers. That is, RDAP extensions without
 an explicitly-defined versioning scheme are opaquely versioned.
+A> issue #38
 
 For example, "fizzbuzz_1" may be the successor to "fizzbuzz_0", but it
 may also be an extension for a completely separate purpose. Only
