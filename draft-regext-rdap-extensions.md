@@ -683,6 +683,12 @@ An extension author may consider excluding older identifiers from the
 set required by new successor versions, based on data about client
 use/support or similar.
 
+Where multiple versions of an extension are to be expected, extension
+authors should consider using formal versioning schemes such as those
+described and defined in [@?I-D.regext-rdap-versioning] and
+[@?I-D.regext-rdap-x-media-type].
+A> issue #61
+
 ### Backwards-Incompatible Changes {#backwards_incompatible_changes}
 
 With the current extension model, an extension with a
