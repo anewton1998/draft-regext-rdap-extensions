@@ -490,12 +490,14 @@ identifier pattern, that example could be written as:
       }
     }
 
-Usage of a bare extension identifier contravenes the guidance in
-[@!RFC9083].  This document updates [@!RFC9083] to explicitly allow
-this pattern.
-
 Along similar lines, an extension may define a single new object
 class, and use the extension's identifier as the object class name.
+
+Usage of a bare extension identifier conflicts with the guidance in
+[@!RFC9083, section 2.1].  This document clarifies [@!RFC9083] to explicitly allow
+this pattern but advises extension authors to use this pattern when only one
+query path, JSON names, or object class is being defined by the extension.
+A> issue #37
 
 ### rdapConformance Population
 
