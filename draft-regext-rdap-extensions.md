@@ -102,7 +102,8 @@ appear in all capitals, as shown here.
 extensions and the IANA registry into which RDAP extensions are to be
 registered.
 
-When in use in RDAP, extension identifiers are prepended to URL path
+When in use in RDAP, extension identifiers are either used as "bare"
+identifiers (see Section (#bare_extension) or prepended to URL path
 segments, URL query parameters, and JSON object member names (herein
 further referred to as "JSON names").  They are also included in the
 "rdapConformance" member of each response that relies on the
@@ -110,6 +111,7 @@ extension, so that clients can determine the extensions being used by
 the server for that response.  The "/help" response returns an
 "rdapConformance" member containing the identifiers for all extensions
 used by the server.
+A> issue #45
 
 The main purpose of the extension identifier is to act as a namespace,
 preventing collisions between elements from different extensions.
