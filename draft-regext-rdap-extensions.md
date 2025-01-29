@@ -191,14 +191,15 @@ transliteration with XML.
 RDAP extension identifiers have no explicit structure, and are opaque
 insofar as no inner-meaning can be "seen" in them.
 
-RDAP extensions MUST NOT define an extension identifier that when
-prepended to an underscore character may collide with an existing
+RDAP extensions MUST NOT define an extension identifier that
+may collide with an existing
 extension identifier.  For example, if there were a pre-existing
 identifier of "foo_bar", another extension could not define the
 identifier "foo". Likewise, if there were a pre-existing identifier of
 "foo_bar", another extension could not define the identifier
 "foo_bar_buzz".  However, an extension could define "foo" if there
 were a pre-existing definition of "foobar", and vice versa.
+A> issue #49
 
 For this reason, usage of an underscore character in RDAP extension
 identifiers is NOT RECOMMENDED. Implementers should be aware that many
