@@ -580,14 +580,16 @@ followed.
 in the discovery of authoritative RIR servers, as the process outlined in
 [@!RFC9224], which uses IANA allocations, does not account for transfers of
 resources between RIRs. [@!RFC7480, section 4.3] instructs servers to ignore
-unknown query parameters. As it relates to issuing URLs for redirects, servers
+unknown query parameters (where "unknown" generally means no defined implementation behavior).
+As it relates to issuing URLs for redirects, servers
 MUST NOT blindly copy query parameters from a request to a redirect URL as
 query parameters may contain sensitive information, such as security credentials,
 not relevant to the target server of the URL. Following the advice in [@!RFC7480],
 servers SHOULD only place query parameters in redirect URLs when it is known
 by the origin server (the server issuing the redirect) that the target server
 (the server referenced by the redirect) can process the query parameter and the
-contents of the query parameter are appropriate to be received by the target.
+target server is the proper target of the contents of the query parameter.
+A> issue #55
 
 # Extension Author Considerations {#extension_author_considerations}
 
