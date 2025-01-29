@@ -442,12 +442,15 @@ A> issue #40
 
 ### Search Results in Extensions {#search_results_in_extensions}
 
-As described in [@!RFC9082] and (#usage_in_requests), an extension may
-define new paths in URLs.  If the extension describes the behavior of
-an RDAP query using the path to return a new RDAP search result, the
-JSON name of the search result MUST be prepended with the extension
-identifier (to avoid collision with search results defined in other
-extensions).  If the search result contains object class instances
+As described in [RFC9082] and (#usage_in_requests), an extension may define
+new paths in URLs.  If the extension describes the behavior of an
+RDAP query using the path to return an RDAP search result for a
+new object class, the JSON name of the search result MUST be
+prepended with the extension identifier (to avoid collision with
+search results defined in other extensions).
+A> issue #41
+
+If the search result contains object class instances
 defined by the extension, each instance MUST have an "objectClassName"
 string as defined in (#object_classes_in_extensions).  For example:
 
