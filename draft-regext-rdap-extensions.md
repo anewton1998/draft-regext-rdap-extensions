@@ -62,7 +62,7 @@ requirements for RDAP extension definition and use, clarifying
 ambiguities and defining additional semantics and options that were
 previously implicit.
 
-## Summary of Updates
+## Summary of Updates {#summary_of_updates}
 
 This document updates [@!RFC7480], [@!RFC9082], and [@!RFC9083] to be consistent
 with RDAP extensions that have been defined by the IETF and for which there are no known
@@ -719,8 +719,16 @@ with prose.
 2. Normative references, i.e. references to materials that are
 required for the interoperability of the extension, should be stable
 and non-changing.
-3. Extension specifications should strongly consider making the use
-of HTTPS with RDAP mandatory if appropriate.
+3. Extension specifications SHOULD be very clear whether RDAP
+requests and responses related to the extension can be exchanged
+over an unencrypted HTTP connection. Extension specification MUST
+mandate use of HTTPS in its Security Considerations if unencrypted
+http data exchange would pose security or privacy risks. Extensions
+should also be compliant with the security considerations of [@!RFC7481].
+4. The use of the various RDAP extensions points, as described in (#summary_of_updates),
+should be clearly delineated.
+
+A> #58
 
 ## Extension Definitions
 
