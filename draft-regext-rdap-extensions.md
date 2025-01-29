@@ -127,6 +127,13 @@ and/or responses, extensions can also be used to signal server policy
 structures). Extensions that are primarily about signaling server
 policy are often called "profiles".
 
+Profile extensions often do the following:
+
+* Mark some specific extensions (and versions thereof) as required.
+* Mark some specific optional queries, object classes, or JSON structures as required.
+* Limit or restrict the values of specific JSON structures.
+A> issue #39
+
 Some extensions exist to denote the usage of values placed into an
 IANA registry, such as the IANA RDAP registries, or the usage of
 extensions for specifications used in RDAP responses, such as extended
@@ -162,6 +169,10 @@ Regardless of the category of the extension, its usage may also
 leverage the appearance of its identifier in the "rdapConformance"
 array.  Clients may use the "/help" query as defined in [@!RFC9082] to
 discover the extensions in use by the server.
+
+As described above, these characteristics are not exclusive to profile
+extensions and may be found in extensions defining new queries, JSON, etc...
+A> issue #39
 
 ### Multiple Identifiers in Single Extension
 
