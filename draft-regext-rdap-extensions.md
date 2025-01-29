@@ -116,7 +116,7 @@ preventing collisions between elements from different extensions.
 Additionally, implementers and operators can use the extension
 identifiers to find extension definitions via an IANA registry.
 
-### Profile and Marker Extensions {#profiles_and_markers}
+### Profile Extensions {#profiles}
 
 While the RDAP extension mechanism was created to extend RDAP queries
 and/or responses, extensions can also be used to signal server policy
@@ -131,11 +131,11 @@ Profile extensions often do the following:
 * Limit or restrict the values of specific JSON structures.
 A> issue #39
 
-Some extensions exist to denote the usage of values placed into an
+Some profile extensions exist to denote the usage of values placed into an
 IANA registry, such as the IANA RDAP registries, or the usage of
 extensions for specifications used in RDAP responses, such as extended
-vCard/jCard properties.  Such extensions exist to "mark" these usages
-and are often called "marker" extensions.
+vCard/jCard properties.
+A> issue #46
 
 For example, an extension may be used to signal desired processing of
 a "rel" attribute in a "links" array, where the "rel" value is
@@ -533,7 +533,7 @@ response:
 
 A strict interpretation of this wording where "construction of the
 response" refers to the JSON structure only would rule out the use of
-(#profiles_and_markers) extension identifiers, which are in common use
+(#profiles) extension identifiers, which are in common use
 in RDAP.  This document updates the guidance. For responses to queries
 other than "/help", a response MUST include in the "rdapConformance"
 array only those extension identifiers necessary for a client to
