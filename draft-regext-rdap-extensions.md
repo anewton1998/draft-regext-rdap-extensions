@@ -276,13 +276,21 @@ path that is not defined by that RDAP extension, those query parameter
 names SHOULD be constructed in the same manner as URL path segments
 (that is, extension identifier + '_' + parameter name).  (See section
 (#identifier_omission) regarding when an extension identifier may be
-omitted.)
+omitted and Section #(bare_extension) regarding bare extensions.)
 
-When an RDAP extension defines query parameters to be used with a URL
-path defined by that RDAP extension, prefixing of query parameters is
-not required.  In this situation, the URL path operates as a namespace
-for the query parameters, so there is no risk of collision with
-parameters defined elsewhere.
+Though the URL path operates as a namespace, both [@!RFC8982]
+and [@!RFC8977] define query parameters without prefixes and therefore
+have a potential for collision. To avoid collisions, query parameter
+must be named according to the following:
+
+* If the RDAP extension is defined by the IETF, a prepended extension
+identifier is OPTIONAL but NOT RECOMMENDED (see Section (#identifier_omission)).
+* If the RDAP extension defines only one query parameter and follows
+the characteristics of a "bare extension" (See Section (#bare_extension)),
+a prepended extension identifier is OPTIONAL but NOT RECOMMENDED.
+* Otherwise the RDAP extension MUST prepend query parameter names with
+an extension identifier.
+A> issue #51
 
 See (#redirects_author) and (#referrals) for other guidance on the use of
 query parameters, and see (#security_considerations) and
