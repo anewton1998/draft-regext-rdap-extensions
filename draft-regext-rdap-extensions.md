@@ -660,8 +660,9 @@ consultation of the definition of "fizzbuzz_1" will determine its
 relationship with "fizzbuzz_0". Additionally, "fizzbuzz_99" may be the
 predecessor of "fizzbuzz_0".
 
-If a future RFC defines a versioning scheme, an RDAP extension
-definition MUST explicitly denote its compliance with that scheme.
+An RDAP extension definition MUST explicitly denote its compliance with any
+versioning scheme, such as [@?I-D.regext-rdap-versioning].
+A> issue #57
 
 ### Backwards-Compatible Changes {#backwards_compatible_changes}
 
