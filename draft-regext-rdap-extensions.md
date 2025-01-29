@@ -421,15 +421,16 @@ JSON names:
       }
     }
 
-It is RECOMMENDED that object class names comprise lowercase ASCII
-characters, and that the "\_" (underscore) character be used as a word
-separator.  Though "objectClassName" is a string and [@!RFC9083] does
+It is RECOMMENDED that object class names use the "camel case" style
+described in (#camel_casing).
+Though "objectClassName" is a string and [@!RFC9083] does
 define one object class name with a space separator (i.e. "ip
 network"), usage of the space character or any other character that
 requires URL-encoding is NOT RECOMMENDED.  When object class names are
 also used in URLs, extensions MUST specify that the names are to be
 URL-encoded as defined in [@!RFC3986] if the object class names
 contain any characters requiring URL-encoding.
+A> issue #40
 
 ### Search Results in Extensions {#search_results_in_extensions}
 
