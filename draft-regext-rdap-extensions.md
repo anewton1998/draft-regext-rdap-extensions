@@ -645,6 +645,15 @@ provision in this respect, clients MUST assume the information
 provided by referrals requires no additional processing or
 modification to use in the dereferencing of the referral.
 
+Extensions MAY define referral processing behaviors of referrals
+defined in other extensions or in [!@RFC9083] only when those
+referrals are not covered by other processing rules.
+
+Servers MUST NOT use multiple extensions in a response with processing
+requirements over the same referrals where clients would not
+be able to process the referrals in a deterministic way.
+A> issue #56
+
 ## Extension Versioning {#versioning}
 
 As stated in (#purpose), RDAP extension identifiers and RDAP
