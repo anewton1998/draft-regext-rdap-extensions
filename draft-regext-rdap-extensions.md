@@ -565,12 +565,13 @@ practice, most extensions owned by the IETF do use extension
 identifiers as prefixes in their requests and responses.
 
 RDAP extensions not defined by the IETF MUST use the extension
-identifier as a prefix in accordance with this document, [@!RFC7480],
+identifier as a prefix or as a bare identifier, in accordance with this document, [@!RFC7480],
 [@!RFC9082], and [@!RFC9083].  RDAP extensions defined by the IETF
 SHOULD use the extension identifier as a prefix or as a bare extension
 identifier (see (#bare_extension)).  IETF-defined RDAP extensions that
 do not follow this guidance MUST describe why it is not being
 followed.
+A> issue #54
 
 # Extension Implementer Considerations {#extension_implementer_considerations}
 
