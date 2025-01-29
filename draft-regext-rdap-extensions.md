@@ -64,30 +64,27 @@ previously implicit.
 
 ## Summary of Updates
 
-This document updates [@!RFC7480], [@!RFC9082], and [@!RFC9083] in the following
-areas:
+This document updates [@!RFC7480], [@!RFC9082], and [@!RFC9083] to be consistent
+with RDAP extensions that have been defined by the IETF and for which there are no known
+interoperability issues. The updates in this document should require no changes
+to either client or server implementations.
 
-1. (#purpose) provides additional guidance on the purpose
-   of RDAP extension identifiers, including their registration for the
-   purpose of avoiding namespace collisions, as well as for signaling
-   server policy/behavior.
-1. (#usage_in_requests) clarifies the usage of extension identifiers in RDAP URLs and formally defines
-   their usage with child path segments and query parameters.
-1. (#usage_in_responses) clarifies the usage of extension identifiers
-   in responses, including for new object classes and search result arrays.
-1. (#extension_implementer_considerations) documents behavior
-   considerations for extension implementers.
-1. (#extension_author_considerations) documents behavior
-   considerations for extension authors, covering
-   redirects ((#redirects_author)), referrals ((#referrals)), and versioning
-   ((#versioning)).
-1. (#existing_extension_registrations) documents existing extensions that
-   were not registered in accordance with the requirements from
-   the relevant RDAP documents ([@!RFC7480], [@!RFC9082], and
-   [@!RFC9083]).
-1. (#rdap_extensions_registry) and (#rdap_json_values_registry) provide further
-   guidance on registrations into the IANA RDAP registries and recommendations
-   for the expert review processes for these registries.
+This document describes the following methods for extending RDAP by registered extensions:
+
+1. JSON Names - The most common extension point for RDAP is the definition of new JSON Names. Guidance is provided here in regards in [@!RFC7480] and [@!RFC9083].
+1. Query Paths - New lookups and searches are defined using URL paths. This document clarifies the practice as described in [@!RFC9082].
+1. Query Parameters - Many queries use URL query parameters to scope and/or enhance RDAP results. This document clarifies the practice as described in [@!RFC9082].
+1. HTTP Headers - Some extensions may use HTTP headers not explicitly enumerated by [@!RFC7480].
+1. Object Classes - Extensions may define new types of objects to be queried. This document clarifies this method as described in [@!RFC9082] and [@!RFC9083].
+
+A> issue #62
+
+This document does not describe the usage of URL matrix parameters as they are NOT RECOMMENDED for use with RDAP
+as they are not widely implemented in broader web architecture and have the potential to interfere with query parameters and query paths.
+A> issue #60
+
+Additionally, this document updates the IANA registry practices for RDAP. See (#iana_considerations).
+A> issue #62
 
 ## Document Terms
 
