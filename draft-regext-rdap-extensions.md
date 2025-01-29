@@ -859,9 +859,10 @@ constraints of query parameter usage as defined in (#redirects_author).
 
 # Acknowledgments
 
+A> issue #35
 The following individuals have provided feedback and contributions to the
-content and direction of this document: James Gould, Daniel Keathley, and
-Ties de Kock.
+content and direction of this document: James Gould, Scott Hollenbeck,
+Ties de Kock, Pawel Kowalik, Daniel Keathley, and Mario Loffredo.
 
 {backmatter}
 
