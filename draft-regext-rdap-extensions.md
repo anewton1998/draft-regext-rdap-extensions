@@ -48,7 +48,7 @@ This document describes and clarifies the usage of extensions in RDAP.
 # Background
 
 The Registration Data Access Protocol (RDAP) defines a uniform protocol
-to access data from Internet operations registries, specifically
+for accessing data from Internet operations registries, specifically
 Domain Name Registries (DNRs), Regional Internet Registries
 (RIRs), and other registries serving Internet Number Resources (INRs).
 RDAP queries are defined in [@!RFC9082] and RDAP responses are defined
@@ -103,7 +103,7 @@ extensions and the IANA registry into which RDAP extensions are to be
 registered.
 
 When in use in RDAP, extension identifiers are either used as "bare"
-identifiers (see Section (#bare_extension) or prepended to URL path
+identifiers (see Section (#bare_extension)) or prepended to URL path
 segments, URL query parameters, and JSON object member names (herein
 further referred to as "JSON names").  They are also included in the
 "rdapConformance" member of each response that relies on the
@@ -166,8 +166,11 @@ the media types expected to be used with those link relations.
 
 Regardless of the category of the extension, its usage may also
 leverage the appearance of its identifier in the "rdapConformance"
-array.
-A> issue #59
+array (i.e. clients are signaled that a profile is in use).
+Profile extensions that mandate the implementation of some other
+extension SHOULD require that the implementor include the extension
+identifier for that other extension in the "rdapConformance" array.
+A> issue #59 and PR comments from tomhrr
 
 As described above, these characteristics are not exclusive to profile
 extensions and may be found in extensions defining new queries, JSON, etc...
@@ -281,19 +284,11 @@ names SHOULD be constructed in the same manner as URL path segments
 (#identifier_omission) regarding when an extension identifier may be
 omitted and Section #(bare_extension) regarding bare extensions.)
 
-Though the URL path operates as a namespace, both [@!RFC8982]
-and [@!RFC8977] define query parameters without prefixes and therefore
-have a potential for collision. To avoid collisions, query parameter
-must be named according to the following:
-
-* If the RDAP extension is defined by the IETF, a prepended extension
-identifier is OPTIONAL but NOT RECOMMENDED (see Section (#identifier_omission)).
-* If the RDAP extension defines only one query parameter and follows
-the characteristics of a "bare extension" (See Section (#bare_extension)),
-a prepended extension identifier is OPTIONAL but NOT RECOMMENDED.
-* Otherwise the RDAP extension MUST prepend query parameter names with
-an extension identifier.
-A> issue #51
+Notwithstanding the above, both [@!RFC8982] and [@!RFC8977] define unprefixed
+query parameters for general use, which means that there is the potential
+for collision with query parameters defined in new extensions.
+Extension authors should take the existence of these query parameters into account when defining new extensions.
+A> issue #51 and PR comments from tomhrr
 
 See (#redirects_author) and (#referrals) for other guidance on the use of
 query parameters, and see (#security_considerations) and
@@ -434,11 +429,8 @@ described in (#camel_casing).
 Though "objectClassName" is a string and [@!RFC9083] does
 define one object class name with a space separator (i.e. "ip
 network"), usage of the space character or any other character that
-requires URL-encoding is NOT RECOMMENDED.  When object class names are
-also used in URLs, extensions MUST specify that the names are to be
-URL-encoded as defined in [@!RFC3986] if the object class names
-contain any characters requiring URL-encoding.
-A> issue #40
+requires URL-encoding is NOT RECOMMENDED.
+A> issue #40 and PR comments form tomhrr
 
 ### Search Results in Extensions {#search_results_in_extensions}
 
@@ -522,7 +514,7 @@ A> issue #52
 Usage of a bare extension identifier conflicts with the guidance in
 [@!RFC9083, section 2.1].  This document clarifies [@!RFC9083, Section 2.1] to explicitly allow
 this pattern but advises extension authors to use this pattern when only one
-query path, JSON names, or object class is being defined by the extension.
+query path, JSON name, or object class is being defined by the extension.
 A> issue #37 and issue #52
 
 ### rdapConformance Population
@@ -605,7 +597,7 @@ not relevant to the target server of the URL. Following the advice in [@!RFC7480
 servers SHOULD only place query parameters in redirect URLs when it is known
 by the origin server (the server issuing the redirect) that the target server
 (the server referenced by the redirect) can process the query parameter and the
-target server is the proper target of the contents of the query parameter.
+target server is a proper target for the contents of the query parameter.
 A> issue #55
 
 # Extension Author Considerations {#extension_author_considerations}
@@ -750,11 +742,11 @@ required for the interoperability of the extension, should be stable
 and non-changing.
 3. Extension specifications SHOULD be very clear whether RDAP
 requests and responses related to the extension can be exchanged
-over an unencrypted HTTP connection. Extension specification MUST
+over an unencrypted HTTP connection. Extension specifications MUST
 mandate use of HTTPS in its Security Considerations if unencrypted
-http data exchange would pose security or privacy risks. Extensions
+HTTP data exchange would pose security or privacy risks. Extensions
 should also be compliant with the security considerations of [@!RFC7481].
-4. The use of the various RDAP extensions points, as described in (#summary_of_updates),
+4. The use of the various RDAP extension points, as described in (#summary_of_updates),
 should be clearly delineated.
 
 A> #58
