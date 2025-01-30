@@ -71,7 +71,7 @@ to either client or server implementations.
 
 This document describes the following methods for extending RDAP by registered extensions:
 
-1. JSON Names - The most common extension point for RDAP is the definition of new JSON Names. Guidance is provided here in regards in [@!RFC7480] and [@!RFC9083].
+1. JSON Names - The most common extension point for RDAP is the definition of new JSON Names. Guidance is provided here in regards to [@!RFC7480] and [@!RFC9083].
 1. Query Paths - New lookups and searches are defined using URL paths. This document clarifies the practice as described in [@!RFC9082].
 1. Query Parameters - Many queries use URL query parameters to scope and/or enhance RDAP results. This document clarifies the practice as described in [@!RFC9082].
 1. HTTP Headers - Some extensions may use HTTP headers not explicitly enumerated by [@!RFC7480].
@@ -80,7 +80,7 @@ This document describes the following methods for extending RDAP by registered e
 A> issue #62
 
 This document does not describe the usage of URL matrix parameters as they are NOT RECOMMENDED for use with RDAP
-as they are not widely implemented in broader web architecture and have the potential to interfere with query parameters and query paths.
+because they are not widely implemented in broader web architecture and have the potential to interfere with query parameters and query paths.
 A> issue #60
 
 Additionally, this document updates the IANA registry practices for RDAP. See (#iana_considerations).
@@ -164,8 +164,8 @@ registered in the Link Relations Registry
 When defining the usage of link relations, extensions should specify
 the media types expected to be used with those link relations.
 
-Regardless of the category of the extension, its usage may also
-leverage the appearance of its identifier in the "rdapConformance"
+Profile extensions may also
+leverage the appearance of their identifier in the "rdapConformance"
 array (i.e. clients are signaled that a profile is in use).
 Profile extensions that mandate the implementation of some other
 extension SHOULD require that the implementor include the extension
@@ -173,7 +173,8 @@ identifier for that other extension in the "rdapConformance" array.
 A> issue #59 and PR comments from tomhrr
 
 As described above, these characteristics are not exclusive to profile
-extensions and may be found in extensions defining new queries, JSON, etc...
+extensions and may be found in extensions defining new queries, JSON, and
+other RDAP extension points (see Section (#summary_of_updates)).
 A> issue #39
 
 ### Multiple Identifiers in Single Extension
@@ -214,8 +215,8 @@ existing extension identifiers do contain underscore characters.
 case-sensitive.  This document clarifies the formulation in [@!RFC7480]
 to explicitly note that extension identifiers are case-sensitive, and
 extension identifiers MUST NOT be registered where a new identifier is
-a mixed-case version of an existing identifier (see (#rdap_extensions_registry)). For example, if
-"lunarNIC" is already registered as an identifier, a new registration
+a mixed-case version of an existing identifier (see (#rdap_extensions_registry)). For example, given
+"lunarNIC" is already registered as an identifier, then a new registration
 with "lunarNic" (note the lowercase if "ic" in "Nic") would not be
 allowed.
 A> issue #33
@@ -257,10 +258,10 @@ From a protocol perspective, the difference between prepending the extension ID 
 the last path segment (e.g. https://base.example/foobar_fizz) and using an
 extension ID as a path segment (e.g. https://base.example/foobar/fizz) is just
 the difference of the underscore and backslash characters. Extension authors
-may use either approach but should rely on implementation experience.
+MAY use either approach but should rely on implementation experience.
 A> issue #34
 
-Appending a path segment to another path segment is NOT RECOMMENDED as
+Appending a path segment to an existing path segment is NOT RECOMMENDED as
 this increases the likelihood of collisions between the queries defined
 by extension identifiers.
 A> issue #36
@@ -280,9 +281,9 @@ of RDAP extension identifiers in URL query parameters.
 When an RDAP extension defines query parameters to be used with a URL
 path that is not defined by that RDAP extension, those query parameter
 names SHOULD be constructed in the same manner as URL path segments
-(that is, extension identifier + '_' + parameter name).  (See section
+(that is, extension identifier + '_' + parameter name).  (See 
 (#identifier_omission) regarding when an extension identifier may be
-omitted and Section #(bare_extension) regarding bare extensions.)
+omitted and #(bare_extension) regarding bare extensions.)
 
 Notwithstanding the above, both [@!RFC8982] and [@!RFC8977] define unprefixed
 query parameters for general use, which means that there is the potential
