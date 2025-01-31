@@ -103,7 +103,7 @@ extensions and the IANA registry into which RDAP extensions are to be
 registered.
 
 When in use in RDAP, extension identifiers are either used as "bare"
-identifiers (see Section (#bare_extension)) or prepended to URL path
+identifiers (see (#bare_extension)) or prepended to URL path
 segments, URL query parameters, and JSON object member names (herein
 further referred to as "JSON names").  They are also included in the
 "rdapConformance" member of each response that relies on the
@@ -174,7 +174,7 @@ A> issue #59 and PR comments from tomhrr
 
 As described above, these characteristics are not exclusive to profile
 extensions and may be found in extensions defining new queries, JSON, and
-other RDAP extension points (see Section (#summary_of_updates)).
+other RDAP extension points (see (#summary_of_updates)).
 A> issue #39
 
 ### Multiple Identifiers in Single Extension
@@ -217,7 +217,7 @@ to explicitly note that extension identifiers are case-sensitive, and
 extension identifiers MUST NOT be registered where a new identifier is
 a mixed-case version of an existing identifier (see (#rdap_extensions_registry)). For example, given
 "lunarNIC" is already registered as an identifier, then a new registration
-with "lunarNic" (note the lowercase if "ic" in "Nic") would not be
+with "lunarNic" (note the lowercase "ic" in "Nic") would not be
 allowed.
 A> issue #33
 
@@ -514,9 +514,9 @@ A> issue #52
 
 Usage of a bare extension identifier conflicts with the guidance in
 [@!RFC9083, section 2.1].  This document clarifies [@!RFC9083, Section 2.1] to explicitly allow
-this pattern but advises extension authors to use this pattern when only one
+this pattern but extension authors MUST NOT use this pattern when only one
 query path, JSON name, or object class is being defined by the extension.
-A> issue #37 and issue #52
+A> issue #37 and issue #52 and PR comments from jasdips
 
 ### rdapConformance Population
 
@@ -597,8 +597,8 @@ query parameters may contain sensitive information, such as security credentials
 not relevant to the target server of the URL. Following the advice in [@!RFC7480],
 servers SHOULD only place query parameters in redirect URLs when it is known
 by the origin server (the server issuing the redirect) that the target server
-(the server referenced by the redirect) can process the query parameter and the
-target server is a proper target for the contents of the query parameter.
+(the server referenced by the redirect) can process the query parameter and
+is a proper target for the contents of the query parameter.
 A> issue #55
 
 # Extension Author Considerations {#extension_author_considerations}
@@ -658,8 +658,7 @@ provided by referrals requires no additional processing or
 modification to use in the dereferencing of the referral.
 
 Extensions MAY define referral processing behaviors of referrals
-defined in other extensions or in [!@RFC9083] only when those
-referrals are not covered by other processing rules.
+defined in other extensions or in [!@RFC9083].
 
 Servers MUST NOT use multiple extensions in a response with processing
 requirements over the same referrals where clients would not
@@ -707,8 +706,7 @@ use/support or similar.
 
 Where multiple versions of an extension are to be expected, extension
 authors should consider using formal versioning schemes such as those
-described and defined in [@?I-D.regext-rdap-versioning] and
-[@?I-D.regext-rdap-x-media-type].
+described and defined in [@?I-D.regext-rdap-versioning].
 A> issue #61
 
 ### Backwards-Incompatible Changes {#backwards_incompatible_changes}
