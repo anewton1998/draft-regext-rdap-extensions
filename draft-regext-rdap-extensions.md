@@ -680,9 +680,9 @@ consultation of the definition of "fizzbuzz_1" will determine its
 relationship with "fizzbuzz_0". Additionally, "fizzbuzz_99" may be the
 predecessor of "fizzbuzz_0".
 
-An RDAP extension definition MUST explicitly denote its compliance with any
+An RDAP extension definition MUST explicitly denote its compliance, or lack of, with any
 versioning scheme, such as [@?I-D.regext-rdap-versioning].
-A> issue #57
+A> issue #57 and PR feedback from jasdips
 
 ### Backwards-Compatible Changes {#backwards_compatible_changes}
 
