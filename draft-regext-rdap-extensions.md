@@ -797,10 +797,7 @@ extensions may require special handling on the part of the client.
 Also, while these extensions will be retained in the registry, future
 extensions that are similarly non-compliant will not be registered.
 
-To avoid any confusion with the operation of the existing entries, an
-extension registration that attempts to use one of the RDAP
-conformance values given in this section as an extension identifier
-(and so as an RDAP conformance value also) will be rejected.
+A> issue #44
 
 # IANA Considerations
 
