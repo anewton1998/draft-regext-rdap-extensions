@@ -513,9 +513,9 @@ class, and use the extension's identifier as the object class name
 A> issue #52
 
 Usage of a bare extension identifier conflicts with the guidance in
-[@!RFC9083, section 2.1].  This document clarifies [@!RFC9083, Section 2.1] to explicitly allow
-this pattern but extension authors MUST NOT use this pattern when only one
-query path, JSON name, or object class is being defined by the extension.
+[@!RFC9083, section 2.1]. Previously, extension authors have used this
+pattern when only one query path, JSON name, or object class is being
+defined by the extension. Henceforth, this pattern MUST NOT be used.
 A> issue #37 and issue #52 and PR comments from jasdips
 
 ### rdapConformance Population
