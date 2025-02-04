@@ -179,12 +179,11 @@ A> issue #39
 
 ### Multiple Identifiers in Single Extension
 
-Extension specifications have customarily defined only one extension
-identifier.  However, there is no explicit limit on the number of
-extension identifiers that may be defined in a single extension
-specification.  The main reason for defining multiple identifiers is
-to reserve multiple namespaces in URLs or responses: see e.g.
-[@?I-D.ietf-regext-rdap-rir-search].
+Extension specifications MAY define more than one extension identifier.
+The servers MUST list all extension identifiers used to generate a response
+in the "rdapConformance" array. The server MUST list all supported
+extension identifiers in the "rdapConformance" array of response to a "/help" request.
+A> issue #48
 
 ## Syntax {#syntax}
 
