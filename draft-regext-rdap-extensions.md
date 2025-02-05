@@ -830,7 +830,7 @@ the extension specification clearly describe if it is backwards-compatible
 5. If the extension registers new values in an IANA registry used by RDAP,
 does it describe how a client is to use those values?
 6. If the extension is a new registration, is it a case-variant of an
-existing registration (see (#syntax)).
+existing registration (see (#syntax))?
 A> issue #33
 
 As noted in (#syntax), any new registration that is a case variant of
