@@ -59,7 +59,7 @@ RDAP contains a means to define extensions for queries not found in
 are also described in [@!RFC7480].  This document describes the
 requirements for RDAP extension definition and use, clarifying
 ambiguities and defining additional semantics and options that were
-previously implicit or under-specified, and places some contraints
+previously implicit or under-specified, and places some constraints
 on the definition of RDAP extensions to prevent collisions with
 various extension mechanisms.
 
@@ -229,8 +229,8 @@ While [@!RFC9082] describes the extension identifier as a prepended
 string to a path segment, it does not describe the usage of the
 extension identifier as a path segment which may have child path
 segments. This document updates [@!RFC9082] in the following manner:
-bare extension identifiers MUST NOT be path segments and path segments
-defined by RDAP MUST NOT have child path segments.
+bare extension identifiers (see (#bare_extensions)) MUST NOT be the 
+most siginificant path segment in an RDAP URL.
 
 Extensions defining new URL paths MUST explicitly define the expected
 responses for each new URL path. New URL paths may return existing
