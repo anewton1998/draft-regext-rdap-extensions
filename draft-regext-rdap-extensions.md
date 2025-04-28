@@ -59,7 +59,7 @@ RDAP contains a means to define extensions for queries not found in
 are also described in [@!RFC7480].  This document describes the
 requirements for RDAP extension definition and use, clarifying
 ambiguities and defining additional semantics and options that were
-previously implicit or under-specified, and places some contrainsts
+previously implicit or under-specified, and places some contraints
 on the definition of RDAP extensions to prevent collisions with
 various extension mechanisms.
 
@@ -67,7 +67,7 @@ various extension mechanisms.
 
 This document updates [@!RFC7480], [@!RFC9082], and [@!RFC9083] for the
 purposes of constraining how extensions are defined. This document does
-not update any core RDAP requests or responses nor does update or obsolete
+not update any core RDAP requests or responses nor does it update or obsolete
 any existing RDAP extensions. The updates in this document should require no changes
 to either client or server implementations.
 
@@ -228,9 +228,9 @@ would be like so:
 While [@!RFC9082] describes the extension identifier as a prepended
 string to a path segment, it does not describe the usage of the
 extension identifier as a path segment which may have child path
-segments. This document updates [@!RFC9082] to disallow the usage of
-extension identifiers as path segments MUST NOT have child path
-segments. 
+segments. This document updates [@!RFC9082] in the following manner:
+bare extension identifiers MUST NOT be path segments and path segments
+defined by RDAP MUST NOT have child path segments.
 
 Extensions defining new URL paths MUST explicitly define the expected
 responses for each new URL path. New URL paths may return existing
@@ -396,12 +396,12 @@ JSON names:
       }
     }
 
-Extension authors are encouraged to use the "camle case" style described
+Extension authors are encouraged to use the "camel case" style described
 in (#camel_casing).
 
 Though "objectClassName" is a string and [@!RFC9083] does
 define one object class name with a space separator (i.e. "ip
-network"), however this document disallows further use of
+network"), this document disallows further use of
 a space character in object class names. Extensions MUST NOT define
 object class names using the space character or any other character that
 requires URL-encoding.
@@ -516,7 +516,7 @@ called "camel casing", in reference to the hump of a camel. In this
 style, the first letter of every word, except the first word,
 composing a name is capitalized.  This convention was adopted to
 visually separate the namespace from the name, with an underscore
-between them.  Extension authors are encouragned to  use camel casing for JSON
+between them.  Extension authors are encouraged to  use camel casing for JSON
 names defined in extensions.
 
 # Extension Implementer Considerations {#extension_implementer_considerations}
@@ -564,7 +564,7 @@ client will be operating in this way.
 In general, extension authors should be mindful of situations
 requiring clients to directly handle redirects at the RDAP layer. Some
 clients may not be utilizing HTTP libraries that provide such an
-option, and some hTTP client libraries that do provide the option do
+option, and some HTTP client libraries that do provide the option do
 not provide it as a default behavior. Additionally, requiring clients
 to handle redirects at the RDAP layer adds complexity to the client in
 that additional logic must be implemented to handle redirect loops,
@@ -730,7 +730,7 @@ extensions that are similarly non-compliant will not be registered.
 
 [@!RFC7480] defines the RDAP Extensions Registry (<https://www.iana.org/assignments/rdap-extensions/rdap-extensions.xhtml>).
 This document does not change the purpose of this registry but does
-update the structure and procedures to be used by its expert reveiwers.
+update the structure and procedures to be used by its expert reviewers.
 
 ### Deprecation Date
 
@@ -739,7 +739,7 @@ in the registry. This field is to remain empty unless IANA is given a date to
 place in the field. A registrant, as denoted by the contact field of the registry,
 may request of IANA to deprecate an RDAP extension. The IETF may request of the
 IANA to deprecate any RDAP extension in the registry. When deprecating an entry
-in this registry, the IANA is record the date of the request in the "Deprecation Date"
+in this registry, the IANA is to record the date of the request in the "Deprecation Date"
 field. The "Deprecation Date" field should use the date format specified in [@!RFC3339].
 
 ### Registratiion Procedures
