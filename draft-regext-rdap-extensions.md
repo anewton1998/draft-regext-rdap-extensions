@@ -227,10 +227,9 @@ would be like so:
 
 While [@!RFC9082] describes the extension identifier as a prepended
 string to a path segment, it does not describe the usage of the
-extension identifier as a path segment which may have child path
-segments. This document updates [@!RFC9082] in the following manner:
-bare extension identifiers (see (#bare_extensions)) MUST NOT be the 
-most siginificant path segment in an RDAP URL.
+extension identifier as a path segment. This document updates [@!RFC9082] 
+in the following manner: bare extension identifiers (see 
+(#bare_extensions)) MUST NOT be the most significant path segment in an RDAP URL.
 
 Extensions defining new URL paths MUST explicitly define the expected
 responses for each new URL path. New URL paths may return existing
