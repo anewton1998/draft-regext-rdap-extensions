@@ -11,7 +11,7 @@ name = "Internet-Draft"
 value = "draft-ietf-regext-rdap-extensions-06"
 stream = "IETF"
 status = "standard"
-date = 2024-04-28T00:00:00Z
+date = 2024-04-29T00:00:00Z
 
 [[author]]
 initials="A."
@@ -73,7 +73,7 @@ to either client or server implementations.
 
 This document describes the following methods for extending RDAP by registered extensions:
 
-1. JSON Names - The most common extension point for RDAP is the definition of new JSON Names. Guidance is provided here in regards to [@!RFC7480] and [@!RFC9083].
+1. JSON Names - The most common extension point for RDAP is the definition of new JSON Names. Guidance is provided here in regard to [@!RFC7480] and [@!RFC9083].
 1. Query Paths - New lookups and searches are defined using URL paths. This document clarifies the practice as described in [@!RFC9082].
 1. Query Parameters - Many queries use URL query parameters to scope and/or enhance RDAP results. This document clarifies the practice as described in [@!RFC9082].
 1. HTTP Headers - Some extensions may use HTTP headers not explicitly enumerated by [@!RFC7480].
@@ -229,7 +229,7 @@ While [@!RFC9082] describes the extension identifier as a prepended
 string to a path segment, it does not describe the usage of the
 extension identifier as a path segment. This document updates [@!RFC9082] 
 in the following manner: bare extension identifiers (see 
-(#bare_extensions)) MUST NOT be the most significant path segment in an RDAP URL.
+(#bare_extension)) MUST NOT be the most significant path segment in an RDAP URL.
 
 Extensions defining new URL paths MUST explicitly define the expected
 responses for each new URL path. New URL paths may return existing
@@ -257,9 +257,7 @@ of RDAP extension identifiers in URL query parameters.
 When an RDAP extension defines query parameters to be used with a URL
 path that is not defined by that RDAP extension, those query parameter
 names MUST be constructed in the same manner as URL path segments
-(that is, extension identifier + '_' + parameter name).  (See 
-(#identifier_omission) regarding when an extension identifier may be
-omitted and #(bare_extension) regarding bare extensions.)
+(that is, extension identifier + '_' + parameter name).
 
 See (#redirects_author) and (#referrals) for other guidance on the use of
 query parameters, and see (#security_considerations) and
