@@ -73,7 +73,7 @@ to either client or server implementations.
 
 This document describes the following methods for extending RDAP by registered extensions:
 
-1. JSON Names - The most common extension point for RDAP is the definition of new JSON Names. Guidance is provided here in regards to [@!RFC7480] and [@!RFC9083].
+1. JSON Names - The most common extension point for RDAP is the definition of new JSON Names. Guidance is provided here in regard to [@!RFC7480] and [@!RFC9083].
 1. Query Paths - New lookups and searches are defined using URL paths. This document clarifies the practice as described in [@!RFC9082].
 1. Query Parameters - Many queries use URL query parameters to scope and/or enhance RDAP results. This document clarifies the practice as described in [@!RFC9082].
 1. HTTP Headers - Some extensions may use HTTP headers not explicitly enumerated by [@!RFC7480].
