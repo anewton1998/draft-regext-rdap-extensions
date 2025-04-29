@@ -8,7 +8,7 @@ updates = [7480, 9082, 9083]
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-ietf-regext-rdap-extensions-06"
+value = "draft-ietf-regext-rdap-extensions-07"
 stream = "IETF"
 status = "standard"
 date = 2024-04-29T00:00:00Z
@@ -90,7 +90,7 @@ Additionally, this document updates the IANA registry practices for RDAP. See (#
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
 "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
 "MAY", and "OPTIONAL" in this document are to be interpreted as
-described in [@!BCP14] when, and only when, they
+described in BCP 14 [@!RFC2119] [@!RFC8174] when, and only when, they
 appear in all capitals, as shown here.
 
 # Identifiers {#identifiers}
@@ -405,7 +405,7 @@ requires URL-encoding.
 
 ### Search Results in Extensions {#search_results_in_extensions}
 
-As described in [RFC9082] and (#usage_in_requests), an extension may define
+As described in [@!RFC9082] and (#usage_in_requests), an extension may define
 new paths in URLs.  If the extension describes the behavior of an
 RDAP query using the path to return an RDAP search result for a
 new object class, the JSON name of the search result MUST be
@@ -591,7 +591,7 @@ provided by referrals requires no additional processing or
 modification to use in the dereferencing of the referral.
 
 Extensions MAY define referral processing behaviors of referrals
-defined in other extensions or in [!@RFC9083].
+defined in other extensions or in [@!RFC9083].
 
 Servers MUST NOT use multiple extensions in a response with processing
 requirements over the same referrals where clients would not
@@ -761,7 +761,7 @@ defined in this document, [@!RFC7480], [@!RFC9082], and [@!RFC9083].
 The following is a summary checklist:
 
 1. Does the extension define an extension identifier following the naming
-conventions described in (#purpose) and (#camel_casing)?
+conventions described in (#syntax) and (#camel_casing)?
 2. If the extension defines new queries, does it clearly describe the
 expected results of each new query?
 3. Does the extension follow the JSON naming requirements as described in (#usage_in_responses)?
@@ -774,7 +774,7 @@ does it describe how a client is to use those values?
 6. If the extension is a new registration, is it a case-variant of an
 existing registration (see (#syntax))?
 
-As noted in (#syntax), any new registration that is a case variant of
+As noted in (#syntax), any new registration that is a case-variant of
 an existing registration MUST be rejected.
 
 RDAP clients SHOULD match values in this registry using
@@ -818,7 +818,7 @@ without processing.
 
 Designated experts MUST reject any registration that is a duplicate of an
 existing registration, and all registrations are to be considered case-insensitive.
-That is, any new registration that is a case variant of an existing registration
+That is, any new registration that is a case-variant of an existing registration
 should be rejected.
 
 RDAP clients SHOULD match values in this registry using case-insensitive matching
@@ -864,8 +864,6 @@ constraints of query parameter usage as defined in (#redirects_author).
 The following individuals have provided feedback and contributions to the
 content and direction of this document: James Gould, Scott Hollenbeck,
 Ties de Kock, Pawel Kowalik, Daniel Keathley, and Mario Loffredo.
-
-A> issue #35
 
 {backmatter}
 
