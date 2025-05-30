@@ -239,7 +239,7 @@ classes or search results defined by the extension (see
 below), or object classes or search results from other extensions.
 
 Additionally, RDAP extensions MUST NOT append a path segment to an
-existing path segment as this increases the likelihood of collisons
+existing path segment as this increases the likelihood of collisions
 between the queries defined by an extension.
 
 ### Usage in Query Parameters {#usage_in_query_parameters}
@@ -476,10 +476,20 @@ identifier pattern, that example could be written as:
       }
     }
 
-Usage of a bare extension identifier conflicts with the guidance in
-[@!RFC9083, section 2.1]. Previously, extension authors have used this
-pattern when only one query path, JSON name, or object class is being
-defined by the extension. Henceforth, this pattern MUST NOT be used.
+Usage of a bare extension identifier contravenes the guidance in [@!RFC9083, section 2.1].
+Implementation experience has shown that an extension using a bare identifier
+can be interoperable though more difficult to process and parse in some
+instances. Furthermore, bare identifier's blur the line between what
+can be interpreted as an extension to RDAP vs core RDAP mechanisms.
+
+This document updates [@!RFC9083] to explicitly allow this pattern
+only in IETF defined RDAP extensions and only when a technical solution
+cannot otherwise be defined.
+
+Along similar lines, an extension may define a single new object class,
+and use the extension's identifier as the object class name only in
+IETF defined RDAP extensions and only when a technical solution cannot
+otherwise be defined.
 
 ### rdapConformance Population
 
