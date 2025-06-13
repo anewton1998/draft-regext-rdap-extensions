@@ -11,7 +11,7 @@ name = "Internet-Draft"
 value = "draft-ietf-regext-rdap-extensions-07"
 stream = "IETF"
 status = "standard"
-date = 2024-04-29T00:00:00Z
+date = 2024-06-20T00:00:00Z
 
 [[author]]
 initials="A."
@@ -102,9 +102,9 @@ extensions and the IANA registry into which RDAP extensions are to be
 registered.
 
 When in use in RDAP, extension identifiers are prepended to URL path
-segments, URL query parameters, and JSON object member names (herein
-further referred to as "JSON names").  They are also included in the
-"rdapConformance" member of each response that relies on the
+segments, URL query parameters, and JSON object member names.
+They are also included in the "rdapConformance" array member of each
+response that relies on the
 extension, so that clients can determine the extensions being used by
 the server for that response.  The "/help" response returns an
 "rdapConformance" member containing the identifiers for all extensions
@@ -121,7 +121,9 @@ While the RDAP extension mechanism was created to extend RDAP queries
 and/or responses, extensions can also be used to signal server policy
 (for example, specifying the conditions of use for existing response
 structures). Extensions that are primarily about signaling server
-policy are often called "profiles".
+policy are often called "profiles". Profile extensions are often used
+by a class of RDAP server operators, such as the [@icann-profile] used
+by gTLD registries and registrars and the [@nro-profile] used by RIRs.
 
 Profile extensions often do the following:
 
@@ -166,6 +168,12 @@ Profile extensions that mandate the implementation of some other
 extension MUST require that the implementor include the extension
 identifier for that other extension in the "rdapConformance" array.
 
+[@!RFC7480] mandates the implementation of HTTPS but does not mandate
+its use. Some profile extensions, especially those used by classes of
+server operators, specify the required use of HTTPS and disallow the
+use of unencrypted HTTP. Similarly, some profile extensions specify
+the availability of service over IPv6.
+
 As described above, these characteristics are not exclusive to profile
 extensions and may be found in extensions defining new queries, JSON, and
 other RDAP extension points (see (#summary_of_updates)).
@@ -197,7 +205,8 @@ identifier "foo". Likewise, if there were a pre-existing identifier of
 "foo_bar_buzz".  However, an extension could define "foo" if there
 were a pre-existing definition of "foobar", and vice versa.
 
-For this reason, RDAP extensions MUST NOT use an underscore character
+For this reason, this document updates the guidance of
+[@!RFC7480] regarding underscore characters: RDAP extensions MUST NOT use an underscore character
 in their RDAP extension identifier. Implementers should be aware that many
 existing extension identifiers do contain underscore characters.
 
@@ -209,6 +218,82 @@ a mixed-case version of an existing identifier (see (#rdap_extensions_registry))
 "lunarNIC" is already registered as an identifier, then a new registration
 with "lunarNic" (note the lowercase "ic" in "Nic") would not be
 allowed.
+
+## Bare Extension Identifiers {#bare_extension}
+
+Some RDAP extensions define only one JSON value and do not prefix it
+with their RDAP extension identifier, instead using the extension
+identifier as the JSON name for that JSON value. That is, the
+extension identifier is used "bare" and not appended with an
+underscore character and subsequent names.
+
+Consider the example in (#child_json_values). Using the bare extension
+identifier pattern, that example could be written as:
+
+    {
+      "rdapConformance": [
+        "rdap_level_0",
+        "lunarNIC"
+      ],
+      "objectClassName": "domain",
+      "ldhName": "example.com",
+      "remarks":
+      [
+        {
+          "description":
+          [
+            "She sells sea shells down by the sea shore.",
+            "Originally written by Terry Sullivan."
+          ]
+        }
+      ],
+      "lunarNIC":
+      {
+        "firstInitial": "R",
+        "lastName": "Heinlein"
+      }
+    }
+
+A> The working group has not come to census on this topic. Therefore,
+A> three positions are presented.
+
+**BARE EXTENSIONS NOT ALLOWED**
+
+Usage of a bare extension identifier conflicts with the guidance in
+[@!RFC9083, section 2.1]. Previously, extension authors have used this
+pattern when only one query path, JSON name, or object class is being
+defined by the extension.
+
+Implementation experience has shown that an extension using a bare identifier can be
+interoperable though more difficult to process and parse in some instances.
+Furthermore, bare identifier's blur the line between what can be interpreted
+as an extension to RDAP vs core RDAP mechanisms.
+
+Henceforth, this pattern MUST NOT be used.
+
+**COMPROMISE: BARE EXTENSIOSN ONLY ALLOWED UNDER CERTAIN CONDITIONS**
+
+Usage of a bare extension identifier contravenes the guidance in [@!RFC9083, section 2.1].
+Implementation experience has shown that an extension using a bare identifier can be
+interoperable though more difficult to process and parse in some instances.
+Furthermore, bare identifier's blur the line between what can be interpreted
+as an extension to RDAP vs core RDAP mechanisms.
+
+This document updates [@!RFC9083] to explicitly allow this pattern only in IETF
+defined RDAP extensions and only when a technical solution cannot otherwise be defined.
+
+Along similar lines, an extension may define a single new object class,
+and use the extension's identifier as the object class name only in IETF defined
+RDAP extensions and only when a technical solution cannot otherwise be defined.
+
+**BARE EXTENSIONS ALLOWED**
+
+Usage of a bare extension identifier contravenes the guidance in [@!RFC9083, section 2.1].
+Implementation experience has shown that an extension using a bare identifier can be
+interoperable though more difficult to process and parse in some instances,
+therefore this document updates [@!RFC9083] to explicitly allow this pattern.
+
+Along similar lines, an extension may define a single new object class, and use the extension's identifier as the object class name.
 
 ## Usage in Requests {#usage_in_requests}
 
@@ -227,9 +312,10 @@ would be like so:
 
 While [@!RFC9082] describes the extension identifier as a prepended
 string to a path segment, it does not describe the usage of the
-extension identifier as a path segment. This document updates [@!RFC9082] 
-in the following manner: bare extension identifiers (see 
-(#bare_extension)) MUST NOT be the most significant path segment in an RDAP URL.
+extension identifier as a path segment.
+
+See (#bare_extensions) with
+regard to the use of bare extension identifiers in RDAP URLs.
 
 Extensions defining new URL paths MUST explicitly define the expected
 responses for each new URL path. New URL paths may return existing
@@ -258,6 +344,9 @@ When an RDAP extension defines query parameters to be used with a URL
 path that is not defined by that RDAP extension, those query parameter
 names MUST be constructed in the same manner as URL path segments
 (that is, extension identifier + '_' + parameter name).
+
+See (#bare_extensions) with
+regard to the use of bare extension identifiers in query parameters.
 
 See (#redirects_author) and (#referrals) for other guidance on the use of
 query parameters, and see (#security_considerations) and
@@ -299,6 +388,9 @@ The example given in [@!RFC9083] is as follows:
 
 In this example, the extension identified by "lunarNIC" is prepended
 to the member names of both a JSON string and a JSON array.
+
+See (#bare_extensions) with
+regard to the use of bare extension identifiers in JSON.
 
 As [@!RFC9083, section 4.1] requires the use of the "rdapConformance"
 data structure, and the "objectClassName" string is required of all
@@ -393,6 +485,9 @@ JSON names:
       }
     }
 
+See (#bare_extensions) with
+regard to the use of bare extension identifiers in object class names.
+
 Extension authors are encouraged to use the "camel case" style described
 in (#camel_casing).
 
@@ -441,45 +536,6 @@ string as defined in (#object_classes_in_extensions).  For example:
       ]
     }
 
-### Bare Extension Identifiers {#bare_extension}
-
-Some RDAP extensions define only one JSON value and do not prefix it
-with their RDAP extension identifier, instead using the extension
-identifier as the JSON name for that JSON value. That is, the
-extension identifier is used "bare" and not appended with an
-underscore character and subsequent names.
-
-Consider the example in (#child_json_values). Using the bare extension
-identifier pattern, that example could be written as:
-
-    {
-      "rdapConformance": [
-        "rdap_level_0",
-        "lunarNIC"
-      ],
-      "objectClassName": "domain",
-      "ldhName": "example.com",
-      "remarks":
-      [
-        {
-          "description":
-          [
-            "She sells sea shells down by the sea shore.",
-            "Originally written by Terry Sullivan."
-          ]
-        }
-      ],
-      "lunarNIC":
-      {
-        "firstInitial": "R",
-        "lastName": "Heinlein"
-      }
-    }
-
-Usage of a bare extension identifier conflicts with the guidance in
-[@!RFC9083, section 2.1]. Previously, extension authors have used this
-pattern when only one query path, JSON name, or object class is being
-defined by the extension. Henceforth, this pattern MUST NOT be used.
 
 ### rdapConformance Population
 
@@ -495,7 +551,7 @@ response:
 A strict interpretation of this wording where "construction of the
 response" refers to the JSON structure only would rule out the use of
 (#profiles) extension identifiers, which are in common use
-in RDAP.  This document updates the guidance. For responses to queries
+in RDAP.  This document clarifies the guidance. For responses to queries
 other than "/help", a response MUST include in the "rdapConformance"
 array only those extension identifiers necessary for a client to
 deserialize the JSON and understand the semantic meaning of the
@@ -513,8 +569,15 @@ called "camel casing", in reference to the hump of a camel. In this
 style, the first letter of every word, except the first word,
 composing a name is capitalized.  This convention was adopted to
 visually separate the namespace from the name, with an underscore
-between them.  Extension authors are encouraged to  use camel casing for JSON
+between them.  Extension authors are encouraged to use camel casing for JSON
 names defined in extensions.
+
+# Usage with HTTP
+
+Extensions MUST NOT redefine the meaning of HTTP status codes or other
+HTTP semantics. Extensions MAY require the use of specific HTTP headers but
+MUST NOT redefine their meanings. Extensions defining new HTTP headers
+MUST have IETF consensus.
 
 # Extension Implementer Considerations {#extension_implementer_considerations}
 
@@ -529,7 +592,7 @@ As it relates to issuing URLs for redirects, servers
 MUST NOT blindly copy query parameters from a request to a redirect URL as
 query parameters may contain sensitive information, such as security credentials,
 not relevant to the target server of the URL. Following the advice in [@!RFC7480],
-servers SHOULD only place query parameters in redirect URLs when it is known
+servers MUST only place query parameters in redirect URLs when it is known
 by the origin server (the server issuing the redirect) that the target server
 (the server referenced by the redirect) can process the query parameter and
 is a proper target for the contents of the query parameter.
@@ -547,7 +610,7 @@ redirect.
 This does not mean extensions are prohibited from using query
 parameters, but rather that the use of query parameters must be
 applied for the scenarios appropriate for the use of the extension.
-Therefore, extensions SHOULD NOT rely on query parameters when the
+Therefore, extensions MUST NOT rely on query parameters when the
 extension is to be used in scenarios requiring clients to find
 authoritative servers, or other scenarios using redirects among
 servers of differing authorities.
@@ -669,15 +732,15 @@ with prose.
 required for the interoperability of the extension, should be stable
 and non-changing.
 3. Extension specifications MUST NOT define requests and responses 
-exchanges over an unencrypted HTTP connection. Extension specifications MUST
-mandate use of HTTPS. Extensions
+exchanges over an unencrypted HTTP connection. Extensions
 should also be compliant with the security considerations of [@!RFC7481].
-4. The use of the various RDAP extension points, as described in (#summary_of_updates),
+4. Extension specifications MUST NOT forbid the use of IPv6.
+5. The use of the various RDAP extension points, as described in (#summary_of_updates),
 should be clearly delineated.
 
 ## Extension Definitions
 
-Extensions must be documented in an RFC or in some other permanent and
+Extensions must be documented in an RFC or in some other permanent, stable, and
 readily available reference, in sufficient detail that
 interoperability between independent implementations is possible.
 
@@ -692,7 +755,8 @@ within the extension's namespace.  Therefore, an extension may define
 the use of its own JSON values together with the use of JSON values
 from other extensions or RDAP specifications. As with the
 [@icann-profile] and [@nro-profile] extensions, the extension may 
-simply signal policy applied to previously-defined RDAP structures.
+simply signal policy applied to previously-defined RDAP structures
+(see (#profiles)).
 
 # Existing Extension Registrations {#existing_extension_registrations}
 
@@ -844,7 +908,7 @@ unknown query parameters. As it relates to issuing URLs for redirects, servers
 MUST NOT blindly copy query parameters from a request to a redirect URL as
 query parameters may contain sensitive information, such as security credentials
 or tracking information, not relevant to the target server of the URL. Following the advice in [@!RFC7480],
-servers SHOULD only place query parameters in redirect URLs when it is known
+servers MUST only place query parameters in redirect URLs when it is known
 by the origin server (the server issuing the redirect) that the target server
 (the server referenced by the redirect) can process the query parameter and the
 contents of the query parameter are appropriate to be received by the target.
