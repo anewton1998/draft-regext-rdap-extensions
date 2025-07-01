@@ -219,9 +219,26 @@ a mixed-case version of an existing identifier (see (#rdap_extensions_registry))
 with "lunarNic" (note the lowercase "ic" in "Nic") would not be
 allowed.
 
-## Bare Extension Identifiers {#bare_extension}
+## Bare Extension Identifiers {#bare_extensions}
 
-Some RDAP extensions define only one JSON value and do not prefix it
+[@!RFC9083, section 2.1] states the following when using the names of JSON
+members:
+
+> Clients of these JSON responses SHOULD ignore unrecognized JSON members in responses.
+> Servers can insert members into the JSON responses, which are not specified in this
+> document, but that does not constitute an error in the response. Servers that insert
+> such unspecified members into JSON responses SHOULD have member names prefixed with
+> a short identifier followed by an underscore followed by a meaningful name. It has
+> been observed that these short identifiers aid software implementers with identifying
+> the specification of the JSON member, and failure to use one could cause an implementer
+> to assume the server is erroneously using a name from this specification. This allowance
+> does not apply to jCard [@?RFC7095] objects. The full JSON name (the prefix plus the
+> underscore plus the meaningful name) SHOULD adhere to the character and name limitations
+> of the prefix registry described in [@?RFC7480]. Failure to use these limitations
+> could result in slower adoption as these limitations have been observed to aid some client
+> programming models.
+
+Despite this, some RDAP extensions define only one JSON value and do not prefix it
 with their RDAP extension identifier, instead using the extension
 identifier as the JSON name for that JSON value. That is, the
 extension identifier is used "bare" and not appended with an
@@ -254,14 +271,18 @@ identifier pattern, that example could be written as:
       }
     }
 
-A> The working group has not come to census on this topic. Therefore,
-A> three positions are presented.
+While [@!RFC9083] is specific to JSON, the use of a bare extension identifier also applies to other identifiers of RDAP extensions, such
+as query parameters and object class names. Identifiers of an RDAP extension which need a prefix to avoid name collision with identifiers
+of other RDAP extensions or RDAP as specified in [@!RFC7480], [@!RFC9082], and [@!RFC9083] are referred to as namespaced identifiers.
+
+A> The working group has not come to consensus on this topic. Therefore,
+A> these positions are presented.
 
 **BARE EXTENSIONS NOT ALLOWED**
 
 Usage of a bare extension identifier conflicts with the guidance in
 [@!RFC9083, section 2.1]. Previously, extension authors have used this
-pattern when only one query path, JSON name, or object class is being
+pattern when only one query path, JSON name, and/or object class is being
 defined by the extension.
 
 Implementation experience has shown that an extension using a bare identifier can be
@@ -269,9 +290,9 @@ interoperable though more difficult to process and parse in some instances.
 Furthermore, bare identifier's blur the line between what can be interpreted
 as an extension to RDAP vs core RDAP mechanisms.
 
-Henceforth, this pattern MUST NOT be used.
+Henceforth, this pattern MUST NOT be used for any namespaced identifier.
 
-**COMPROMISE: BARE EXTENSIOSN ONLY ALLOWED UNDER CERTAIN CONDITIONS**
+**COMPROMISE: BARE EXTENSIONS ONLY ALLOWED UNDER CERTAIN CONDITIONS**
 
 Usage of a bare extension identifier contravenes the guidance in [@!RFC9083, section 2.1].
 Implementation experience has shown that an extension using a bare identifier can be
@@ -281,19 +302,18 @@ as an extension to RDAP vs core RDAP mechanisms.
 
 This document updates [@!RFC9083] to explicitly allow this pattern only in IETF
 defined RDAP extensions and only when a technical solution cannot otherwise be defined.
+This applies not only to JSON names but to other namespaced identifiers.
 
-Along similar lines, an extension may define a single new object class,
-and use the extension's identifier as the object class name only in IETF defined
-RDAP extensions and only when a technical solution cannot otherwise be defined.
-
-**BARE EXTENSIONS ALLOWED**
+**BARE EXTENSIONS ALWAYS ALLOWED**
 
 Usage of a bare extension identifier contravenes the guidance in [@!RFC9083, section 2.1].
 Implementation experience has shown that an extension using a bare identifier can be
 interoperable though more difficult to process and parse in some instances,
-therefore this document updates [@!RFC9083] to explicitly allow this pattern.
+therefore this document updates [@!RFC9083] to explicitly allow this pattern
+when an extension defines only one namespaced identifier of a type (e.g. only one JSON name, only
+one query parameter, etc...).
 
-Along similar lines, an extension may define a single new object class, and use the extension's identifier as the object class name.
+This applies not only to JSON names but to all namespaced identifiers.
 
 ## Usage in Requests {#usage_in_requests}
 
@@ -734,7 +754,7 @@ and non-changing.
 3. Extension specifications MUST NOT define requests and responses 
 exchanges over an unencrypted HTTP connection. Extensions
 should also be compliant with the security considerations of [@!RFC7481].
-4. Extension specifications MUST NOT forbid the use of IPv6.
+4. Extension specifications MUST NOT forbid the use of RDAP services over IPv6.
 5. The use of the various RDAP extension points, as described in (#summary_of_updates),
 should be clearly delineated.
 
