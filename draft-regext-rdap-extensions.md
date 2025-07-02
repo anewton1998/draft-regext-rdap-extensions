@@ -11,7 +11,7 @@ name = "Internet-Draft"
 value = "draft-ietf-regext-rdap-extensions-07"
 stream = "IETF"
 status = "standard"
-date = 2024-06-20T00:00:00Z
+date = 2024-07-02T00:00:00Z
 
 [[author]]
 initials="A."
