@@ -89,7 +89,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
 described in BCP 14 [@!RFC2119] [@!RFC8174] when, and only when, they
 appear in all capitals, as shown here.
 
-# Identifiers {#identifiers}
+# Extension Identifiers {#extension_identifiers}
 
 ## Purpose {#purpose}
 
@@ -158,7 +158,7 @@ the media types expected to be used with those link relations.
 
 Profile extensions may also
 leverage the appearance of their identifier in the "rdapConformance"
-array (i.e. clients are signaled that a profile is in use).
+array (i.e., clients are signaled that a profile is in use).
 Profile extensions that mandate the implementation of another
 extension MUST require that the implementor include the extension
 identifier for that other extension in the "rdapConformance" array.
@@ -301,8 +301,7 @@ While [@!RFC9082] describes the extension identifier as a prepended
 string to a path segment, it does not describe the usage of the
 extension identifier as a path segment.
 
-See (#bare_extensions) with
-regard to the use of bare extension identifiers in RDAP URLs.
+Note that "bare" identifiers are now explicitly forbidden (see (#bare_extensions)).
 
 Extensions defining new URL paths MUST explicitly define the expected
 responses for each new URL path. New URL paths may return existing
@@ -313,7 +312,7 @@ below), or object classes or search results from other extensions.
 
 Additionally, RDAP extensions MUST NOT append a path segment to an
 existing path segment as this increases the likelihood of collisions
-between the queries defined by an extension.
+with the queries defined by an extension.
 
 ### Usage in Query Parameters {#usage_in_query_parameters}
 
@@ -340,7 +339,7 @@ query parameters, and see (#security_considerations) and
 (#privacy_considerations) regarding constraints on the usage of query
 parameters.
 
-[@!RFC3986] does not define a query string as being a list of
+[@!RFC3986] does not exclusively define a query string as being a list of
 name=value pairs, however that is the convention used in RDAP.
 RDAP extensions MUST NOT define query strings in other forms.
 
@@ -414,7 +413,7 @@ object class instances, the complete example from above would be:
 
 ### Child JSON Values {#child_json_values}
 
-Prefixing of the extension identifier is not required for children of
+Prefixing with the extension identifier is not required for children of
 a prefixed JSON object defined by an RDAP extension.
 
 The following example shows this use with a JSON object:
@@ -481,7 +480,7 @@ Extension authors are encouraged to use the "camel case" style described
 in (#camel_casing).
 
 Though "objectClassName" is a string and [@!RFC9083] does
-define one object class name with a space separator (i.e. "ip
+define one object class name with a space separator (i.e., "ip
 network"), this document disallows further use of
 a space character in object class names. Extensions MUST NOT define
 object class names using the space character or any other character that
@@ -493,8 +492,8 @@ As described in [@!RFC9082] and (#usage_in_requests), an extension may define
 new paths in URLs.  If the extension describes the behavior of an
 RDAP query using the path to return an RDAP search result for a
 new object class, the JSON name of the search result MUST be
-prepended with the extension identifier (to avoid collision with
-search results defined in other extensions).
+prepended with the extension identifier to avoid collision with
+search results defined in other extensions.
 
 If the search result contains object class instances
 defined by the extension, each instance MUST have an "objectClassName"
@@ -717,7 +716,7 @@ the following content guidelines:
 1. Examples of RDAP JSON should be generously given, especially in
 areas of the specification which may be complex or difficult to describe
 with prose.
-2. Normative references, i.e. references to materials that are
+2. Normative references, i.e., references to materials that are
 required for the interoperability of the extension, MUST be stable
 and non-changing and MUST NOT be denoted as a "work in progress"
 or similar description.
@@ -779,7 +778,7 @@ extensions that are similarly non-compliant will not be registered.
 
 ## RDAP Extensions Registry {#rdap_extensions_registry}
 
-[@!RFC7480] defines the RDAP Extensions Registry (<https://www.iana.org/assignments/rdap-extensions/rdap-extensions.xhtml>).
+[@!RFC7480] defines the [@rdap-extensions] registry.
 This document does not change the purpose of this registry but does
 update the structure and procedures to be used by its expert reviewers.
 
@@ -790,7 +789,7 @@ in the registry. This field is to remain empty unless IANA is given a date to
 place in the field. A registrant, as denoted by the contact field of the registry,
 may request of IANA to deprecate an RDAP extension. The IETF may request of the
 IANA to deprecate any RDAP extension in the registry. When deprecating an entry
-in this registry, the IANA is to record the date of the request in the "Deprecation Date"
+in this registry, IANA is to record the date of the request in the "Deprecation Date"
 field. The "Deprecation Date" field should use the date format specified in [@!RFC3339].
 
 ### Registratiion Procedures
@@ -842,16 +841,15 @@ using the wrong case.
 
 ## RDAP JSON Values Registry {#rdap_json_values_registry}
 
-[@!RFC9083, section 10.2] defines the [RDAP JSON Values Registry in IANA]
-(https://www.iana.org/assignments/rdap-json-values/rdap-json-values.xhtml).
+[@!RFC9083, section 10.2] defines the [@rdap-json-values].
 This registry contains values to be used in the JSON values of RDAP responses.
 Registrations into this registry may occur in IETF-defined RDAP extensions
 or via requests to the IANA. Authors of RDAP extensions not defined by the
-IETF MAY register values in this registry via requests to the IANA. The IANA
+IETF MAY register values in this registry via requests to the IANA. IANA
 is requested to send a copy of any request not originating from the IETF to
 regext@ietf.org or its successor.
 
-This document does not change the RDAP JSON Values Registry nor its purpose.
+This document does not change the [@rdap-json-values] nor its purpose.
 However, this document does update the procedures for registrations and the
 processes to be used by its expert reviewers.
 
@@ -881,13 +879,13 @@ That is, any new registration that is a case-variant of an existing registration
 should be rejected.
 
 RDAP clients SHOULD match values in this registry using case-insensitive matching
-to handle server implementations incorrectly using the wrong case.
+to handle scenarios in which servers incorrectly use the wrong case.
 
 Definitions of new types (see above) MAY additionally constrain the format of
 values for those new types beyond the specification of this document and [@!RFC9083].
 Designated experts MUST evaluate registrations with those criteria.
 
-The RDAP JSON Values Registry should have as a minimum three expert reviewers
+The [@rdap-json-values] registry should have as a minimum three expert reviewers
 and ideally four or five. An expert reviewer assigned to the review of an RDAP
 JSON values registration must have another expert reviewer double-check any
 submitted registration.
@@ -948,7 +946,25 @@ Ties de Kock, Pawel Kowalik, Daniel Keathley, and Mario Loffredo.
 
 <reference anchor='link-relations' target='https://www.iana.org/assignments/link-relations/link-relations.xhtml'>
     <front>
-        <title>IANA Link Relations Registry</title>
+        <title>Link Relations</title>
+        <author>
+            <organization>IANA</organization>
+        </author>
+    </front>
+</reference>
+
+<reference anchor='rdap-extensions' target='https://www.iana.org/assignments/rdap-extensions/rdap-extensions.xhtml'>
+    <front>
+        <title>RDAP Extensions</title>
+        <author>
+            <organization>IANA</organization>
+        </author>
+    </front>
+</reference>
+
+<reference anchor='rdap-json-values' target='https://www.iana.org/assignments/rdap-json-values/rdap-json-values.xhtml'>
+    <front>
+        <title>RDAP JSON Values</title>
         <author>
             <organization>IANA</organization>
         </author>
