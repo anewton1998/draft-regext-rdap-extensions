@@ -160,7 +160,7 @@ Profile extensions may also
 leverage the appearance of their identifier in the "rdapConformance"
 array (i.e., clients are signaled that a profile is in use).
 Profile extensions that mandate the implementation of another
-extension MUST require that the implementor include the extension
+extension MUST require that the implementer include the extension
 identifier for that other extension in the "rdapConformance" array.
 
 [@!RFC7480] mandates the implementation of HTTPS but does not mandate
@@ -275,19 +275,21 @@ Usage of a bare extension identifier conflicts with the guidance in
 pattern when only one query path, JSON name, and/or object class is being
 defined by the extension.
 
-Implementation experience has shown that an extension using a bare identifier can be
-interoperable though more difficult to process and parse in some instances.
-Furthermore, bare identifier's blur the line between what can be interpreted
-as an extension to RDAP vs core RDAP mechanisms.
-
-Henceforth, this pattern MUST NOT be used for any namespaced identifier.
+Implementation experience has shown that an extension using a bare
+identifier can be interoperable, though more difficult to process and
+parse in some instances.  Furthermore, prefixed identifiers are
+clearly syntactically distinguishable from identifiers defined by the
+core RDAP specifications, which provides more flexibility to
+implementers and helps with debugging and similar.  Due to these
+considerations, the bare extension identifier pattern MUST NOT be used
+for any namespaced identifier.
 
 ## Usage in Requests {#usage_in_requests}
 
 ### Usage in Paths {#usage_in_paths}
 
 [@!RFC9082, section 5] describes the use of extension identifiers in
-formulating URLs to query RDAP servers. The extension identifiers are
+formulating URLs for RDAP queries. The extension identifiers are
 to be prepended to the path segments they use. For example, if an
 extension uses the identifier "foobar", then the path segments used in
 that extension are prepended with "foobar_".  If the "foobar"
@@ -792,7 +794,7 @@ IANA to deprecate any RDAP extension in the registry. When deprecating an entry
 in this registry, IANA is to record the date of the request in the "Deprecation Date"
 field. The "Deprecation Date" field should use the date format specified in [@!RFC3339].
 
-### Registratiion Procedures
+### Registration Procedures
 
 Extension authors are encouraged but not required to seek an informal review
 of their extension by sending a request for review to regext@ietf.org or its
