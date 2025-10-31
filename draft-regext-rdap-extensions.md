@@ -650,6 +650,27 @@ Servers MUST NOT use multiple extensions in a response with processing
 requirements over the same referrals where clients would not
 be able to process the referrals in a deterministic way.
 
+## Extensions Referencing Other Extensions {#extension_referencing}
+
+As stated in (#profiles), extensions may rely on other extensions by stipulating
+the usage of those other extensions.
+
+For example, the extenions "bazz" may require the usage of structures defined
+in "fuzz" instead of redefining new, equivalent structures:
+
+    {
+      "rdapConformance": [
+        "rdap_level_0",
+        "bazz",
+        "fuzz"
+      ],
+      "objectClassName": "autnum",
+      "startAutnum": 64496,
+      "endAutnum": 64497,
+      "bazz_cones": [ 64498, 64499],
+      "fuzz_adjacents": [ 64500, 64501 ]
+    }
+
 ## Extension Versioning {#versioning}
 
 As stated in (#purpose), RDAP extension identifiers and RDAP
@@ -658,38 +679,83 @@ they possess no explicit version despite the fact that some extension
 identifiers include trailing numbers. That is, RDAP extensions without
 an explicitly-defined versioning scheme are opaquely versioned.
 
-For example, "fizzbuzz_1" may be the successor to "fizzbuzz_0", but it
+For example, "fizzbuzz1" may be the successor to "fizzbuzz0", but it
 may also be an extension for a completely separate purpose. Only
-consultation of the definition of "fizzbuzz_1" will determine its
-relationship with "fizzbuzz_0". Additionally, "fizzbuzz_99" may be the
-predecessor of "fizzbuzz_0".
+consultation of the definition of "fizzbuzz1" will determine its
+relationship with "fizzbuzz0". Additionally, "fizzbuzz99" may be the
+predecessor of "fizzbuzz0".
 
-An RDAP extension definition MUST explicitly denote its compliance, or lack of, with any
+An RDAP extension definition MUST explicitly denote its compliance with any
 versioning scheme, such as [@?I-D.ietf-regext-rdap-versioning].
 
-### Backwards-Compatible Changes {#backwards_compatible_changes}
+### Non-overlapping Successors {#non_overlapping_successors}
 
-If an RDAP extension author wants to publish a new version of an
-extension that is backwards-compatible with the previous version, then
-one option is for the new version of the extension to define a new
-identifier, as well as requiring that both the previous identifier
-and the new identifier be included in the "rdapConformance" array of
-responses.  That way, clients relying on the previous version of the
-extension will continue to function as intended, while clients wanting
-to make use of the newer version of the extension can check for the new
-identifier in the response.
+Should an extension author desire to create a successor extension,
+the simplest method is to create a new extension that replicates
+all the functionality of the previous extension.
 
-This approach can be used for an arbitrary number of new
-backwards-compatible versions of a given extension.  For an extension
-with many backwards-compatible successor versions, this
-may lead to many identifiers being included in responses.
-An extension author may consider excluding older identifiers from the
-set required by new successor versions, based on data about client
-use/support or similar.
+Take for example this RDAP response for "fizzbuzz0":
 
-Where multiple versions of an extension are to be expected, extension
-authors should consider using formal versioning schemes such as those
-described and defined in [@?I-D.ietf-regext-rdap-versioning].
+    {
+      "rdapConformance": [
+        "rdap_level_0",
+        "fizzbuzz0"
+      ],
+      "objectClassName": "domain",
+      "ldhName": "example.com",
+      "fizzbuzz0_malwareReputationId": 1234
+    }
+
+A successor extension may define the same functionality with
+equivalent structures.
+
+    {
+      "rdapConformance": [
+        "rdap_level_0",
+        "fizzbuzz1"
+      ],
+      "objectClassName": "domain",
+      "ldhName": "example.com",
+      "fizzbuzz1_malwareReputationId": 1234,
+      "fizzbuzz1_spamReputationId": 7890
+    }
+
+During a transition period, both extensions could be in use.
+
+    {
+      "rdapConformance": [
+        "rdap_level_0",
+        "fizzbuzz0",
+        "fizzbuzz1"
+      ],
+      "objectClassName": "domain",
+      "ldhName": "example.com",
+      "fizzbuzz0_malwareReputationId": 1234,
+      "fizzbuzz1_malwareReputationId": 1234,
+      "fizzbuzz1_spamReputationId": 7890
+    }
+
+### Overlapping Successors {#overlapping_successors}
+
+If extension authors are concerned about the size of responses for
+successor extensions using non-overlapping structures (see (#non_overlapping_successors)),
+they may overlap the functionality by requiring the use of the
+previous extension. For example:
+
+    {
+      "rdapConformance": [
+        "rdap_level_0",
+        "fizzbuzz0",
+        "fizzbuzz1"
+      ],
+      "objectClassName": "domain",
+      "ldhName": "example.com",
+      "fizzbuzz0_malwareReputationId": 1234,
+      "fizzbuzz1_spamReputationId": 7890
+    }
+
+And at some future time, a successor such as "fizzbuzz9" may no longer
+need the function provided by "fizzbuzz0" and may cease to reference it.
 
 ### Backwards-Incompatible Changes {#backwards_incompatible_changes}
 
@@ -827,8 +893,7 @@ expected results of each new query?
 3. Does the extension follow the JSON naming requirements as described in (#usage_in_responses)?
 4. If the extension is a newer version of an older extension, does
 the extension specification clearly describe if it is backwards-compatible
-(see (#backwards_compatible_changes)) or backwards-incompatible
-(see (#backwards_incompatible_changes))?
+(see (#versioning))?
 5. If the extension registers new values in an IANA registry used by RDAP,
 does it describe how a client is to use those values?
 6. If the extension is a new registration, is it a case-variant of an
