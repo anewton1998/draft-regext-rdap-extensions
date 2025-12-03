@@ -691,8 +691,8 @@ versioning scheme, such as [@?I-D.ietf-regext-rdap-versioning].
 ### Non-overlapping Successors {#non_overlapping_successors}
 
 Should an extension author desire to create a successor extension,
-the simplest method is to create a new extension that replicates
-all the functionality of the previous extension.
+the simplest method is to create a new extension (with a new extension identifier, as required)
+that replicates all the functionality of the previous extension.
 
 Take for example this RDAP response for "fizzbuzz0":
 
@@ -757,12 +757,13 @@ previous extension. For example:
 And at some future time, a successor such as "fizzbuzz9" may no longer
 need the function provided by "fizzbuzz0" and may cease to reference it.
 
-### Backwards-Incompatible Changes {#backwards_incompatible_changes}
+### Breaking Changes in Successors {#breaking_changes}
 
 With the current extension model, an extension with a
-backwards-incompatible change is indistinguishable from a new,
-unrelated extension.  Implementers of such changes should consider the
-following:
+successor with breaking changes is indistinguishable from a new,
+unrelated extension.  Additionally, there is no signaling
+mechanism in RDAP to specify successors with breaking changes.
+Implementers of such changes should consider the following:
 
  - whether the new version of the extension can be provided alongside
    the old version of the extension, so that a service can simply
@@ -774,6 +775,33 @@ following:
    might work); and
  - whether the extension itself should define how versioning is
    handled within the extension documentation.
+
+When using a transition period between two versions of an extension by
+using both versions, the successor must not conflict with the predecessor.
+Typically, this is not an issue when the rules of RDAP namespaced identifiers
+are followed (see #(bare_extensions)), but care should be taken if the
+extensions specify other behaviors not protected by namespaces, particularly
+referrals (see #(referrals)).
+
+### Evolving Extensions without Signaled Changes
+
+Because RDAP clients ignore unrecognized JSON names and query parameters, it is
+possible to extend an RDAP extension by adding new JSON names or query parameters
+within the same namespace of an existing RDAP extension without changing the
+extension identifier or other signaling methods (see [@?I-D.ietf-regext-rdap-versioning]).
+
+In this scenario, clients that are not updated to recognize the new elements
+should simply ignore them. The same is also true for referrals (see #(referrals)).
+
+However, the introduction of new object classes into an existing extension will
+cause most clients to process no information and will cause some clients to produce
+errors.
+
+Evolving extensions as described here is NOT RECOMMENDED because there is no
+explicit signal to clients regarding these extensions. This lack of signal
+will lead to difficulty in troubleshooting issues and could mislead client
+implementers to believe their software is fully conforming with the extension
+specification when it is not.
 
 ## Extension Specification Content
 
