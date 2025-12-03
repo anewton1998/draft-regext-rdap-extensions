@@ -655,7 +655,7 @@ be able to process the referrals in a deterministic way.
 As stated in (#profiles), extensions may rely on other extensions by stipulating
 the usage of those other extensions.
 
-For example, the extenions "bazz" may require the usage of structures defined
+For example, the extensions "bazz" may require the usage of structures defined
 in "fuzz" instead of redefining new, equivalent structures:
 
     {
@@ -782,6 +782,12 @@ Typically, this is not an issue when the rules of RDAP namespaced identifiers
 are followed (see #(bare_extensions)), but care should be taken if the
 extensions specify other behaviors not protected by namespaces, particularly
 referrals (see #(referrals)).
+
+Breaking changes may also occur in requirements for processing of data in
+protocol elements that appear in both a successor and predecessor.
+For example, a profile extension (see #(profiles)) may require domain names
+always end with a dot ("."). Should its successor remove this requirement
+this could be considered a breaking change.
 
 ### Evolving Extensions without Signaled Changes
 
