@@ -781,7 +781,7 @@ using both versions, the successor must not conflict with the predecessor.
 Typically, this is not an issue when the rules of RDAP namespaced identifiers
 are followed (see #(bare_extensions)), but care should be taken if the
 extensions specify other behaviors not protected by namespaces, particularly
-referrals (see #(referrals)).
+referrals (see (#referrals)).
 
 Breaking changes may also occur in requirements for processing of data in
 protocol elements that appear in both a successor and predecessor.
@@ -797,7 +797,7 @@ within the same namespace of an existing RDAP extension without changing the
 extension identifier or other signaling methods (see [@?I-D.ietf-regext-rdap-versioning]).
 
 In this scenario, clients that are not updated to recognize the new elements
-should simply ignore them. The same is also true for referrals (see #(referrals)).
+should simply ignore them. The same is also true for referrals (see (#referrals)).
 
 However, the introduction of new object classes into an existing extension will
 cause most clients to process no information and will cause some clients to produce
