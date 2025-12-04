@@ -8,10 +8,10 @@ updates = [7480, 9082, 9083]
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-ietf-regext-rdap-extensions-08"
+value = "draft-ietf-regext-rdap-extensions-09"
 stream = "IETF"
 status = "standard"
-date = 2024-10-14T00:00:00Z
+date = 2024-12-04T00:00:00Z
 
 [[author]]
 initials="A."
@@ -803,7 +803,7 @@ However, the introduction of new object classes into an existing extension will
 cause most clients to process no information and will cause some clients to produce
 errors.
 
-Evolving extensions as described here is NOT RECOMMENDED because there is no
+Extensions MUST NOT be evolved as described in this section because there is no
 explicit signal to clients regarding these extensions. This lack of signal
 will lead to difficulty in troubleshooting issues and could mislead client
 implementers to believe their software is fully conforming with the extension
