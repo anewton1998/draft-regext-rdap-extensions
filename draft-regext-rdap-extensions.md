@@ -77,6 +77,7 @@ This document describes the following methods for extending RDAP by registered e
 1. Query Paths - New lookups and searches are defined using URL paths. This document clarifies the practice as described in [@!RFC9082].
 1. Query Parameters - Many queries use URL query parameters to scope and/or enhance RDAP results. This document clarifies the practice as described in [@!RFC9082].
 1. HTTP Headers - Some extensions may use HTTP headers or header parameters not explicitly enumerated by [@!RFC7480].
+1. HTTP Status Codes - Some extensions may use HTTP status codes not explicitly enumerated by [@!RFC7480].
 1. Object Classes - Extensions may define new types of objects to be queried. This document clarifies this method as described in [@!RFC9082] and [@!RFC9083].
 
 Additionally, this document updates the IANA registry practices for RDAP. See (#iana_considerations).
@@ -566,8 +567,12 @@ names defined in extensions.
 
 Extensions MUST NOT redefine the meaning of HTTP status codes or other
 HTTP semantics. Extensions MAY require the use of specific HTTP headers but
-MUST NOT redefine their meanings. Extensions defining new HTTP headers
-MUST have IETF consensus.
+MUST NOT redefine their meanings.
+
+Extensions MAY require the use of HTTP status codes not explicitly enumerated
+in [@!RFC7480] but MUST NOT redefine their meanings.
+
+Extensions defining the use of new HTTP headers or HTTP status codes MUST have IETF consensus.
 
 # Extension Implementer Considerations {#extension_implementer_considerations}
 
@@ -650,6 +655,10 @@ Servers MUST NOT use multiple extensions in a response with processing
 requirements over the same referrals where clients would not
 be able to process the referrals in a deterministic way.
 
+Extensions MUST register new link relations in the [@link-relations] registry.
+The expert reviewers of this registry may require the relationship name
+be prepended with "rdap_".
+
 ## Extensions Referencing Other Extensions {#extension_referencing}
 
 As stated in (#profiles), extensions may rely on other extensions by stipulating
@@ -685,8 +694,63 @@ consultation of the definition of "fizzbuzz1" will determine its
 relationship with "fizzbuzz0". Additionally, "fizzbuzz99" may be the
 predecessor of "fizzbuzz0".
 
-An RDAP extension definition MUST explicitly denote its compliance with any
-versioning scheme, such as [@?I-D.ietf-regext-rdap-versioning].
+If an RDAP extension uses a versioning method, such as [@?I-D.ietf-regext-rdap-versioning],
+it MUST be explicitly described in its specification.
+
+### Breaking Changes in Successors {#breaking_changes}
+
+With the current extension model, an extension with a
+successor with breaking changes is indistinguishable from a new,
+unrelated extension.  Additionally, there is no signaling
+mechanism in RDAP to specify successors with breaking changes.
+Implementers of such changes should consider the following:
+
+ - whether the new version of the extension can be provided alongside
+   the old version of the extension, so that a service can simply
+   support both during a transition period;
+ - whether some sort of client signaling should be supported, so that
+   clients can opt for the old or new version of the extension in
+   responses that they receive (see
+   [@?I-D.ietf-regext-rdap-x-media-type] for an example of how this
+   might work); and
+ - whether the extension itself should define how versioning is
+   handled within the extension documentation.
+
+When using a transition period between two versions of an extension by
+using both versions, the successor must not conflict with the predecessor.
+Typically, this is not an issue when the rules of RDAP namespaced identifiers
+are followed (see #(bare_extensions)), but care should be taken if the
+extensions specify other behaviors not protected by namespaces, particularly
+referrals (see (#referrals)).
+
+Another breaking change is to introduce a new object class where a client
+previously expected another, such as:
+
+ - a query using a path and/or query parameters
+   (e.g., /domain/foo.example produces "new_domain" instead of "domain");
+ - a referral (e.g., "related" produces "new_domain" instead of "domain");
+ - search results; and
+ - other JSON arrays and JSON members.
+
+Breaking changes may occur in requirements for processing of data in
+protocol elements that appear in both a successor and predecessor.
+For example, a profile extension (see (#profiles)) may require domain names
+always end with a dot ("."). Should its successor remove this requirement
+this could be considered a breaking change.
+
+### Non-breaking Changes in Successors {#nonbreaking_changes}
+
+The following are considered non-breaking changes between a successor and
+a predecessor.
+
+ - new referrals
+ - new JSON members
+ - new query paths
+ - new query parameters
+
+The use of a new HTTP header (i.e., one previously not in-use with the predecessor),
+may either be a breaking change or non-breaking change, depending on the usage of
+the header with underlying HTTP software and infrastructure.
 
 ### Non-overlapping Successors {#non_overlapping_successors}
 
@@ -757,37 +821,9 @@ previous extension. For example:
 And at some future time, a successor such as "fizzbuzz9" may no longer
 need the function provided by "fizzbuzz0" and may cease to reference it.
 
-### Breaking Changes in Successors {#breaking_changes}
-
-With the current extension model, an extension with a
-successor with breaking changes is indistinguishable from a new,
-unrelated extension.  Additionally, there is no signaling
-mechanism in RDAP to specify successors with breaking changes.
-Implementers of such changes should consider the following:
-
- - whether the new version of the extension can be provided alongside
-   the old version of the extension, so that a service can simply
-   support both during a transition period;
- - whether some sort of client signaling should be supported, so that
-   clients can opt for the old or new version of the extension in
-   responses that they receive (see
-   [@?I-D.ietf-regext-rdap-x-media-type] for an example of how this
-   might work); and
- - whether the extension itself should define how versioning is
-   handled within the extension documentation.
-
-When using a transition period between two versions of an extension by
-using both versions, the successor must not conflict with the predecessor.
-Typically, this is not an issue when the rules of RDAP namespaced identifiers
-are followed (see #(bare_extensions)), but care should be taken if the
-extensions specify other behaviors not protected by namespaces, particularly
-referrals (see (#referrals)).
-
-Breaking changes may also occur in requirements for processing of data in
-protocol elements that appear in both a successor and predecessor.
-For example, a profile extension (see #(profiles)) may require domain names
-always end with a dot ("."). Should its successor remove this requirement
-this could be considered a breaking change.
+Note that because RDAP extension identifiers are opaque, overlapping
+successors is indistinguishable from one extension referencing another
+extension (see (#extension_referencing)).
 
 ### Evolving Extensions without Signaled Changes
 
@@ -797,17 +833,15 @@ within the same namespace of an existing RDAP extension without changing the
 extension identifier or other signaling methods (see [@?I-D.ietf-regext-rdap-versioning]).
 
 In this scenario, clients that are not updated to recognize the new elements
-should simply ignore them. The same is also true for referrals (see (#referrals)).
+should simply ignore them. This is true for all non-breaking changes
+(see (#nonbreaking_changes)).
 
-However, the introduction of new object classes into an existing extension will
-cause most clients to process no information and will cause some clients to produce
-errors.
-
-Extensions MUST NOT be evolved as described in this section because there is no
-explicit signal to clients regarding these extensions. This lack of signal
-will lead to difficulty in troubleshooting issues and could mislead client
-implementers to believe their software is fully conforming with the extension
-specification when it is not.
+This lack of signaling mechanism can lead to difficulty in troubleshooting
+issues and could mislead client implementers to believe their software is fully
+conforming with the extension specification when it is not. Therefore,
+it is RECOMMENDED that extensions use a signaling a mechanism, such as that
+described in the sections above or in [@?I-D.ietf-regext-rdap-versioning],
+when creating successors.
 
 ## Extension Specification Content
 
