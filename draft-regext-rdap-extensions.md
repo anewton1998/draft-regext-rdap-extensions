@@ -68,8 +68,11 @@ authorities of information, where information is interlinked from
 one authority to another. Bootstrap servers issue HTTP redirects to
 authoritative TLD and RIR servers, and those servers may directly refer
 to information held by domain registrars or other Internet Number
-registries. Therefore, RDAP extensions must be constructed with regard
-to the whole ecosystem.
+registries. Each redirect and referral must be correctly interpreted
+and followed by a client. Therefore, RDAP extensions must be constructed with regard
+to the whole ecosystem, and be specified in such a manner as to
+accommodate these interconnections and the various paths and mechanisms
+used by clients to navigate them.
 
 ## Summary of Updates {#summary_of_updates}
 
@@ -967,10 +970,13 @@ Intended usage: COMMON
 IANA is instructed to add a new "Deprecation Date" field to each registration
 in the registry. This field is to remain empty unless IANA is given a date to
 place in the field. A registrant, as denoted by the contact field of the registry,
-may request of IANA to deprecate an RDAP extension. The IESG may request of the
-IANA to deprecate any RDAP extension in the registry. When deprecating an entry
-in this registry, IANA is to record the date of the request in the "Deprecation Date"
-field. The "Deprecation Date" field should use the date format specified in [@!RFC3339].
+may request of IANA to deprecate their RDAP extension. The IESG may request of the
+IANA to deprecate any RDAP extension in the registry.
+The "Deprecation Date" field should use the date format specified in [@!RFC3339].
+
+IANA is requested to record the RDAP extensions "icann_rdap_response_profile_0" and
+"icann_rdap_technical_implementation_guide_0", currently marked as obsolete,
+with the deprecation date of 20250821.
 
 ### Registration Procedures
 
@@ -1011,8 +1017,9 @@ does it describe how a client is to use those values?
 6. If the extension is a new registration, is it a case-variant of an
 existing registration (see (#syntax))?
 
-As noted in (#syntax), any new registration that is a case-variant of
-an existing registration MUST be rejected.
+As noted in (#syntax):
+* Any new registration that is a case-variant of an existing registration MUST be rejected.
+* Any registration containing the word "ietf" MUST have IETF consensus.
 
 RDAP clients SHOULD match values in this registry using
 case-insensitive matching to handle server implementations incorrectly
@@ -1046,8 +1053,13 @@ states:
 
 All registrations SHOULD meet these requirements. However, there may be scenarios
 in which it is more appropriate for the values to follow other
-requirements, such as for values also used in other specifications or documents. In all cases,
-it should be understood that additional registrations of RDAP JSON values occurring
+requirements, such as for values also used in other specifications or documents.
+
+Registrations MUST NOT contain problematic code points as defined by [@!RFC9839, section 2.2].
+
+Registrations containing the word "ietf" MUST have IETF consensus.
+
+In all cases, it should be understood that additional registrations of RDAP JSON values occurring
 after the specification of the value's type in the registry may not be
 recognized by clients, and therefore either ignored or passed on to users
 without processing.
