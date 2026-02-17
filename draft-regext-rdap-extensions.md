@@ -8,10 +8,10 @@ updates = [7480, 9082, 9083]
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-ietf-regext-rdap-extensions-10"
+value = "draft-ietf-regext-rdap-extensions-12"
 stream = "IETF"
 status = "standard"
-date = 2026-01-27T00:00:00Z
+date = 2026-02-17T00:00:00Z
 
 [[author]]
 initials="A."
@@ -953,7 +953,7 @@ extensions that are similarly non-compliant will not be registered.
 This document does not change the purpose of this registry but does
 update the structure and procedures to be used by its expert reviewers.
 
-## Example Extension {#example_extension}
+### Example Extension {#example_extension}
 
 The IETF requests the IANA to register the following extension in [@rdap-extensions]:
 
