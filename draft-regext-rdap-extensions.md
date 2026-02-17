@@ -895,6 +895,9 @@ should also be compliant with the security considerations of [@!RFC7481].
 5. The use of the various RDAP extension points, as described in (#summary_of_updates),
 should be clearly delineated.
 
+Extension specifications should also consider if [@!RFC9839, section 2.2] is
+applicable to the JSON data conveyed by the extension.
+
 ## Extension Definitions
 
 Extensions must be documented in an RFC or in some other permanent, stable, and
