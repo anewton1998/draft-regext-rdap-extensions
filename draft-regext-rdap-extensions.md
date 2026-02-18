@@ -152,7 +152,7 @@ registered in the [@link-relations]:
     {
       "rdapConformance": [
         "rdap_level_0",
-        "exampleExtension"
+        "exampleExt"
       ],
       "objectClassName": "domain",
       "ldhName": "example.com",
@@ -222,7 +222,7 @@ Extension identifiers containing the word "ietf" in any mixed capitalization
 MUST have IETF consensus.
 
 Extension identifiers MUST NOT start with "example" because these
-identifiers are reserved for use in documentation.
+identifiers are reserved for use as examples in documentation.
 
 For this reason, this document updates the guidance of
 [@!RFC7480] regarding underscore characters: RDAP extensions MUST NOT use an underscore character
@@ -903,6 +903,9 @@ should be clearly delineated.
 Extension specifications should also consider if [@!RFC9839, section 2.2] is
 applicable to the JSON data conveyed by the extension.
 
+When generically describing interactions with other extensions, specifications
+may use extension identifiers beginning with "example".
+
 ## Extension Definitions
 
 Extensions must be documented in an RFC or in some other permanent, stable, and
@@ -1014,7 +1017,7 @@ As noted in (#syntax):
 
 * Any new registration that is a case-variant of an existing registration MUST be rejected.
 * Any registration containing the word "ietf" MUST have IETF consensus.
-* No registration may start with "example".
+* Registrations MUST NOT start with "example".
 
 RDAP clients SHOULD match values in this registry using
 case-insensitive matching to handle server implementations incorrectly
@@ -1055,7 +1058,7 @@ Registrations MUST NOT contain problematic code points as defined by [@!RFC9839,
 Registrations containing the word "ietf" MUST have IETF consensus.
 
 Registrations MUST NOT start with "example" because these JSON values
-are reserved for use in documentation.
+are reserved for use as examples in documentation.
 
 In all cases, it should be understood that additional registrations of RDAP JSON values occurring
 after the specification of the value's type in the registry may not be
