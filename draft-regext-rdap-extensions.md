@@ -8,10 +8,10 @@ updates = [7480, 9082, 9083]
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-ietf-regext-rdap-extensions-12"
+value = "draft-ietf-regext-rdap-extensions-13"
 stream = "IETF"
 status = "standard"
-date = 2026-02-17T00:00:00Z
+date = 2026-02-18T00:00:00Z
 
 [[author]]
 initials="A."
@@ -84,12 +84,12 @@ to either client or server implementations.
 
 This document describes the following methods for extending RDAP by registered extensions:
 
-1. JSON Names - The most common extension point for RDAP is the definition of new JSON Names. Guidance for JSON Names is provided in this document with regard to [@!RFC7480] and [@!RFC9083].
+1. JSON Names - The most common extension point for RDAP is the definition of new JSON names. Guidance for JSON names is provided in this document with regard to [@!RFC7480] and [@!RFC9083].
 1. URL Paths - New lookups and searches are defined using URL paths. This document clarifies the practice as described in [@!RFC9082].
 1. Query Strings and Parameters - Many queries use URL query strings and parameters to scope and/or enhance RDAP results. This document clarifies the practice as described in [@!RFC9082].
 1. HTTP Headers - Some extensions may use HTTP headers or header parameters not explicitly enumerated by [@!RFC7480].
 1. HTTP Status Codes - Some extensions may use HTTP status codes not explicitly enumerated by [@!RFC7480].
-1. Media type parameters - Some extensions may define additional media type parameters for the "application/rdap+json" media type.
+1. Media Type Parameters - Some extensions may define additional media type parameters for the "application/rdap+json" media type ([@!RFC9083, section 10.1]).
 1. Object Classes - Extensions may define new types of objects to be queried. This document clarifies this method as described in [@!RFC9082] and [@!RFC9083].
 
 Additionally, this document updates the IANA registry practices for RDAP. See (#iana_considerations).
@@ -112,7 +112,7 @@ registered.
 
 When in use in RDAP, extension identifiers are prepended to URL path
 segments, URL query parameters, and JSON object member names.
-They are also included in the "rdapConformance" array member of each
+They are also included in the "rdapConformance" array ([@!RFC9083, section 4.1]) member of each
 response that relies on the
 extension, so that clients can determine the extensions being used by
 the server for that response.  The "/help" query returns a response with an
@@ -173,7 +173,7 @@ Profile extensions may also
 leverage the appearance of their identifier in the "rdapConformance"
 array (i.e., clients are signaled that a profile is in use).
 Profile extensions that mandate the implementation of another
-extension MUST require that the implementer include the extension
+extension MUST require that the implementers include the extension
 identifier for that other extension in the "rdapConformance" array.
 
 [@!RFC7480] mandates the implementation of HTTPS but does not mandate
@@ -199,7 +199,7 @@ In brief, RDAP extension identifiers start with an alphabetic
 character and may contain alphanumeric characters and "_" (underscore)
 characters. This formulation was explicitly chosen to allow
 compatibility with variable names in programming languages and
-transliteration with XML. See [@!RFC7480, Section 6] and [@!RFC9083, Section 2.1].
+transliteration with XML. See [@!RFC7480, section 6] and [@!RFC9083, section 2.1].
 
 RDAP extension identifiers have no explicit structure, and are opaque
 insofar as no inner-meaning can be "seen" in them.
@@ -218,16 +218,16 @@ identifier "example1". Likewise, if there were a pre-existing identifier of
 "example1_bar_buzz".  However, an extension could define "exampleThing" if there
 were a pre-existing definition of "exampleThingOther", and vice versa.
 
+For this reason, this document updates the guidance of
+[@!RFC7480] regarding underscore characters: RDAP extensions MUST NOT use an underscore character
+in their RDAP extension identifier. Implementers should be aware that many
+existing extension identifiers do contain underscore characters.
+
 Extension identifiers containing the word "ietf" in any mixed capitalization
 MUST have IETF consensus.
 
 Extension identifiers MUST NOT start with "example" because these
 identifiers are reserved for use as examples in documentation.
-
-For this reason, this document updates the guidance of
-[@!RFC7480] regarding underscore characters: RDAP extensions MUST NOT use an underscore character
-in their RDAP extension identifier. Implementers should be aware that many
-existing extension identifiers do contain underscore characters.
 
 [@!RFC7480] does not explicitly state that extension identifiers are
 case-sensitive.  This document clarifies the formulation in [@!RFC7480]
@@ -343,7 +343,7 @@ below), or object classes or search results from other extensions.
 Additionally, RDAP extensions MUST NOT append a path segment to an
 existing path segment as this practice increases the likelihood of collisions
 with the queries defined by an extension (e.g., extension "example2" defining
-"https://base.example/domain/example2" or "https://base.example/example1_fazz/example2").
+"/domain/example2" or "/example1_fazz/example2").
 
 ### Usage in Query Parameters {#usage_in_query_parameters}
 
@@ -595,7 +595,7 @@ called "camel casing", in reference to the hump of a camel. In this
 style, the first letter of every word, except the first word,
 composing a name is capitalized.  This convention was adopted to
 visually separate the namespace from the name, with an underscore
-between them.  Extension authors are encouraged to use camel casing for JSON
+between them (e.g., "example_someData").  Extension authors are encouraged to use camel casing for JSON
 names defined in extensions.
 
 # Usage with HTTP
@@ -769,7 +769,7 @@ Another breaking change is to introduce a new object class where a client
 previously expected another, such as:
 
  - A query using a path and/or query parameters
-   (e.g., /domain/foo.example produces "example_domain" instead of "domain");
+   (e.g., "/domain/foo.example" produces "example_domain" instead of "domain");
  - A referral (e.g., "related" produces "example_domain" instead of "domain");
  - Search results; and
  - Other JSON arrays and JSON members.
@@ -863,8 +863,8 @@ previous extension. For example:
 And at some future time, a successor such as "example9" may no longer
 need the function provided by "example0" and may cease to reference it.
 
-Note that because RDAP extension identifiers are opaque, overlapping
-successors is indistinguishable from one extension referencing another
+Note that because RDAP extension identifiers are opaque, an overlapping
+successor is indistinguishable from one extension referencing another
 extension (see (#extension_referencing)).
 
 ### Evolving Extensions without Signaled Changes
@@ -880,7 +880,7 @@ would simply ignore them. This is true for all non-breaking changes
 
 However, when such changes are made, the extension MUST describe
 mechanisms for the clients to recognize and properly process
-such a changed response (e.g. by way of a signaling
+such a changed response (e.g., by way of a signaling
 method like [@?I-D.ietf-regext-rdap-versioning]).
 
 ## Extension Specification Content
