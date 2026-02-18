@@ -555,7 +555,7 @@ string as defined in (#object_classes_in_extensions).  For example:
             "firstInitial": "J",
             "lastName": "SomePerson"
           }
-        },
+        ]
       ]
     }
 
@@ -893,7 +893,7 @@ with prose.
 required for the interoperability of the extension, MUST be stable
 and non-changing and MUST NOT be denoted as a "work in progress"
 or similar description.
-3. Extension specifications MUST NOT define request and response 
+3. Extension specifications MUST NOT define request and response
 exchanges over an unencrypted HTTP connection. Extensions
 should also be compliant with the security considerations of [@!RFC7481].
 4. Extension specifications MUST NOT forbid the use of RDAP services over IPv6.
@@ -1103,7 +1103,7 @@ contents of the query parameter are appropriate to be received by the target.
 (#usage_in_query_parameters) describes the usage of query parameters
 and (#redirects_author) describes the restrictions extensions must follow to
 use them. As query parameters have been known to be used to subvert
-the privacy preferences of users in HTTP-based protocols, server MUST
+the privacy preferences of users in HTTP-based protocols, servers MUST
 NOT blindly copy query parameters from a request to a redirect URL as
 described in (#security_considerations) and extensions MUST follow the
 constraints of query parameter usage as defined in (#redirects_author).
