@@ -152,7 +152,7 @@ registered in the [@link-relations]:
     {
       "rdapConformance": [
         "rdap_level_0",
-        "lunarNIC"
+        "exampleExt"
       ],
       "objectClassName": "domain",
       "ldhName": "example.com",
@@ -208,18 +208,21 @@ RDAP extensions MUST NOT define an extension identifier that
 may collide with an existing extension identifier. RDAP extensions
 MUST NOT define an extension identifier, which when appended with
 an underscore character would be a substring starting from the first
-character of an existing extension identifier. Similarly RDAP extensions
+character of an existing extension identifier. Similarly, RDAP extensions
 MUST NOT define an extension identifier starting with a substring being
 an existing extension identifier appended with an underscore.
 For example, if there were a pre-existing
-identifier of "foo_bar", another extension could not define the
-identifier "foo". Likewise, if there were a pre-existing identifier of
-"foo_bar", another extension could not define the identifier
-"foo_bar_buzz".  However, an extension could define "foo" if there
-were a pre-existing definition of "foobar", and vice versa.
+identifier of "example1_bar", another extension could not define the
+identifier "example1". Likewise, if there were a pre-existing identifier of
+"example1_bar", another extension could not define the identifier
+"example1_bar_buzz".  However, an extension could define "exampleThing" if there
+were a pre-existing definition of "exampleThingOther", and vice versa.
 
-Extensions containing the word "ietf" in any mixed capitalization
+Extension identifiers containing the word "ietf" in any mixed capitalization
 MUST have IETF consensus.
+
+Extension identifiers MUST NOT start with "example" because these
+identifiers are reserved for use as examples in documentation.
 
 For this reason, this document updates the guidance of
 [@!RFC7480] regarding underscore characters: RDAP extensions MUST NOT use an underscore character
@@ -236,6 +239,9 @@ with "lunarNic" (note the lowercase "ic" in "Nic") would not be
 allowed.
 
 ## Bare Extension Identifiers {#bare_extensions}
+
+A "bare" extension identifier is one that is used without a prefix
+(e.g., "exampleExt" instead of "exampleExt_author").
 
 [@!RFC9083, section 2.1] states the following when using the names of JSON
 members:
@@ -266,7 +272,7 @@ identifier pattern, that example could be written as:
     {
       "rdapConformance": [
         "rdap_level_0",
-        "lunarNIC"
+        "exampleExt"
       ],
       "objectClassName": "domain",
       "ldhName": "example.com",
@@ -275,15 +281,16 @@ identifier pattern, that example could be written as:
         {
           "description":
           [
-            "She sells sea shells down by the sea shore.",
-            "Originally written by Terry Sullivan."
+            "Query the database."
+            "JSON replaces the Whois."
+            "Structured data flows."
           ]
         }
       ],
-      "lunarNIC":
+      "exampleExt":
       {
         "firstInitial": "R",
-        "lastName": "Heinlein"
+        "lastName": "SomePerson"
       }
     }
 
@@ -312,13 +319,13 @@ for any namespaced identifier.
 [@!RFC9082, section 5] describes the use of extension identifiers in
 formulating URLs for RDAP queries. The extension identifiers are
 to be prepended to the path segments they use. For example, if an
-extension uses the identifier "foobar", then the path segments used in
-that extension are prepended with "foobar_".  If the "foobar"
+extension uses the identifier "exampleExt", then the path segments used in
+that extension are prepended with "exampleExt_".  If the "exampleExt"
 extension defines paths "fizz" and "fazz", the URLs for this extension
 would be like so:
 
-    https://base.example/foobar_fizz
-    https://base.example/foobar_fazz
+    https://base.example/exampleExt_fizz
+    https://base.example/exampleExt_fazz
 
 While [@!RFC9082] describes the extension identifier as a prepended
 string to a path segment, it does not describe the usage of the
@@ -335,8 +342,8 @@ below), or object classes or search results from other extensions.
 
 Additionally, RDAP extensions MUST NOT append a path segment to an
 existing path segment as this practice increases the likelihood of collisions
-with the queries defined by an extension (e.g., extension "foo" defining
-"https://base.example/domain/foo" or "https://base.example/fizz_fazz/foo").
+with the queries defined by an extension (e.g., extension "example2" defining
+"https://base.example/domain/example2" or "https://base.example/example1_fazz/example2").
 
 ### Usage in Query Parameters {#usage_in_query_parameters}
 
@@ -347,7 +354,7 @@ an explicitly named value in a query string. Therefore, the use of query
 parameters, whether prefixed with an extension identifier or not, is
 not supported by [@!RFC9082] and [@!RFC7480].
 
-Futhermore, [@!RFC3986] and [@!RFC9110] do not define the name=value pair
+Furthermore, [@!RFC3986] and [@!RFC9110] do not define the name=value pair
 format of a query string. This is defined in [@!RFC1866].
 
 Despite this, there are several extensions that do specify query
@@ -451,7 +458,7 @@ The following example shows this use with a JSON object:
     {
       "rdapConformance": [
         "rdap_level_0",
-        "lunarNIC"
+        "exampleExt"
       ],
       "objectClassName": "domain",
       "ldhName": "example.com",
@@ -460,22 +467,23 @@ The following example shows this use with a JSON object:
         {
           "description":
           [
-            "She sells sea shells down by the sea shore.",
-            "Originally written by Terry Sullivan."
+            "Query the database."
+            "JSON replaces the Whois."
+            "Structured data flows."
           ]
         }
       ],
-      "lunarNIC_author":
+      "exampleExt_author":
       {
         "firstInitial": "R",
-        "lastName": "Heinlein"
+        "lastName": "SomePerson"
       }
     }
 
-Here the JSON name "lunarNIC_author" will separate the JSON from other
+Here the JSON name "exampleExt_author" will separate the JSON from other
 extensions that may have an "author" structure. But the JSON contained
-within "lunarNIC_author" need not be prepended, as collision is
-avoided by the use of "lunarNIC_author".
+within "exampleExt_author" need not be prepended, as collision is
+avoided by the use of "exampleExt_author".
 
 ### Object Classes in Extensions {#object_classes_in_extensions}
 
@@ -494,13 +502,13 @@ JSON names:
     {
       "rdapConformance": [
         "rdap_level_0",
-        "lunarNIC"
+        "exampleExt"
       ],
-      "objectClassName": "lunarNIC_author",
+      "objectClassName": "exampleExt_author",
       "author":
       {
         "firstInitial": "R",
-        "lastName": "Heinlein"
+        "lastName": "SomePerson"
       }
     }
 
@@ -532,25 +540,25 @@ string as defined in (#object_classes_in_extensions).  For example:
     {
       "rdapConformance": [
         "rdap_level_0",
-        "lunarNIC"
+        "exampleExt"
       ],
-      "lunarNIC_authorSearchResult": [
+      "exampleExt_authorSearchResult": [
         {
-          "objectClassName": "lunarNIC_author",
+          "objectClassName": "exampleExt_author",
           "author":
           {
             "firstInitial": "R",
-            "lastName": "Heinlein"
+            "lastName": "SomePerson"
           }
         },
         {
-          "objectClassName": "lunarNIC_author",
+          "objectClassName": "exampleExt_author",
           "author":
           {
             "firstInitial": "J",
-            "lastName": "Pournelle"
+            "lastName": "SomePerson"
           }
-        },
+        ]
       ]
     }
 
@@ -698,20 +706,20 @@ be prepended with "rdap-".
 As stated in (#profiles), extensions may rely on other extensions by stipulating
 the usage of those other extensions.
 
-For example, the extension "bazz" may require the usage of structures defined
-in "fuzz" instead of redefining new, equivalent structures:
+For example, the extension "exampleExt1" may require the usage of structures defined
+in "exampleExt2" instead of redefining new, equivalent structures:
 
     {
       "rdapConformance": [
         "rdap_level_0",
-        "bazz",
-        "fuzz"
+        "exampleExt1",
+        "exampleExt2"
       ],
       "objectClassName": "autnum",
       "startAutnum": 64496,
       "endAutnum": 64497,
-      "bazz_cones": [ 64498, 64499],
-      "fuzz_adjacents": [ 64500, 64501 ]
+      "exampleExt1_cones": [ 64498, 64499],
+      "exampleExt2_adjacents": [ 64500, 64501 ]
     }
 
 ## Extension Versioning {#versioning}
@@ -722,11 +730,11 @@ they possess no explicit version despite the fact that some extension
 identifiers include trailing numbers. That is, RDAP extensions without
 an explicitly-defined versioning scheme are opaquely versioned.
 
-For example, "fizzbuzz1" may be the successor to "fizzbuzz0", but it
+For example, "exampleExt1" may be the successor to "exampleExt0", but it
 may also be an extension for a completely separate purpose. Only
-consultation of the definition of "fizzbuzz1" will determine its
-relationship with "fizzbuzz0". Additionally, "fizzbuzz99" may be the
-predecessor of "fizzbuzz0".
+consultation of the definition of "exampleExt1" will determine its
+relationship with "exampleExt0". Additionally, "exampleExt99" may be the
+predecessor of "exampleExt0".
 
 If an RDAP extension uses a versioning method, such as [@?I-D.ietf-regext-rdap-versioning],
 it MUST be explicitly described in its specification.
@@ -739,15 +747,15 @@ unrelated extension.  Additionally, there is no signaling
 mechanism in RDAP to specify successors with breaking changes.
 Implementers of such changes should consider the following:
 
- - whether the new version of the extension can be provided alongside
+ - Whether the new version of the extension can be provided alongside
    the old version of the extension, so that a service can simply
    support both during a transition period;
- - whether some sort of client signaling should be supported, so that
+ - Whether some sort of client signaling should be supported, so that
    clients can opt for the old or new version of the extension in
    responses that they receive (see
    [@?I-D.ietf-regext-rdap-x-media-type] for an example of how this
    might work); and
- - whether the extension itself should define how versioning is
+ - Whether the extension itself should define how versioning is
    handled within the extension documentation.
 
 When using a transition period between two versions of an extension by
@@ -760,11 +768,11 @@ referrals (see (#referrals)).
 Another breaking change is to introduce a new object class where a client
 previously expected another, such as:
 
- - a query using a path and/or query parameters
-   (e.g., /domain/foo.example produces "new_domain" instead of "domain");
- - a referral (e.g., "related" produces "new_domain" instead of "domain");
- - search results; and
- - other JSON arrays and JSON members.
+ - A query using a path and/or query parameters
+   (e.g., /domain/foo.example produces "example_domain" instead of "domain");
+ - A referral (e.g., "related" produces "example_domain" instead of "domain");
+ - Search results; and
+ - Other JSON arrays and JSON members.
 
 Breaking changes may occur in requirements for processing of data in
 protocol elements that appear in both a successor and a predecessor.
@@ -777,10 +785,10 @@ this could be considered a breaking change.
 The following are considered non-breaking changes between a successor and
 a predecessor.
 
- - new referrals
- - new JSON members
- - new URL paths
- - new query parameters
+ - New referrals
+ - New JSON members
+ - New URL paths
+ - New query parameters
 
 The use of a new HTTP header (i.e., one previously not in-use with the predecessor),
 may either be a breaking change or a non-breaking change, depending on the usage of
@@ -792,16 +800,16 @@ Should an extension author desire to create a successor extension,
 the simplest method is to create a new extension (with a new extension identifier, as required)
 that replicates all the functionality of the previous extension.
 
-Take for example this RDAP response for "fizzbuzz0":
+Take for example this RDAP response for "example0":
 
     {
       "rdapConformance": [
         "rdap_level_0",
-        "fizzbuzz0"
+        "example0"
       ],
       "objectClassName": "domain",
       "ldhName": "example.com",
-      "fizzbuzz0_malwareReputationId": 1234
+      "example0_malwareReputationId": 1234
     }
 
 A successor extension may define the same functionality with
@@ -810,12 +818,12 @@ equivalent structures.
     {
       "rdapConformance": [
         "rdap_level_0",
-        "fizzbuzz1"
+        "example1"
       ],
       "objectClassName": "domain",
       "ldhName": "example.com",
-      "fizzbuzz1_malwareReputationId": 1234,
-      "fizzbuzz1_spamReputationId": 7890
+      "example1_malwareReputationId": 1234,
+      "example1_spamReputationId": 7890
     }
 
 During a transition period, both extensions could be in use.
@@ -823,14 +831,14 @@ During a transition period, both extensions could be in use.
     {
       "rdapConformance": [
         "rdap_level_0",
-        "fizzbuzz0",
-        "fizzbuzz1"
+        "example0",
+        "example1"
       ],
       "objectClassName": "domain",
       "ldhName": "example.com",
-      "fizzbuzz0_malwareReputationId": 1234,
-      "fizzbuzz1_malwareReputationId": 1234,
-      "fizzbuzz1_spamReputationId": 7890
+      "example0_malwareReputationId": 1234,
+      "example1_malwareReputationId": 1234,
+      "example1_spamReputationId": 7890
     }
 
 ### Overlapping Successors {#overlapping_successors}
@@ -843,17 +851,17 @@ previous extension. For example:
     {
       "rdapConformance": [
         "rdap_level_0",
-        "fizzbuzz0",
-        "fizzbuzz1"
+        "example0",
+        "example1"
       ],
       "objectClassName": "domain",
       "ldhName": "example.com",
-      "fizzbuzz0_malwareReputationId": 1234,
-      "fizzbuzz1_spamReputationId": 7890
+      "example0_malwareReputationId": 1234,
+      "example1_spamReputationId": 7890
     }
 
-And at some future time, a successor such as "fizzbuzz9" may no longer
-need the function provided by "fizzbuzz0" and may cease to reference it.
+And at some future time, a successor such as "example9" may no longer
+need the function provided by "example0" and may cease to reference it.
 
 Note that because RDAP extension identifiers are opaque, overlapping
 successors is indistinguishable from one extension referencing another
@@ -888,7 +896,7 @@ with prose.
 required for the interoperability of the extension, MUST be stable
 and non-changing and MUST NOT be denoted as a "work in progress"
 or similar description.
-3. Extension specifications MUST NOT define request and response 
+3. Extension specifications MUST NOT define request and response
 exchanges over an unencrypted HTTP connection. Extensions
 should also be compliant with the security considerations of [@!RFC7481].
 4. Extension specifications MUST NOT forbid the use of RDAP services over IPv6.
@@ -897,6 +905,9 @@ should be clearly delineated.
 
 Extension specifications should also consider if [@!RFC9839, section 2.2] is
 applicable to the JSON data conveyed by the extension.
+
+When generically describing interactions with other extensions, specifications
+may use extension identifiers beginning with "example".
 
 ## Extension Definitions
 
@@ -953,21 +964,6 @@ extensions that are similarly non-compliant will not be registered.
 This document does not change the purpose of this registry but does
 update the structure and procedures to be used by its expert reviewers.
 
-### Example Extension {#example_extension}
-
-The IETF requests the IANA to register the following extension in [@rdap-extensions]:
-
-Extension identifier: example
-
-Registry operator: ALL
-
-Published specification: This RFC Reference Once Published
-
-Person & email address to contact for further information:
-The Internet Engineering Steering Group <iesg@ietf.org>
-
-Intended usage: COMMON
-
 ### Deprecation Date
 
 IANA is instructed to add a new "Deprecation Date" field to each registration
@@ -1021,8 +1017,10 @@ does it describe how a client is to use those values?
 existing registration (see (#syntax))?
 
 As noted in (#syntax):
+
 * Any new registration that is a case-variant of an existing registration MUST be rejected.
 * Any registration containing the word "ietf" MUST have IETF consensus.
+* Registrations MUST NOT start with "example".
 
 RDAP clients SHOULD match values in this registry using
 case-insensitive matching to handle server implementations incorrectly
@@ -1061,6 +1059,9 @@ requirements, such as for values also used in other specifications or documents.
 Registrations MUST NOT contain problematic code points as defined by [@!RFC9839, section 2.2].
 
 Registrations containing the word "ietf" MUST have IETF consensus.
+
+Registrations MUST NOT start with "example" because these JSON values
+are reserved for use as examples in documentation.
 
 In all cases, it should be understood that additional registrations of RDAP JSON values occurring
 after the specification of the value's type in the registry may not be
@@ -1105,7 +1106,7 @@ contents of the query parameter are appropriate to be received by the target.
 (#usage_in_query_parameters) describes the usage of query parameters
 and (#redirects_author) describes the restrictions extensions must follow to
 use them. As query parameters have been known to be used to subvert
-the privacy preferences of users in HTTP-based protocols, server MUST
+the privacy preferences of users in HTTP-based protocols, servers MUST
 NOT blindly copy query parameters from a request to a redirect URL as
 described in (#security_considerations) and extensions MUST follow the
 constraints of query parameter usage as defined in (#redirects_author).
