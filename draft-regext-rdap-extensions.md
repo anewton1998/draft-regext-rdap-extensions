@@ -240,6 +240,9 @@ allowed.
 
 ## Bare Extension Identifiers {#bare_extensions}
 
+A "bare" extension identifier is one that is used without a prefix
+(e.g., "exampleExt" instead of "exampleExt_author").
+
 [@!RFC9083, section 2.1] states the following when using the names of JSON
 members:
 
