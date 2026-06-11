@@ -788,15 +788,20 @@ For example, a profile extension (see (#profiles)) may require domain names
 always end with a dot ("."). Should its successor remove this requirement,
 this could be considered a breaking change.
 
-The following is a non-exhaustive list of other types of breaking changes:
+The following is a non-exhaustive list of other types of breaking changes,
+where a protocol element is considered to be, but not limited to, JSON names,
+JSON values, query parameters, query paths, etc...:
 
- - Changing the data-type of a protocol element such as a JSON value
-   or query parameter value (e.g., "hello": 1 to "hello": "world");
+ - Changing the data type of a protocol element (e.g., "hello": 1 to "hello": "world");
  - Changing the name of an identifier;
- - Expanding the expected range to
-   be found in a protocol element (e.g. 0 to 9 becomes 0 to 10);
- - Expanding the set of values to
-   be found in a protocol element when not defined in an IANA registry;
+ - Expanding the expected range (e.g., 0 to 9 becomes 0 to 10) to
+   be found in a protocol element in a response;
+ - Contracting the expected range (e.g., 0 to 10 becomes 0 to 9) to
+   be found in a protocol element in a request;
+ - Expanding the set of values when the set is not defined in an IANA registry to
+   be found in a protocol element in a response;
+ - Contracting the set of values when the set is not defined in an IANA registry to
+   be found in a protocol element in a request;
  - Removing a required protocol element from a response;
  - Changing a required protocol element in a response to optional; and
  - Requiring new protocol elements in a request.
