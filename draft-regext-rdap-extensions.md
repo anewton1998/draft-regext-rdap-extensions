@@ -788,6 +788,15 @@ For example, a profile extension (see (#profiles)) may require domain names
 always end with a dot ("."). Should its successor remove this requirement,
 this could be considered a breaking change.
 
+The following is a non-exhaustive list of other types of breaking changes:
+
+ - Changing the data-type of a protocol element such as a JSON value
+   or query parameter value (e.g., "hello": 1 to "hello": "world");
+ - Changing the name of an identifier;
+ - Removing a required protocol element from a response;
+ - Changing a required protocol element in a response to optional; and
+ - Requiring new protocol elements in a request.
+
 ### Non-breaking Changes in Successors {#nonbreaking_changes}
 
 The following are considered non-breaking changes between a successor and
