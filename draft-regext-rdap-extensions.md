@@ -793,6 +793,10 @@ The following is a non-exhaustive list of other types of breaking changes:
  - Changing the data-type of a protocol element such as a JSON value
    or query parameter value (e.g., "hello": 1 to "hello": "world");
  - Changing the name of an identifier;
+ - Expanding the expected range to
+   be found in a protocol element (e.g. 0 to 9 becomes 0 to 10);
+ - Expanding the set of values to
+   be found in a protocol element when not defined in an IANA registry;
  - Removing a required protocol element from a response;
  - Changing a required protocol element in a response to optional; and
  - Requiring new protocol elements in a request.
