@@ -744,10 +744,10 @@ it MUST be explicitly described in its specification.
 ### Breaking Changes in Successors {#breaking_changes}
 
 A breaking change (also known as a backwards-incompatible change) occurs
-when a modification in a successor extension causes clients conforming
-to the predecessor extension to malfunction, experience degradation of
-functionality, or fail to interoperate in some other manner specific to
-the extension.
+when a modification in a successor extension with respect to the predecessor
+extension causes clients conforming to the predecessor extension to
+malfunction, experience degradation of functionality, or fail to
+interoperate in some other manner.
 
 With the current extension model, an extension with a
 successor with breaking changes is indistinguishable from a new,
