@@ -793,7 +793,7 @@ where a protocol element is considered to be, but not limited to, JSON names,
 JSON values, query parameters, query paths, etc...:
 
  - Changing the data type of a protocol element (e.g., "hello": 1 to "hello": "world");
- - Changing the name of an identifier;
+ - Changing the name of a protocol element;
  - Expanding the expected range (e.g., 0 to 9 becomes 0 to 10) to
    be found in a protocol element in a response;
  - Contracting the expected range (e.g., 0 to 10 becomes 0 to 9) to
