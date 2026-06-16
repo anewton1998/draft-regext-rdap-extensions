@@ -11,7 +11,7 @@ name = "Internet-Draft"
 value = "draft-ietf-regext-rdap-extensions-13"
 stream = "IETF"
 status = "standard"
-date = 2026-02-18T00:00:00Z
+date = 2026-06-16T00:00:00Z
 
 [[author]]
 initials="A."
@@ -77,7 +77,7 @@ used by clients to navigate them.
 ## Summary of Updates {#summary_of_updates}
 
 This document updates [@!RFC7480], [@!RFC9082], and [@!RFC9083] for the
-purposes of constraining how extensions are defined. This document does
+purposes of constraining how extensions are defined and interpreted. This document does
 not update any core RDAP requests or responses nor does it update or obsolete
 any existing RDAP extensions. The updates in this document should require no changes
 to either client or server implementations.
@@ -169,9 +169,9 @@ registered in the [@link-relations]:
 When defining the usage of link relations, extensions MUST specify
 the media types expected to be used with those link relations.
 
-Profile extensions may also
+Profile extensions 
 leverage the appearance of their identifier in the "rdapConformance"
-array (i.e., clients are signaled that a profile is in use).
+array to signal to clients that a profile is in use.
 Profile extensions that mandate the implementation of another
 extension MUST require that the implementers include the extension
 identifier for that other extension in the "rdapConformance" array.
@@ -226,8 +226,11 @@ existing extension identifiers do contain underscore characters.
 Extension identifiers containing the word "ietf" in any mixed capitalization
 MUST have IETF consensus.
 
-Extension identifiers MUST NOT start with "example" because these
+Extension identifiers MUST NOT start with "example" in any mixed capitalization because these
 identifiers are reserved for use as examples in documentation.
+
+Extension identifiers starting with "draft" are reserved for descriptions of works in-progress
+and MUST NOT be registered in the [@rdap-extensions] registry.
 
 [@!RFC7480] does not explicitly state that extension identifiers are
 case-sensitive.  This document clarifies the formulation in [@!RFC7480]
@@ -331,8 +334,6 @@ While [@!RFC9082] describes the extension identifier as a prepended
 string to a path segment, it does not describe the usage of the
 extension identifier as a path segment.
 
-Note that "bare" identifiers are now explicitly forbidden (see (#bare_extensions)).
-
 Extensions defining new URL paths MUST explicitly define the expected
 responses for each new URL path. New URL paths may return existing
 object classes or search results as defined in [@!RFC9083], object
@@ -367,8 +368,6 @@ When an RDAP extension defines query parameters, those query parameter
 names MUST be constructed in the same manner as URL path segments
 (that is, extension identifier + '_' + parameter name).
 
-Note that "bare" identifiers are now explicitly forbidden (see (#bare_extensions)).
-
 See (#redirects_author) and (#referrals) for other guidance on the use of
 query parameters, and see (#security_considerations) and
 (#privacy_considerations) regarding constraints on the usage of query
@@ -388,8 +387,12 @@ using other forms of URL query strings.
 the JSON returned by RDAP servers. Just as in URLs, the extension
 identifier is prepended to JSON names to create a namespace so that
 the JSON name from one extension will not collide with the JSON name
-from another extension. Just as with unknown query parameters in URLs,
-clients are to ignore unknown JSON names.
+from another extension.
+
+[@!RFC9083] states:
+    Clients of these JSON responses SHOULD ignore unrecognized JSON members in responses.
+
+This document updates this guidance: clients MUST ignore unknown JSON names.
 
 The example given in [@!RFC9083] is as follows:
 
@@ -415,8 +418,6 @@ The example given in [@!RFC9083] is as follows:
 
 In this example, the extension identified by "lunarNIC" is prepended
 to the member names of both a JSON string and a JSON array.
-
-Note that "bare" identifiers are now explicitly forbidden (see (#bare_extensions)).
 
 As [@!RFC9083, section 4.1] requires the use of the "rdapConformance"
 data structure, and the "objectClassName" string is required of all
@@ -511,8 +512,6 @@ JSON names:
         "lastName": "SomePerson"
       }
     }
-
-Note that "bare" identifiers are now explicitly forbidden (see (#bare_extensions)).
 
 Extension authors are encouraged to use the "camel case" style described
 in (#camel_casing).
@@ -662,7 +661,13 @@ In general, extension authors should be mindful of situations
 requiring clients to directly handle redirects at the RDAP layer. Some
 clients may not be utilizing HTTP libraries that provide such an
 option, and some HTTP client libraries that do provide the option do
-not provide it as a default behavior. Additionally, requiring clients
+not provide it as a default behavior.
+
+While HTTP does allow RDAP content to be returned in a redirect,
+some clients will not have access to that content, in particular
+browser-based clients.
+
+Additionally, requiring clients
 to handle redirects at the RDAP layer adds complexity to the client in
 that additional logic must be implemented to handle redirect loops,
 parameter deconfliction, and URL encoding. The guidance given in
@@ -741,6 +746,13 @@ it MUST be explicitly described in its specification.
 
 ### Breaking Changes in Successors {#breaking_changes}
 
+A breaking change (also known as a backwards-incompatible change) occurs
+when a modification in a successor extension with respect to the predecessor
+extension, where each is identified by the same extension identifier (see (#syntax)),
+causes clients conforming to the predecessor extension to
+malfunction, experience degradation of functionality, or fail to
+interoperate in some other manner.
+
 With the current extension model, an extension with a
 successor with breaking changes is indistinguishable from a new,
 unrelated extension.  Additionally, there is no signaling
@@ -779,6 +791,26 @@ protocol elements that appear in both a successor and a predecessor.
 For example, a profile extension (see (#profiles)) may require domain names
 always end with a dot ("."). Should its successor remove this requirement,
 this could be considered a breaking change.
+
+The following is a non-exhaustive list of other types of breaking changes,
+where a protocol element is considered to be, but not limited to, JSON names,
+JSON values, query parameters, query paths, etc.:
+
+ - Changing the data type of a protocol element (e.g., "hello": 1 to "hello": "world");
+ - Changing the name of a protocol element;
+ - Changing the interpreted or semantic meaning of a protocol element (e.g., "secure" changes from signed to encrypted);
+ - Changing the inferences to be drawn from the absence of a protocol element;
+ - Expanding the expected range (e.g., 0 to 9 becomes 0 to 10) to
+   be found in a protocol element in a response;
+ - Contracting the expected range (e.g., 0 to 10 becomes 0 to 9) to
+   be found in a protocol element in a request;
+ - Expanding the set of values when the set is not defined in an IANA registry to
+   be found in a protocol element in a response;
+ - Contracting the set of values when the set is not defined in an IANA registry to
+   be found in a protocol element in a request;
+ - Removing a required protocol element from a response;
+ - Changing a required protocol element in a response to optional; and
+ - Requiring new protocol elements in a request.
 
 ### Non-breaking Changes in Successors {#nonbreaking_changes}
 
@@ -1021,10 +1053,10 @@ As noted in (#syntax):
 * Any new registration that is a case-variant of an existing registration MUST be rejected.
 * Any registration containing the word "ietf" MUST have IETF consensus.
 * Registrations MUST NOT start with "example".
+* Registrations MUST NOT start with "draft".
 
-RDAP clients SHOULD match values in this registry using
-case-insensitive matching to handle server implementations incorrectly
-using the wrong case.
+As expert reviewers are considered to be subject-matter experts with regard to RDAP,
+they are also expected to use their good technical judgement when evaluating requests.
 
 ## RDAP JSON Values Registry {#rdap_json_values_registry}
 
@@ -1073,9 +1105,6 @@ existing registration, and all registrations are to be considered case-insensiti
 That is, any new registration that is a case-variant of an existing registration
 MUST be rejected.
 
-RDAP clients SHOULD match values in this registry using case-insensitive matching
-to handle scenarios in which servers incorrectly use the wrong case.
-
 Definitions of new types (see above) MAY additionally constrain the format of
 values for those new types beyond the specification of this document and [@!RFC9083].
 Designated experts MUST evaluate registrations with those criteria.
@@ -1086,6 +1115,29 @@ JSON values registration must have another expert reviewer double-check any
 submitted registration.
 
 Expert reviewers are to use the criteria defined in [@!RFC9083, section 10.2].
+As expert reviewers are considered to be subject-matter experts with regard to RDAP,
+they are also expected to use their good technical judgement when evaluating requests.
+
+# Operational Considerations
+
+## Interpretation of IANA Registry Values
+
+RDAP clients SHOULD match values of "rdapConformance" array with the values in the [@rdap-extensions] registry using
+case-insensitive matching to handle server implementations incorrectly
+using the wrong case.
+
+RDAP clients SHOULD match values in the [@rdap-json-values] registry using case-insensitive matching
+to handle scenarios in which servers incorrectly use the wrong case.
+
+## Referral and Redirect Loops
+
+A redirect loop will occur if a server issues a redirect causing a client to follow
+redirects back to a previous server queried during the processing of the same query.
+Clients MUST cancel any queries when a redirect loop is detected. Servers MUST NOT
+issue responses that cause redirect loops.
+
+The same is also true of referrals. Clients MUST cancel any query when a referral loop
+is detected. Servers MUST NOT issue responses that cause referral loops.
 
 # Security Considerations {#security_considerations}
 
