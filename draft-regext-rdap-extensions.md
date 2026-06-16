@@ -748,7 +748,8 @@ it MUST be explicitly described in its specification.
 
 A breaking change (also known as a backwards-incompatible change) occurs
 when a modification in a successor extension with respect to the predecessor
-extension causes clients conforming to the predecessor extension to
+extension identified by the same extension identifier
+causes clients conforming to the predecessor extension to
 malfunction, experience degradation of functionality, or fail to
 interoperate in some other manner.
 
