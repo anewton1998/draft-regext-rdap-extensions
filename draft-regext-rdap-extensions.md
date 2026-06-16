@@ -229,6 +229,9 @@ MUST have IETF consensus.
 Extension identifiers MUST NOT start with "example" in any mixed capitalization because these
 identifiers are reserved for use as examples in documentation.
 
+Extension identifiers starting with "draft" are reserved for descriptions of works in-progress
+and MUST NOT be registered in the [@rdap-extensions] registry.
+
 [@!RFC7480] does not explicitly state that extension identifiers are
 case-sensitive.  This document clarifies the formulation in [@!RFC7480]
 to explicitly note that extension identifiers are case-sensitive, and
@@ -790,10 +793,12 @@ this could be considered a breaking change.
 
 The following is a non-exhaustive list of other types of breaking changes,
 where a protocol element is considered to be, but not limited to, JSON names,
-JSON values, query parameters, query paths, etc...:
+JSON values, query parameters, query paths, etc.:
 
  - Changing the data type of a protocol element (e.g., "hello": 1 to "hello": "world");
  - Changing the name of a protocol element;
+ - Changing the interpreted or semantic meaning of a protocol element (e.g., "secure" changes from signed to encrypted);
+ - Changing the inferences to be drawn from the absence of a protocol element;
  - Expanding the expected range (e.g., 0 to 9 becomes 0 to 10) to
    be found in a protocol element in a response;
  - Contracting the expected range (e.g., 0 to 10 becomes 0 to 9) to
@@ -1047,6 +1052,7 @@ As noted in (#syntax):
 * Any new registration that is a case-variant of an existing registration MUST be rejected.
 * Any registration containing the word "ietf" MUST have IETF consensus.
 * Registrations MUST NOT start with "example".
+* Registrations MUST NOT start with "draft".
 
 As expert reviewers are considered to be subject-matter experts with regard to RDAP,
 they are also expected to use their good technical judgement when evaluating requests.
