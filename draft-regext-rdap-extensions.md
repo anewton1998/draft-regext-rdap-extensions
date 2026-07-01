@@ -757,35 +757,15 @@ Some of these rules are explicit, such as ignoring unknown query parameters and
 JSON names, while others are implicit to the operation of HTTP and JSON, such as
 when a JSON name is specified to have a specific data type.
 
-If an RDAP extension uses a versioning method, such as [@?I-D.ietf-regext-rdap-versioning],
-it MUST be explicitly described in its specification.
-
-### Breaking Changes in Successors {#breaking_changes}
+### Breaking Changes in Revisions {#breaking_changes_revisions}
 
 A breaking change (also known as a backwards-incompatible change) occurs
 when a modification in a revision causes clients conforming to the predecessor to
 malfunction, experience degradation of functionality, or fail to
 interoperate in some other manner.
 
-However, a replacement is indistinguishable from a new, unrelated
-extension and is a breaking change from its predecessor.
-Implementers of such changes should consider the following:
-
- - Whether a replacement can be provided alongside
-   the predecessor, so that a service can simply
-   support both during a transition period;
- - Whether some sort of client signaling should be supported, so that
-   clients can opt for the predecessor or replacement of the extension in
-   responses that they receive (see
-   [@?I-D.ietf-regext-rdap-x-media-type] for an example of how this
-   might work); and
- - Whether the extension itself should define how versioning is
-   handled within the extension documentation.
-
-When using a transition period between a predecessor and its successor,
-the successor must not conflict with the predecessor.
-Typically, this is not an issue when the rules of RDAP namespaced identifiers
-are followed (see (#bare_extensions)), but care should be taken if the
+Typically, breaking changes are easily understood when the rules of RDAP namespaced identifiers
+are not followed (see (#bare_extensions)), but care should be taken if the
 extensions specify other behaviors not protected by namespaces, particularly
 referrals (see (#referrals)).
 
@@ -796,10 +776,10 @@ previously expected another, such as:
    (e.g., "/domain/foo.example" produces "example_domain" instead of "domain");
  - A referral (e.g., "related" produces "example_domain" instead of "domain");
  - Search results; and
- - Other JSON arrays and JSON members.
+ - Other JSON arrays and JSON members that may contain object classes.
 
 Breaking changes may occur in requirements for processing of data in
-protocol elements that appear in both a successor and a predecessor.
+protocol elements that appear in both a successor and a revision.
 For example, a profile extension (see (#profiles)) may require domain names
 always end with a dot ("."). Should its successor remove this requirement,
 this could be considered a breaking change.
@@ -839,7 +819,35 @@ the header with underlying HTTP software and infrastructure.
 When possible, non-breaking revisions are a better practice than replacements
 and the methods described in (#non_overlapping_replacements) and (#overlapping_replacements).
 
-### Non-overlapping Replacements {#non_overlapping_replacements}
+### Compatibility of Replacements
+
+A replacement is indistinguishable from a new, unrelated
+extension and is not backwards-compatible with its predecessor due to the rules of
+RDAP namespaced identifiers (see (#bare_identifiers)).
+Implementers of such changes should consider the following:
+
+ - Whether a replacement can be provided alongside
+   the predecessor, so that a service can simply
+   support both during a transition period;
+ - Whether some sort of client signaling should be supported, so that
+   clients can opt for the predecessor or replacement of the extension in
+   responses that they receive (see
+   [@?I-D.ietf-regext-rdap-x-media-type] for an example of how this
+   might work); and
+ - Whether the extension itself should define how versioning is
+   handled within the extension documentation (see [@?I-D.ietf-regext-rdap-versioning] for an example of how this might work).
+
+When using a transition period between a predecessor and its replacement,
+the replacement must not conflict with the predecessor.
+Typically, this is not an issue when the rules of RDAP namespaced identifiers
+are followed (see (#bare_extensions)), but similar to compatibility of revisions
+there are some non-obvious compatibility issues with replacements.
+Care should be taken if the extensions specify other behaviors not protected by namespaces, particularly
+referrals (see (#referrals)).
+
+Strategies for using a replacement in a transition are described below.
+
+#### Non-overlapping Replacements {#non_overlapping_replacements}
 
 Should an extension author desire to create a successor extension,
 one method is to create a replacement
@@ -886,7 +894,7 @@ During a transition period, both extensions could be in use.
       "example1_spamReputationId": 7890
     }
 
-### Overlapping Replacements {#overlapping_replacements}
+#### Overlapping Replacements {#overlapping_replacements}
 
 If extension authors are concerned about the size of responses for
 replacements using non-overlapping structures (see (#non_overlapping_replacements)),
