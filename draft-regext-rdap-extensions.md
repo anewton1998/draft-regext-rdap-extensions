@@ -739,7 +739,23 @@ For example, "exampleExt1" may be the successor to "exampleExt0", but it
 may also be an extension for a completely separate purpose. Only
 consultation of the definition of "exampleExt1" will determine its
 relationship with "exampleExt0". Additionally, "exampleExt99" may be the
-predecessor of "exampleExt0".
+predecessor to "exampleExt0".
+
+The following terms are used to describe an
+extension that supersedes another:
+
+ - A revision is an extension that succeeds another extension where
+   both the successor and the predecessor use the same extension identifier.
+ - A replacement is an extension that succeeds another extension where
+   the successor uses an extension identifier different from the one used by the predecessor. 
+
+Compatibility of revisions and replacements with their predecessors is
+taken from the rules in [!@RFC7480], [!@RFC9082], and [!@RFC9083] regarding
+the recognition of protocol elements, where a protocol element is 
+considered to be, but not limited to, JSON names, JSON values, query parameters, query paths, etc...
+Some of these rules are explicit, such as ignoring unknown query parameters and
+JSON names, while others are implicit to the operation of HTTP and JSON, such as
+when a JSON name is specified to have a specific data type.
 
 If an RDAP extension uses a versioning method, such as [@?I-D.ietf-regext-rdap-versioning],
 it MUST be explicitly described in its specification.
@@ -747,31 +763,27 @@ it MUST be explicitly described in its specification.
 ### Breaking Changes in Successors {#breaking_changes}
 
 A breaking change (also known as a backwards-incompatible change) occurs
-when a modification in a successor extension with respect to the predecessor
-extension, where each is identified by the same extension identifier (see (#syntax)),
-causes clients conforming to the predecessor extension to
+when a modification in a revision causes clients conforming to the predecessor to
 malfunction, experience degradation of functionality, or fail to
 interoperate in some other manner.
 
-With the current extension model, an extension with a
-successor with breaking changes is indistinguishable from a new,
-unrelated extension.  Additionally, there is no signaling
-mechanism in RDAP to specify successors with breaking changes.
+However, a replacement is indistinguishable from a new, unrelated
+extension and is a breaking change from its predecessor.
 Implementers of such changes should consider the following:
 
- - Whether the new version of the extension can be provided alongside
-   the old version of the extension, so that a service can simply
+ - Whether a replacement can be provided alongside
+   the predecessor, so that a service can simply
    support both during a transition period;
  - Whether some sort of client signaling should be supported, so that
-   clients can opt for the old or new version of the extension in
+   clients can opt for the predecessor or replacement of the extension in
    responses that they receive (see
    [@?I-D.ietf-regext-rdap-x-media-type] for an example of how this
    might work); and
  - Whether the extension itself should define how versioning is
    handled within the extension documentation.
 
-When using a transition period between two versions of an extension by
-using both versions, the successor must not conflict with the predecessor.
+When using a transition period between a predecessor and its successor,
+the successor must not conflict with the predecessor.
 Typically, this is not an issue when the rules of RDAP namespaced identifiers
 are followed (see (#bare_extensions)), but care should be taken if the
 extensions specify other behaviors not protected by namespaces, particularly
@@ -792,9 +804,7 @@ For example, a profile extension (see (#profiles)) may require domain names
 always end with a dot ("."). Should its successor remove this requirement,
 this could be considered a breaking change.
 
-The following is a non-exhaustive list of other types of breaking changes,
-where a protocol element is considered to be, but not limited to, JSON names,
-JSON values, query parameters, query paths, etc.:
+The following is a non-exhaustive list of other types of breaking changes:
 
  - Changing the data type of a protocol element (e.g., "hello": 1 to "hello": "world");
  - Changing the name of a protocol element;
@@ -812,25 +822,28 @@ JSON values, query parameters, query paths, etc.:
  - Changing a required protocol element in a response to optional; and
  - Requiring new protocol elements in a request.
 
-### Non-breaking Changes in Successors {#nonbreaking_changes}
+### Non-breaking Changes in Revisions {#nonbreaking_changes}
 
-The following are considered non-breaking changes between a successor and
-a predecessor.
+The following are considered non-breaking changes between a revision and
+its predecessor.
 
  - New referrals
  - New JSON members
  - New URL paths
- - New query parameters
+ - New, optional query parameters
 
 The use of a new HTTP header (i.e., one previously not in-use with the predecessor),
 may either be a breaking change or a non-breaking change, depending on the usage of
 the header with underlying HTTP software and infrastructure.
 
-### Non-overlapping Successors {#non_overlapping_successors}
+When possible, non-breaking revisions are a better practice than replacements
+and the methods described in (#non_overlapping_replacements) and (#overlapping_replacements).
+
+### Non-overlapping Replacements {#non_overlapping_replacements}
 
 Should an extension author desire to create a successor extension,
-the simplest method is to create a new extension (with a new extension identifier, as required)
-that replicates all the functionality of the previous extension.
+one method is to create a replacement
+that replicates all the functionality of the predecessor.
 
 Take for example this RDAP response for "example0":
 
@@ -844,7 +857,7 @@ Take for example this RDAP response for "example0":
       "example0_malwareReputationId": 1234
     }
 
-A successor extension may define the same functionality with
+A replacement may define the same functionality with
 equivalent structures.
 
     {
@@ -873,10 +886,10 @@ During a transition period, both extensions could be in use.
       "example1_spamReputationId": 7890
     }
 
-### Overlapping Successors {#overlapping_successors}
+### Overlapping Replacements {#overlapping_replacements}
 
 If extension authors are concerned about the size of responses for
-successor extensions using non-overlapping structures (see (#non_overlapping_successors)),
+replacements using non-overlapping structures (see (#non_overlapping_replacements)),
 they may overlap the functionality by requiring the use of the
 previous extension. For example:
 
@@ -892,16 +905,17 @@ previous extension. For example:
       "example1_spamReputationId": 7890
     }
 
-And at some future time, a successor such as "example9" may no longer
+And at some future time, a future replacement such as "example9" may no longer
 need the function provided by "example0" and may cease to reference it.
 
 Note that because RDAP extension identifiers are opaque, an overlapping
 successor is indistinguishable from one extension referencing another
 extension (see (#extension_referencing)).
 
-### Evolving Extensions without Signaled Changes
+### Evolving Extensions without Describing Changes
 
-Because RDAP clients ignore unrecognized JSON names and query parameters, it is
+Because RDAP clients ignore unrecognized JSON names, and RDAP servers ignore unknown
+query parameters, it is
 possible to extend an RDAP extension by adding new JSON names or query parameters
 within the same namespace of an existing RDAP extension without changing the
 extension identifier or using other signaling methods.
@@ -912,7 +926,7 @@ would simply ignore them. This is true for all non-breaking changes
 
 However, when such changes are made, the extension MUST describe
 mechanisms for the clients to recognize and properly process
-such a changed response (e.g., by way of a signaling
+such a changed response (e.g., by way of a
 method like [@?I-D.ietf-regext-rdap-versioning]).
 
 ## Extension Specification Content
@@ -1003,11 +1017,11 @@ in the registry. This field is to remain empty unless IANA is given a date to
 place in the field. A registrant, as denoted by the contact field of the registry,
 may request of IANA to deprecate their RDAP extension. The IESG may request of the
 IANA to deprecate any RDAP extension in the registry.
-The "Deprecation Date" field should use the date format specified in [@!RFC3339].
+The "Deprecation Date" field should use the full-date ABNF rule specified in [@!RFC3339].
 
 IANA is requested to record the RDAP extensions "icann_rdap_response_profile_0" and
 "icann_rdap_technical_implementation_guide_0", currently marked as obsolete,
-with the deprecation date of 20250821.
+with the deprecation date of 2025-08-21.
 
 ### Registration Procedures
 
