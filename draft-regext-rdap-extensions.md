@@ -752,7 +752,7 @@ extension that supersedes another:
 Compatibility of revisions and replacements with their predecessors is
 taken from the rules in [!@RFC7480], [!@RFC9082], and [!@RFC9083] regarding
 the recognition of protocol elements, where a protocol element is 
-considered to be, but not limited to, JSON names, JSON values, query parameters, query paths, etc...
+considered to be, but not limited to, JSON names, JSON values, query parameters, query paths, etc.
 Some of these rules are explicit, such as ignoring unknown query parameters and
 JSON names, while others are implicit to the operation of HTTP and JSON, such as
 when a JSON name is specified to have a specific data type.
@@ -779,7 +779,7 @@ previously expected another, such as:
  - Other JSON arrays and JSON members that may contain object classes.
 
 Breaking changes may occur in requirements for processing of data in
-protocol elements that appear in both a successor and a revision.
+protocol elements that appear in both a predecessor and a revision.
 For example, a profile extension (see (#profiles)) may require domain names
 always end with a dot ("."). Should its successor remove this requirement,
 this could be considered a breaking change.
@@ -789,14 +789,14 @@ The following is a non-exhaustive list of other types of breaking changes:
  - Changing the data type of a protocol element (e.g., "hello": 1 to "hello": "world");
  - Changing the name of a protocol element;
  - Changing the interpreted or semantic meaning of a protocol element (e.g., "secure" changes from signed to encrypted);
- - Changing the inferences to be drawn from the absence of a protocol element;
+ - Changing the inferences to be drawn from the absence of a protocol element (e.g., a default changes from true to false);
  - Expanding the expected range (e.g., 0 to 9 becomes 0 to 10) to
    be found in a protocol element in a response;
  - Contracting the expected range (e.g., 0 to 10 becomes 0 to 9) to
    be found in a protocol element in a request;
- - Expanding the set of values when the set is not defined in an IANA registry to
+ - Expanding a set of values when that set is not defined in an IANA registry to
    be found in a protocol element in a response;
- - Contracting the set of values when the set is not defined in an IANA registry to
+ - Contracting a set of values when that set is not defined in an IANA registry to
    be found in a protocol element in a request;
  - Removing a required protocol element from a response;
  - Changing a required protocol element in a response to optional; and
@@ -815,9 +815,6 @@ its predecessor.
 The use of a new HTTP header (i.e., one previously not in-use with the predecessor),
 may either be a breaking change or a non-breaking change, depending on the usage of
 the header with underlying HTTP software and infrastructure.
-
-When possible, non-breaking revisions are a better practice than replacements
-and the methods described in (#non_overlapping_replacements) and (#overlapping_replacements).
 
 ### Compatibility of Replacements
 
@@ -841,9 +838,8 @@ When using a transition period between a predecessor and its replacement,
 the replacement must not conflict with the predecessor.
 Typically, this is not an issue when the rules of RDAP namespaced identifiers
 are followed (see (#bare_extensions)), but similar to compatibility of revisions
-there are some non-obvious compatibility issues with replacements.
-Care should be taken if the extensions specify other behaviors not protected by namespaces, particularly
-referrals (see (#referrals)).
+there are some non-obvious compatibility issues with replacements regarding behaviors not protected
+by namespaces, such as with referrals (see (#referrals)).
 
 Strategies for using a replacement in a transition are described below.
 
@@ -913,7 +909,7 @@ previous extension. For example:
       "example1_spamReputationId": 7890
     }
 
-And at some future time, a future replacement such as "example9" may no longer
+And at some future time, another overlapping replacement such as "example9" may no longer
 need the function provided by "example0" and may cease to reference it.
 
 Note that because RDAP extension identifiers are opaque, an overlapping
@@ -926,7 +922,7 @@ Because RDAP clients ignore unrecognized JSON names, and RDAP servers ignore unk
 query parameters, it is
 possible to extend an RDAP extension by adding new JSON names or query parameters
 within the same namespace of an existing RDAP extension without changing the
-extension identifier or using other signaling methods.
+extension identifier (i.e., a revision) or using other signaling methods.
 
 In this scenario, clients that are not updated to recognize the new elements
 would simply ignore them. This is true for all non-breaking changes
