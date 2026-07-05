@@ -8,10 +8,10 @@ updates = [7480, 9082, 9083]
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-ietf-regext-rdap-extensions-13"
+value = "draft-ietf-regext-rdap-extensions-14"
 stream = "IETF"
 status = "standard"
-date = 2026-06-16T00:00:00Z
+date = 2026-07-06T00:00:00Z
 
 [[author]]
 initials="A."
@@ -764,10 +764,11 @@ when a modification in a revision causes clients conforming to the predecessor t
 malfunction, experience degradation of functionality, or fail to
 interoperate in some other manner.
 
-Typically, breaking changes are easily understood when the rules of RDAP namespaced identifiers
-are not followed (see (#bare_extensions)), but care should be taken if the
-extensions specify other behaviors not protected by namespaces, particularly
-referrals (see (#referrals)).
+Determining that a change is a breaking change will generally be trivial
+when the change is syntactical, like with the deprecation of a member in a
+response. It may be more difficult with non-syntactical elements, like referrals
+(see (#referrals)). Extension authors should take care when determining whether a
+change is a breaking change.
 
 Another breaking change is to introduce a new object class where a client
 previously expected another, such as:
@@ -913,7 +914,7 @@ And at some future time, another overlapping replacement such as "example9" may 
 need the function provided by "example0" and may cease to reference it.
 
 Note that because RDAP extension identifiers are opaque, an overlapping
-successor is indistinguishable from one extension referencing another
+replacement is indistinguishable from one extension referencing another
 extension (see (#extension_referencing)).
 
 ### Evolving Extensions without Describing Changes
