@@ -757,6 +757,12 @@ Some of these rules are explicit, such as ignoring unknown query parameters and
 JSON names, while others are implicit to the operation of HTTP and JSON, such as
 when a JSON name is specified to have a specific data type.
 
+Versioning of RDAP extensions is expected to follow the general principles
+described in [@MNOT-VERSIONING]:
+
+  - Newer versions of extensions are not to break existing clients.
+  - Backwards-compatible changes should be favored over incompatible ones.
+
 ### Breaking Changes in Revisions {#breaking_changes_revisions}
 
 A breaking change (also known as a backwards-incompatible change) occurs
@@ -821,7 +827,7 @@ the header with underlying HTTP software and infrastructure.
 
 A replacement is indistinguishable from a new, unrelated
 extension and is not backwards-compatible with its predecessor due to the rules of
-RDAP namespaced identifiers (see (#bare_identifiers)).
+RDAP namespaced identifiers (see (#bare_extensions)).
 Implementers of such changes should consider the following:
 
  - Whether a replacement can be provided alongside
@@ -1244,4 +1250,13 @@ Ties de Kock, Pawel Kowalik, Daniel Keathley, and Mario Loffredo.
             <organization>IANA</organization>
         </author>
     </front>
+</reference>
+
+<reference anchor="MNOT-VERSIONING" target="https://mnot.net/blog/2011/web_api_versioning_smackdown">
+  <front>
+    <title>Web API Versioning Smackdown</title>
+    <author initials="M." surname="Nottingham" fullname="Mark Nottingham"/>
+    <date year="2011" month="December" day="19"/>
+  </front>
+  <refcontent>Mark Nottingham's Blog</refcontent>
 </reference>
