@@ -8,10 +8,10 @@ updates = [7480, 9082, 9083]
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-ietf-regext-rdap-extensions-14"
+value = "draft-ietf-regext-rdap-extensions-15"
 stream = "IETF"
 status = "standard"
-date = 2026-07-06T00:00:00Z
+date = 2026-07-18T00:00:00Z
 
 [[author]]
 initials="A."
@@ -284,8 +284,8 @@ identifier pattern, that example could be written as:
         {
           "description":
           [
-            "Query the database."
-            "JSON replaces the Whois."
+            "Query the database.",
+            "JSON replaces the Whois.",
             "Structured data flows."
           ]
         }
@@ -557,7 +557,7 @@ string as defined in (#object_classes_in_extensions).  For example:
             "firstInitial": "J",
             "lastName": "SomePerson"
           }
-        ]
+        }
       ]
     }
 
@@ -742,14 +742,14 @@ relationship with "exampleExt0". Additionally, "exampleExt99" may be the
 predecessor to "exampleExt0".
 
 The following terms are used to describe an
-extension that supersedes another:
+extension that takes the place of another:
 
  - A revision is an extension that succeeds another extension where
    both the successor and the predecessor use the same extension identifier.
- - A replacement is an extension that succeeds another extension where
+ - A superseder is an extension that succeeds another extension where
    the successor uses an extension identifier different from the one used by the predecessor. 
 
-Compatibility of revisions and replacements with their predecessors is
+Compatibility of revisions and superseders with their predecessors is
 taken from the rules in [!@RFC7480], [!@RFC9082], and [!@RFC9083] regarding
 the recognition of protocol elements, where a protocol element is 
 considered to be, but not limited to, JSON names, JSON values, query parameters, query paths, etc.
@@ -762,6 +762,15 @@ described in [@MNOT-VERSIONING]:
 
   - Newer versions of extensions are not to break existing clients.
   - Backwards-compatible changes should be favored over incompatible ones.
+  - A feature change should not unduly impact other features.
+
+Because there is no relationship between an RDAP client and an RDAP
+server, there is no way to absolutely determine if a breaking change will have no
+impact on all clients. Therefore, breaking changes described in this document
+concern only interoperability and not policy. Changes in policy may, and often do,
+result in breakage of interoperability. Such policy changes cannot be outright forbidden,
+and the description of breaking changes and non-breaking changes in this document
+serves to inform policy-makers of interoperability concerns.
 
 ### Breaking Changes in Revisions {#breaking_changes_revisions}
 
@@ -823,37 +832,37 @@ The use of a new HTTP header (i.e., one previously not in-use with the predecess
 may either be a breaking change or a non-breaking change, depending on the usage of
 the header with underlying HTTP software and infrastructure.
 
-### Compatibility of Replacements
+### Compatibility of Superseders
 
-A replacement is indistinguishable from a new, unrelated
+A superseder is indistinguishable from a new, unrelated
 extension and is not backwards-compatible with its predecessor due to the rules of
 RDAP namespaced identifiers (see (#bare_extensions)).
 Implementers of such changes should consider the following:
 
- - Whether a replacement can be provided alongside
+ - Whether a superseder can be provided alongside
    the predecessor, so that a service can simply
    support both during a transition period;
  - Whether some sort of client signaling should be supported, so that
-   clients can opt for the predecessor or replacement of the extension in
+   clients can opt for the predecessor or superseder of the extension in
    responses that they receive (see
    [@?I-D.ietf-regext-rdap-x-media-type] for an example of how this
    might work); and
  - Whether the extension itself should define how versioning is
    handled within the extension documentation (see [@?I-D.ietf-regext-rdap-versioning] for an example of how this might work).
 
-When using a transition period between a predecessor and its replacement,
-the replacement must not conflict with the predecessor.
+When using a transition period between a predecessor and its superseder,
+the superseder must not conflict with the predecessor.
 Typically, this is not an issue when the rules of RDAP namespaced identifiers
 are followed (see (#bare_extensions)), but similar to compatibility of revisions
-there are some non-obvious compatibility issues with replacements regarding behaviors not protected
+there are some non-obvious compatibility issues with superseders regarding behaviors not protected
 by namespaces, such as with referrals (see (#referrals)).
 
-Strategies for using a replacement in a transition are described below.
+Strategies for using a superseder in a transition are described below.
 
-#### Non-overlapping Replacements {#non_overlapping_replacements}
+#### Non-overlapping Superseders {#non_overlapping_superseders}
 
 Should an extension author desire to create a successor extension,
-one method is to create a replacement
+one method is to create a superseder
 that replicates all the functionality of the predecessor.
 
 Take for example this RDAP response for "example0":
@@ -868,7 +877,7 @@ Take for example this RDAP response for "example0":
       "example0_malwareReputationId": 1234
     }
 
-A replacement may define the same functionality with
+A superseder may define the same functionality with
 equivalent structures.
 
     {
@@ -897,10 +906,10 @@ During a transition period, both extensions could be in use.
       "example1_spamReputationId": 7890
     }
 
-#### Overlapping Replacements {#overlapping_replacements}
+#### Overlapping Superseders {#overlapping_superseders}
 
 If extension authors are concerned about the size of responses for
-replacements using non-overlapping structures (see (#non_overlapping_replacements)),
+superseders using non-overlapping structures (see (#non_overlapping_superseders)),
 they may overlap the functionality by requiring the use of the
 previous extension. For example:
 
@@ -916,11 +925,11 @@ previous extension. For example:
       "example1_spamReputationId": 7890
     }
 
-And at some future time, another overlapping replacement such as "example9" may no longer
+And at some future time, another overlapping superseder such as "example9" may no longer
 need the function provided by "example0" and may cease to reference it.
 
 Note that because RDAP extension identifiers are opaque, an overlapping
-replacement is indistinguishable from one extension referencing another
+superseder is indistinguishable from one extension referencing another
 extension (see (#extension_referencing)).
 
 ### Evolving Extensions without Describing Changes
