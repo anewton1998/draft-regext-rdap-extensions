@@ -8,10 +8,10 @@ updates = [7480, 9082, 9083]
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-ietf-regext-rdap-extensions-14"
+value = "draft-ietf-regext-rdap-extensions-15"
 stream = "IETF"
 status = "standard"
-date = 2026-07-06T00:00:00Z
+date = 2026-08-13T00:00:00Z
 
 [[author]]
 initials="A."
@@ -166,9 +166,6 @@ registered in the [@link-relations]:
       ]
     }
 
-When defining the usage of link relations, extensions MUST specify
-the media types expected to be used with those link relations.
-
 Profile extensions 
 leverage the appearance of their identifier in the "rdapConformance"
 array to signal to clients that a profile is in use.
@@ -209,7 +206,7 @@ may collide with an existing extension identifier. RDAP extensions
 MUST NOT define an extension identifier, which when appended with
 an underscore character would be a substring starting from the first
 character of an existing extension identifier. Similarly, RDAP extensions
-MUST NOT define an extension identifier starting with a substring being
+MUST NOT define an extension identifier starting with a substring of
 an existing extension identifier appended with an underscore.
 For example, if there were a pre-existing
 identifier of "example1_bar", another extension could not define the
@@ -218,10 +215,12 @@ identifier "example1". Likewise, if there were a pre-existing identifier of
 "example1_bar_buzz".  However, an extension could define "exampleThing" if there
 were a pre-existing definition of "exampleThingOther", and vice versa.
 
-For this reason, this document updates the guidance of
-[@!RFC7480] regarding underscore characters: RDAP extensions MUST NOT use an underscore character
-in their RDAP extension identifier. Implementers should be aware that many
-existing extension identifiers do contain underscore characters.
+This document updates the ABNF “name” rule in [@!RFC7480] to not allow the
+use of an underscore character in the RDAP extension identifier.   The revised ABNF [@!RFC5234] “name” rule is:
+
+    name = ALPHA *( ALPHA / DIGIT )
+
+Implementers should be aware that existing extension identifiers do contain underscore characters.
 
 Extension identifiers containing the word "ietf" in any mixed capitalization
 MUST have IETF consensus.
@@ -241,36 +240,16 @@ a mixed-case version of an existing identifier (see (#rdap_extensions_registry))
 with "lunarNic" (note the lowercase "ic" in "Nic") would not be
 allowed.
 
-## Bare Extension Identifiers {#bare_extensions}
+The [@!RFC7480] ABNF "name" rule referenced JSON names, where there was no requirement
+to include the suffix for JSON members, and Section 2.1 of [@!RFC9083] included the
+language “JSON responses SHOULD have member names prefixed with a short identifier followed
+by an underscore followed by a meaningful name”.  This contradiction led to the use of a
+bare extension identifier, where a JSON member uses the extension identifier without
+the use of an underscore followed by a meaningful name.  That is, the extension identifier
+is used "bare" and not appended with an underscore character and subsequent names.
 
-A "bare" extension identifier is one that is used without a prefix
-(e.g., "exampleExt" instead of "exampleExt_author").
-
-[@!RFC9083, section 2.1] states the following when using the names of JSON
-members:
-
-> Clients of these JSON responses SHOULD ignore unrecognized JSON members in responses.
-> Servers can insert members into the JSON responses, which are not specified in this
-> document, but that does not constitute an error in the response. Servers that insert
-> such unspecified members into JSON responses SHOULD have member names prefixed with
-> a short identifier followed by an underscore followed by a meaningful name. It has
-> been observed that these short identifiers aid software implementers with identifying
-> the specification of the JSON member, and failure to use one could cause an implementer
-> to assume the server is erroneously using a name from this specification. This allowance
-> does not apply to jCard [@?RFC7095] objects. The full JSON name (the prefix plus the
-> underscore plus the meaningful name) SHOULD adhere to the character and name limitations
-> of the prefix registry described in [@?RFC7480]. Failure to use these limitations
-> could result in slower adoption as these limitations have been observed to aid some client
-> programming models.
-
-Despite this, some RDAP extensions define only one JSON value and do not prefix it
-with their RDAP extension identifier, instead using the extension
-identifier as the JSON name for that JSON value. That is, the
-extension identifier is used "bare" and not appended with an
-underscore character and subsequent names.
-
-Consider the example in (#child_json_values). Using the bare extension
-identifier pattern, that example could be written as:
+Consider the example in (#child_json_values). Using the bare extension identifier pattern,
+that example could be written as:
 
     {
       "rdapConformance": [
@@ -284,8 +263,8 @@ identifier pattern, that example could be written as:
         {
           "description":
           [
-            "Query the database."
-            "JSON replaces the Whois."
+            "Query the database.",
+            "JSON replaces the Whois.",
             "Structured data flows."
           ]
         }
@@ -297,23 +276,21 @@ identifier pattern, that example could be written as:
       }
     }
 
-While [@!RFC9083] is specific to JSON, the use of a bare extension identifier also applies to other identifiers of RDAP extensions, such
-as query parameters and object class names. Identifiers of an RDAP extension which need a prefix to avoid name collision with identifiers
-of other RDAP extensions or RDAP as specified in [@!RFC7480], [@!RFC9082], and [@!RFC9083] are referred to as namespaced identifiers.
+While [@!RFC9083] is specific to JSON, the use of a bare extension identifier also applies
+to other identifiers of RDAP extensions, such as query parameters and object class names.
+Identifiers of an RDAP extension which need a prefix to avoid name collision with identifiers
+of other RDAP extensions or RDAP as specified in [@!RFC7480], [@!RFC9082], and [@!RFC9083] are
+referred to as namespaced identifiers. Prefixed identifiers are clearly syntactically
+distinguishable from identifiers defined by the core RDAP specifications,
+which provides more flexibility to implementers and helps with debugging and operational issues. 
 
-Usage of a bare extension identifier conflicts with the guidance in
-[@!RFC9083, section 2.1]. Previously, extension authors have used this
-pattern when only one query path, JSON name, and/or object class is being
-defined by the extension.
+The syntax for extension elements
+(JSON member, query parameters, object class name, HTTP headers, path segments, media type parameter, etc.)
+is defined by the "extension-element" ABNF rule:
 
-Implementation experience has shown that an extension using a bare
-identifier can be interoperable, though more difficult to process and
-parse in some instances.  Furthermore, prefixed identifiers are
-clearly syntactically distinguishable from identifiers defined by the
-core RDAP specifications, which provides more flexibility to
-implementers and helps with debugging and similar.  Due to these
-considerations, the bare extension identifier pattern MUST NOT be used
-for any namespaced identifier.
+    extension-element = name "_" ALPHA *( ALPHA / DIGIT / "_" ) 
+
+Implementers should be aware that existing extension elements use bare extension identifiers.
 
 ## Usage in Requests {#usage_in_requests}
 
@@ -394,34 +371,10 @@ from another extension.
 
 This document updates this guidance: clients MUST ignore unknown JSON names.
 
-The example given in [@!RFC9083] is as follows:
-
-    {
-      "handle": "ABC123",
-      "lunarNIC_beforeOneSmallStep": "TRUE THAT!",
-      "remarks":
-      [
-        {
-          "description":
-          [
-            "She sells sea shells down by the sea shore.",
-            "Originally written by Terry Sullivan."
-          ]
-        }
-      ],
-      "lunarNIC_harshMistressNotes":
-      [
-        "In space,",
-        "nobody can hear you scream."
-      ]
-    }
-
-In this example, the extension identified by "lunarNIC" is prepended
-to the member names of both a JSON string and a JSON array.
-
 As [@!RFC9083, section 4.1] requires the use of the "rdapConformance"
 data structure, and the "objectClassName" string is required of all
-object class instances, the complete example from above would be:
+object class instances, a complete example based on the example from
+[@!RFC9083] would be:
 
     {
       "rdapConformance": [
@@ -442,10 +395,10 @@ object class instances, the complete example from above would be:
           ]
         }
       ],
-      "lunarNIC_harshMistressNotes":
+      "lunarNIC_spaceNotes":
       [
-        "In space,",
-        "nobody can hear you scream."
+        "Because space is so vast",
+        "you must use IPv6."
       ]
     }
 
@@ -557,7 +510,7 @@ string as defined in (#object_classes_in_extensions).  For example:
             "firstInitial": "J",
             "lastName": "SomePerson"
           }
-        ]
+        }
       ]
     }
 
@@ -575,14 +528,14 @@ response:
 
 A strict interpretation of this wording where "construction of the
 response" refers only to the JSON structure would rule out the use of
-(#profiles) extension identifiers, which are in common use
+profile extensions (see (#profiles)), which are in common use
 in RDAP.  This document clarifies the guidance. For responses to queries
 other than "/help", a response MUST include in the "rdapConformance"
 array only those extension identifiers necessary for a client to
 deserialize the JSON and understand the semantic meaning of the
-content within the JSON, and each extension identifier MUST be free
-from conflict with the other identifiers with respect to their syntax
-and semantics.
+content within the JSON, which includes profile extension identifiers (see (#profiles)).
+Each extension identifier MUST be free from conflict with the other identifiers
+with respect to their syntax and semantics.
 
 Note that this document does not update the guidance from [@!RFC9083, section 4.1]
 regarding "/help" responses and the "rdapConformance" array.
@@ -610,7 +563,7 @@ status codes in [@http-status-codes].
 Extensions MAY define new media type parameters for the "application/rdap+json" media
 type. Extensions MUST NOT redefine the meaning of existing media type parameters.
 Media type parameters MUST be prefixed with an extension identifier
-(see (#bare_extensions)).
+(see (#syntax)).
 
 RDAP extensions defining the use of new HTTP headers, HTTP status codes,
 or media type parameters MUST have IETF consensus.
@@ -706,10 +659,15 @@ Extensions MUST register new link relations in the [@link-relations] registry.
 The expert reviewers of this registry may require the relationship name
 be prepended with "rdap-".
 
+When defining the usage of link relations, extensions MUST specify
+the media types expected to be used with those link relations.
+
 ## Extensions Referencing Other Extensions {#extension_referencing}
 
-As stated in (#profiles), extensions may rely on other extensions by stipulating
+As stated for profile extensions (see (#profiles)), extensions may rely on other extensions by stipulating
 the usage of those other extensions.
+Dependencies between extensions MUST be defined using a normative reference
+in the dependent extension and MUST include an explicit description of the dependency.
 
 For example, the extension "exampleExt1" may require the usage of structures defined
 in "exampleExt2" instead of redefining new, equivalent structures:
@@ -742,14 +700,14 @@ relationship with "exampleExt0". Additionally, "exampleExt99" may be the
 predecessor to "exampleExt0".
 
 The following terms are used to describe an
-extension that supersedes another:
+extension that takes the place of another:
 
  - A revision is an extension that succeeds another extension where
    both the successor and the predecessor use the same extension identifier.
- - A replacement is an extension that succeeds another extension where
+ - A superseder is an extension that succeeds another extension where
    the successor uses an extension identifier different from the one used by the predecessor. 
 
-Compatibility of revisions and replacements with their predecessors is
+Compatibility of revisions and superseders with their predecessors is
 taken from the rules in [!@RFC7480], [!@RFC9082], and [!@RFC9083] regarding
 the recognition of protocol elements, where a protocol element is 
 considered to be, but not limited to, JSON names, JSON values, query parameters, query paths, etc.
@@ -757,11 +715,13 @@ Some of these rules are explicit, such as ignoring unknown query parameters and
 JSON names, while others are implicit to the operation of HTTP and JSON, such as
 when a JSON name is specified to have a specific data type.
 
-Versioning of RDAP extensions is expected to follow the general principles
-described in [@MNOT-VERSIONING]:
-
-  - Newer versions of extensions are not to break existing clients.
-  - Backwards-compatible changes should be favored over incompatible ones.
+Because there is no relationship between an RDAP client and an RDAP
+server, there is no way to absolutely determine if a breaking change will have no
+impact on all clients. Therefore, breaking changes described in this document
+concern only interoperability and not policy. Changes in policy may
+result in breakage of interoperability. Such policy changes cannot be outright forbidden,
+and the description of breaking changes and non-breaking changes in this document
+serves to inform policy-makers of interoperability concerns.
 
 ### Breaking Changes in Revisions {#breaking_changes_revisions}
 
@@ -823,41 +783,42 @@ The use of a new HTTP header (i.e., one previously not in-use with the predecess
 may either be a breaking change or a non-breaking change, depending on the usage of
 the header with underlying HTTP software and infrastructure.
 
-### Compatibility of Replacements
+### Considerations for Superseders
 
-A replacement is indistinguishable from a new, unrelated
+A superseder is indistinguishable from a new, unrelated
 extension and is not backwards-compatible with its predecessor due to the rules of
-RDAP namespaced identifiers (see (#bare_extensions)).
+RDAP namespaced identifiers (see (#syntax)).
 Implementers of such changes should consider the following:
 
- - Whether a replacement can be provided alongside
+ - Whether a superseder can be provided alongside
    the predecessor, so that a service can simply
    support both during a transition period;
  - Whether some sort of client signaling should be supported, so that
-   clients can opt for the predecessor or replacement of the extension in
+   clients can opt for the predecessor or superseder of the extension in
    responses that they receive (see
    [@?I-D.ietf-regext-rdap-x-media-type] for an example of how this
    might work); and
  - Whether the extension itself should define how versioning is
    handled within the extension documentation (see [@?I-D.ietf-regext-rdap-versioning] for an example of how this might work).
 
-When using a transition period between a predecessor and its replacement,
-the replacement must not conflict with the predecessor.
+When using a transition period between a predecessor and its superseder,
+the superseder must not conflict with the predecessor.
 Typically, this is not an issue when the rules of RDAP namespaced identifiers
-are followed (see (#bare_extensions)), but similar to compatibility of revisions
-there are some non-obvious compatibility issues with replacements regarding behaviors not protected
+are followed (see (#syntax)), but similar to compatibility of revisions
+there are some non-obvious compatibility issues with superseders regarding behaviors not protected
 by namespaces, such as with referrals (see (#referrals)).
 
-Strategies for using a replacement in a transition are described below.
+Known strategies compatible with [@!RFC7480], [@!RFC9082], and [@!RFC9083] using a superseder are described below.
 
-#### Non-overlapping Replacements {#non_overlapping_replacements}
+#### Non-overlapping Superseders {#non_overlapping_superseders}
 
 Should an extension author desire to create a successor extension,
-one method is to create a replacement
+one method is to create a superseder
 that replicates all the functionality of the predecessor.
 
 Take for example this RDAP response for "example0":
 
+!---
     {
       "rdapConformance": [
         "rdap_level_0",
@@ -867,10 +828,13 @@ Take for example this RDAP response for "example0":
       "ldhName": "example.com",
       "example0_malwareReputationId": 1234
     }
+!---
+Figure: note "example0_malwareReputationId"
 
-A replacement may define the same functionality with
+A superseder may define the same functionality with
 equivalent structures.
 
+!---
     {
       "rdapConformance": [
         "rdap_level_0",
@@ -881,9 +845,12 @@ equivalent structures.
       "example1_malwareReputationId": 1234,
       "example1_spamReputationId": 7890
     }
+!---
+Figure: note "example1" replicates "example0" and adds new members
 
 During a transition period, both extensions could be in use.
 
+!---
     {
       "rdapConformance": [
         "rdap_level_0",
@@ -896,14 +863,17 @@ During a transition period, both extensions could be in use.
       "example1_malwareReputationId": 1234,
       "example1_spamReputationId": 7890
     }
+!---
+Figure: note "example0" and "example1" both have "malwareReputationId"
 
-#### Overlapping Replacements {#overlapping_replacements}
+#### Overlapping Superseders {#overlapping_superseders}
 
 If extension authors are concerned about the size of responses for
-replacements using non-overlapping structures (see (#non_overlapping_replacements)),
+superseders using non-overlapping structures (see (#non_overlapping_superseders)),
 they may overlap the functionality by requiring the use of the
 previous extension. For example:
 
+!---
     {
       "rdapConformance": [
         "rdap_level_0",
@@ -915,12 +885,14 @@ previous extension. For example:
       "example0_malwareReputationId": 1234,
       "example1_spamReputationId": 7890
     }
+!---
+Figure: note "example0" is required and "example1" adds the new member
 
-And at some future time, another overlapping replacement such as "example9" may no longer
+And at some future time, another overlapping superseder such as "example9" may no longer
 need the function provided by "example0" and may cease to reference it.
 
 Note that because RDAP extension identifiers are opaque, an overlapping
-replacement is indistinguishable from one extension referencing another
+superseder is indistinguishable from one extension referencing another
 extension (see (#extension_referencing)).
 
 ### Evolving Extensions without Describing Changes
@@ -1252,11 +1224,3 @@ Ties de Kock, Pawel Kowalik, Daniel Keathley, and Mario Loffredo.
     </front>
 </reference>
 
-<reference anchor="MNOT-VERSIONING" target="https://mnot.net/blog/2011/web_api_versioning_smackdown">
-  <front>
-    <title>Web API Versioning Smackdown</title>
-    <author initials="M." surname="Nottingham" fullname="Mark Nottingham"/>
-    <date year="2011" month="December" day="19"/>
-  </front>
-  <refcontent>Mark Nottingham's Blog</refcontent>
-</reference>
