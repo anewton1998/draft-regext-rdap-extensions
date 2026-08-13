@@ -240,11 +240,11 @@ a mixed-case version of an existing identifier (see (#rdap_extensions_registry))
 with "lunarNic" (note the lowercase "ic" in "Nic") would not be
 allowed.
 
-The [@!RFC7480] ABNF "name" rule referenced JSON Names, where there was no requirement
+The [@!RFC7480] ABNF "name" rule referenced JSON names, where there was no requirement
 to include the suffix for JSON members, and Section 2.1 of [@!RFC9083] included the
 language “JSON responses SHOULD have member names prefixed with a short identifier followed
 by an underscore followed by a meaningful name”.  This contradiction led to the use of a
-Bare Extension Identifier, where a JSON member uses the extension identifier without
+bare extension identifier, where a JSON member uses the extension identifier without
 the use of an underscore followed by a meaningful name.  That is, the extension identifier
 is used "bare" and not appended with an underscore character and subsequent names.
 
@@ -290,7 +290,7 @@ is defined by the "extension-element" ABNF rule:
 
     extension-element = name "_" ALPHA *( ALPHA / DIGIT / "_" ) 
 
-Implementers should be aware that existing extension elements use Bare Extension Identifiers.
+Implementers should be aware that existing extension elements use bare extension identifiers.
 
 ## Usage in Requests {#usage_in_requests}
 
@@ -846,7 +846,7 @@ equivalent structures.
       "example1_spamReputationId": 7890
     }
 !---
-Figure: note "example1" replicates example0 and adds new members
+Figure: note "example1" replicates "example0" and adds new members
 
 During a transition period, both extensions could be in use.
 
