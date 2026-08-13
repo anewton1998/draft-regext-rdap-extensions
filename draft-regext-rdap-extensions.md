@@ -263,8 +263,8 @@ that example could be written as:
         {
           "description":
           [
-            "Query the database."
-            "JSON replaces the Whois."
+            "Query the database.",
+            "JSON replaces the Whois.",
             "Structured data flows."
           ]
         }
