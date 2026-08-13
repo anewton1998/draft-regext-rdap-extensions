@@ -818,6 +818,7 @@ that replicates all the functionality of the predecessor.
 
 Take for example this RDAP response for "example0":
 
+!---
     {
       "rdapConformance": [
         "rdap_level_0",
@@ -827,10 +828,13 @@ Take for example this RDAP response for "example0":
       "ldhName": "example.com",
       "example0_malwareReputationId": 1234
     }
+!---
+Figure: note "example0_malwareReputationId"
 
 A superseder may define the same functionality with
 equivalent structures.
 
+!---
     {
       "rdapConformance": [
         "rdap_level_0",
@@ -841,9 +845,12 @@ equivalent structures.
       "example1_malwareReputationId": 1234,
       "example1_spamReputationId": 7890
     }
+!---
+Figure: note "example1" replicates example0 and adds new members
 
 During a transition period, both extensions could be in use.
 
+!---
     {
       "rdapConformance": [
         "rdap_level_0",
@@ -856,6 +863,8 @@ During a transition period, both extensions could be in use.
       "example1_malwareReputationId": 1234,
       "example1_spamReputationId": 7890
     }
+!---
+Figure: note "example0" and "example1" both have "malwareReputationId"
 
 #### Overlapping Superseders {#overlapping_superseders}
 
@@ -864,6 +873,7 @@ superseders using non-overlapping structures (see (#non_overlapping_superseders)
 they may overlap the functionality by requiring the use of the
 previous extension. For example:
 
+!---
     {
       "rdapConformance": [
         "rdap_level_0",
@@ -875,6 +885,8 @@ previous extension. For example:
       "example0_malwareReputationId": 1234,
       "example1_spamReputationId": 7890
     }
+!---
+Figure: note "example0" is required and "example1" adds the new member
 
 And at some future time, another overlapping superseder such as "example9" may no longer
 need the function provided by "example0" and may cease to reference it.
