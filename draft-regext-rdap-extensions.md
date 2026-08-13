@@ -718,7 +718,7 @@ when a JSON name is specified to have a specific data type.
 Because there is no relationship between an RDAP client and an RDAP
 server, there is no way to absolutely determine if a breaking change will have no
 impact on all clients. Therefore, breaking changes described in this document
-concern only interoperability and not policy. Changes in policy may, and often do,
+concern only interoperability and not policy. Changes in policy may
 result in breakage of interoperability. Such policy changes cannot be outright forbidden,
 and the description of breaking changes and non-breaking changes in this document
 serves to inform policy-makers of interoperability concerns.
@@ -808,7 +808,7 @@ are followed (see (#syntax)), but similar to compatibility of revisions
 there are some non-obvious compatibility issues with superseders regarding behaviors not protected
 by namespaces, such as with referrals (see (#referrals)).
 
-Strategies for using a superseder in a transition are described below.
+Known strategies compatible with [@!RFC7480], [@!RFC9082], and [@!RFC9083] using a superseder are described below.
 
 #### Non-overlapping Superseders {#non_overlapping_superseders}
 
