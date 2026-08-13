@@ -715,13 +715,6 @@ Some of these rules are explicit, such as ignoring unknown query parameters and
 JSON names, while others are implicit to the operation of HTTP and JSON, such as
 when a JSON name is specified to have a specific data type.
 
-Versioning of RDAP extensions is expected to follow the general principles
-described in [?@MNOT-VERSIONING]:
-
-  - Newer versions of extensions are not to break existing clients.
-  - Backwards-compatible changes should be favored over incompatible ones.
-  - A feature change should not unduly impact other features.
-
 Because there is no relationship between an RDAP client and an RDAP
 server, there is no way to absolutely determine if a breaking change will have no
 impact on all clients. Therefore, breaking changes described in this document
@@ -1219,11 +1212,3 @@ Ties de Kock, Pawel Kowalik, Daniel Keathley, and Mario Loffredo.
     </front>
 </reference>
 
-<reference anchor="MNOT-VERSIONING" target="https://mnot.net/blog/2011/web_api_versioning_smackdown">
-  <front>
-    <title>Web API Versioning Smackdown</title>
-    <author initials="M." surname="Nottingham" fullname="Mark Nottingham"/>
-    <date year="2011" month="December" day="19"/>
-  </front>
-  <refcontent>Mark Nottingham's Blog</refcontent>
-</reference>
