@@ -240,6 +240,8 @@ a mixed-case version of an existing identifier (see (#rdap_extensions_registry))
 with "lunarNic" (note the lowercase "ic" in "Nic") would not be
 allowed.
 
+### Bare Extension Identifiers
+
 The [@!RFC7480] ABNF "name" rule referenced JSON names, where there was no requirement
 to include the suffix for JSON members, and Section 2.1 of [@!RFC9083] included the
 language “JSON responses SHOULD have member names prefixed with a short identifier followed
@@ -283,12 +285,6 @@ of other RDAP extensions or RDAP as specified in [@!RFC7480], [@!RFC9082], and [
 referred to as namespaced identifiers. Prefixed identifiers are clearly syntactically
 distinguishable from identifiers defined by the core RDAP specifications,
 which provides more flexibility to implementers and helps with debugging and operational issues. 
-
-The syntax for extension elements
-(JSON member, query parameters, object class name, HTTP headers, path segments, media type parameter, etc.)
-is defined by the "extension-element" ABNF rule:
-
-    extension-element = name "_" ALPHA *( ALPHA / DIGIT / "_" ) 
 
 Implementers should be aware that existing extension elements use bare extension identifiers.
 
@@ -778,6 +774,7 @@ its predecessor.
  - New JSON members
  - New URL paths
  - New, optional query parameters
+ - New link relations
 
 The use of a new HTTP header (i.e., one previously not in-use with the predecessor),
 may either be a breaking change or a non-breaking change, depending on the usage of
@@ -814,7 +811,7 @@ Known strategies compatible with [@!RFC7480], [@!RFC9082], and [@!RFC9083] using
 
 Should an extension author desire to create a successor extension,
 one method is to create a superseder
-that replicates all the functionality of the predecessor.
+that replicates some or all the functionality of the predecessor.
 
 Take for example this RDAP response for "example0":
 
@@ -848,7 +845,9 @@ equivalent structures.
 !---
 Figure: note "example1" replicates "example0" and adds new members
 
-During a transition period, both extensions could be in use.
+During a transition period, both extensions could be in use to have interoperability
+with clients with processing logic specific to the superseder and clients with processing logic only specifc
+to the predecessor.
 
 !---
     {
@@ -865,6 +864,12 @@ During a transition period, both extensions could be in use.
     }
 !---
 Figure: note "example0" and "example1" both have "malwareReputationId"
+
+A non-overlapping superseder may replicate all the functionality of the predecessor,
+or it may replicate only parts of the predecessor. The specification for a superseder MUST
+specify how clients are to process the protocol elements from a predecessor. It is RECOMMENDED
+that the specifications for a superseder instruct clients to cease processing the predecessor
+and treat it as if it were an unknown RDAP extension.
 
 #### Overlapping Superseders {#overlapping_superseders}
 
@@ -1014,7 +1019,7 @@ successor.
 
 The registration template of this registry is found in [@!RFC7480] and is unchanged by this document.
 It is requested of the IANA that all registrations be copied to regext@ietf.org
-or its successor.
+or its successor (i.e., requests from IETF and non-IETF origins).
 
 Extensions MUST be documented in a stable, non-changing, and
 readily available reference, in sufficient detail that
@@ -1059,11 +1064,14 @@ they are also expected to use their good technical judgement when evaluating req
 
 [@!RFC9083, section 10.2] defines the [@rdap-json-values].
 This registry contains values to be used in the JSON values of RDAP responses.
+
+### Registration Procedures
+
 Registrations into this registry may occur in IETF-defined RDAP extensions
 or via requests to the IANA. Authors of RDAP extensions not defined by the
 IETF MAY register values in this registry via requests to the IANA. IANA
-is requested to send a copy of any request not originating from the IETF to
-regext@ietf.org or its successor.
+is requested to send a copy of all requests to
+regext@ietf.org or its successor (i.e. requests from both IETF and non-IETF origins).
 
 This document does not change the [@rdap-json-values] nor its purpose.
 However, this document does update the procedures for registrations and the
@@ -1084,6 +1092,8 @@ states:
 All registrations SHOULD meet these requirements. However, there may be scenarios
 in which it is more appropriate for the values to follow other
 requirements, such as for values also used in other specifications or documents.
+In such cases, the registration MUST include the justification when these
+requirements are not followed.
 
 Registrations MUST NOT contain problematic code points as defined by [@!RFC9839, section 2.2].
 
@@ -1096,6 +1106,8 @@ In all cases, it should be understood that additional registrations of RDAP JSON
 after the specification of the value's type in the registry may not be
 recognized by clients, and therefore either ignored or passed on to users
 without processing.
+
+### Expert Review
 
 Designated experts MUST reject any registration that is a duplicate of an
 existing registration, and all registrations are to be considered case-insensitive.
@@ -1114,6 +1126,64 @@ submitted registration.
 Expert reviewers are to use the criteria defined in [@!RFC9083, section 10.2].
 As expert reviewers are considered to be subject-matter experts with regard to RDAP,
 they are also expected to use their good technical judgement when evaluating requests.
+
+## Link Relatations
+
+IANA is requested to register the following relationships into [@link-relations]:
+
+#### rdap-base
+
+**Relation Name:** rdap-base
+
+**Description:** Refers to the base URL of an RDAP service. This relations MUST NOT
+be used in HTTP redirects because the target URL is not expected to fully specify
+the location of an RDAP resource (see [@!RFC7480]).
+
+**Reference:** This document once published as an RFC.
+
+#### rdap-base-top
+
+**Relation Name:** rdap-base-top
+
+**Description:** Refers to the base URL of the RDAP service at the top of a hierarchy
+such as a hierarchy described in [@?RFC9910]. This relations MUST NOT
+be used in HTTP redirects because the target URL is not expected to fully specify
+the location of an RDAP resource (see [@!RFC7480]).
+
+**Reference:** This document once published as an RFC.
+
+#### rdap-base-bottom
+
+**Relation Name:** rdap-base-bottom
+
+**Description:** Refers to the base URL of the RDAP service at the bottom of a hierarchy
+such as a hierarchy described in [@?RFC9910]. This relations MUST NOT
+be used in HTTP redirects because the target URL is not expected to fully specify
+the location of an RDAP resource (see [@!RFC7480]).
+
+**Reference:** This document once published as an RFC.
+
+#### rdap-base-up
+
+**Relation Name:** rdap-base-up
+
+**Description:** Refers to the base URL of the RDAP service one level up in a hierarchy
+such as a hierarchy described in [@?RFC9910]. This relations MUST NOT
+be used in HTTP redirects because the target URL is not expected to fully specify
+the location of an RDAP resource (see [@!RFC7480]).
+
+**Reference:** This document once published as an RFC.
+
+#### rdap-base-down
+
+**Relation Name:** rdap-base-down
+
+**Description:** Refers to the base URL of the RDAP service one level down in a hierarchy
+such as a hierarchy described in [@?RFC9910]. This relations MUST NOT
+be used in HTTP redirects because the target URL is not expected to fully specify
+the location of an RDAP resource (see [@!RFC7480]).
+
+**Reference:** This document once published as an RFC.
 
 # Operational Considerations
 
