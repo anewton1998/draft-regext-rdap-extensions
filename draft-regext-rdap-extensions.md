@@ -1181,7 +1181,7 @@ they are also expected to use their good technical judgement when evaluating req
 
 IANA is requested to register the following relationships into [@link-relations]:
 
-#### rdap-base
+### rdap-base
 
 **Relation Name:** rdap-base
 
@@ -1191,7 +1191,7 @@ the location of an RDAP resource (see [@!RFC7480]).
 
 **Reference:** This document once published as an RFC.
 
-#### rdap-base-top
+### rdap-base-top
 
 **Relation Name:** rdap-base-top
 
@@ -1202,7 +1202,7 @@ the location of an RDAP resource (see [@!RFC7480]).
 
 **Reference:** This document once published as an RFC.
 
-#### rdap-base-bottom
+### rdap-base-bottom
 
 **Relation Name:** rdap-base-bottom
 
@@ -1213,7 +1213,7 @@ the location of an RDAP resource (see [@!RFC7480]).
 
 **Reference:** This document once published as an RFC.
 
-#### rdap-base-up
+### rdap-base-up
 
 **Relation Name:** rdap-base-up
 
@@ -1224,7 +1224,7 @@ the location of an RDAP resource (see [@!RFC7480]).
 
 **Reference:** This document once published as an RFC.
 
-#### rdap-base-down
+### rdap-base-down
 
 **Relation Name:** rdap-base-down
 
