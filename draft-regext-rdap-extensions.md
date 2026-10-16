@@ -216,7 +216,7 @@ identifier "example1". Likewise, if there were a pre-existing identifier of
 were a pre-existing definition of "exampleThingOther", and vice versa.
 
 This document updates the ABNF “name” rule in [@!RFC7480] to not allow the
-use of an underscore character in the RDAP extension identifier.   The revised ABNF [@!RFC5234] “name” rule is:
+use of an underscore character in the RDAP extension identifier. The revised ABNF [@!RFC5234] “name” rule is:
 
     name = ALPHA *( ALPHA / DIGIT )
 
@@ -242,13 +242,38 @@ allowed.
 
 ### Bare Extension Identifiers
 
-The [@!RFC7480] ABNF "name" rule referenced JSON names, where there was no requirement
-to include the suffix for JSON members, and Section 2.1 of [@!RFC9083] included the
-language “JSON responses SHOULD have member names prefixed with a short identifier followed
-by an underscore followed by a meaningful name”.  This contradiction led to the use of a
-bare extension identifier, where a JSON member uses the extension identifier without
-the use of an underscore followed by a meaningful name.  That is, the extension identifier
-is used "bare" and not appended with an underscore character and subsequent names.
+A "bare" extension identifier is one that is used without a prefix
+(e.g., "exampleExt" instead of "exampleExt_author").
+
+Section 6 of [@!RFC7480] establishes the ABNF "name" rule (see above) for
+"prefixes used in JSON data serialization and URI path segments".
+
+Section 2.1 of [@!RFC9083] states the following when using the names of
+JSON members:
+
+>  Clients of these JSON responses SHOULD ignore unrecognized JSON
+>  members in responses.  Servers can insert members into the JSON
+>  responses, which are not specified in this document, but that does
+>  not constitute an error in the response.  Servers that insert such
+>  unspecified members into JSON responses SHOULD have member names
+>  prefixed with a short identifier followed by an underscore
+>  followed by a meaningful name.  It has been observed that these
+>  short identifiers aid software implementers with identifying the
+>  specification of the JSON member, and failure to use one could
+>  cause an implementer to assume the server is erroneously using a
+>  name from this specification.  This allowance does not apply to
+>  jCard [@!RFC7095] objects.  The full JSON name (the prefix plus the
+>  underscore plus the meaningful name) SHOULD adhere to the
+>  character and name limitations of the prefix registry described in
+>  [@!RFC7480].  Failure to use these limitations could result in
+>  slower adoption as these limitations have been observed to aid
+>  some client programming models.
+
+Despite this, some RDAP extensions define only one JSON value and do
+not prefix it with their RDAP extension identifier, instead using the
+extension identifier as the JSON name for that JSON value.  That is,
+the extension identifier is used "bare" and not appended with an
+underscore character and subsequent names.
 
 Consider the example in (#child_json_values). Using the bare extension identifier pattern,
 that example could be written as:
@@ -279,7 +304,7 @@ that example could be written as:
     }
 
 While [@!RFC9083] is specific to JSON, the use of a bare extension identifier also applies
-to other identifiers of RDAP extensions, such as query parameters and object class names.
+to other identifiers of RDAP extensions (see [@!RFC7480]), such as query parameters and object class names.
 Identifiers of an RDAP extension which need a prefix to avoid name collision with identifiers
 of other RDAP extensions or RDAP as specified in [@!RFC7480], [@!RFC9082], and [@!RFC9083] are
 referred to as namespaced identifiers. Prefixed identifiers are clearly syntactically
