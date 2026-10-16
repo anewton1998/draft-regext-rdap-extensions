@@ -1199,7 +1199,7 @@ to handle scenarios in which servers incorrectly use the wrong case.
 ## Referral and Redirect Loops
 
 A redirect loop will occur if a server issues a redirect causing a client to follow
-redirects back to a previous server queried during the processing of the same query.
+redirects back to a previous resource queried during the processing of the same query.
 Clients MUST cancel any queries when a redirect loop is detected. Servers MUST NOT
 issue responses that cause redirect loops.
 
