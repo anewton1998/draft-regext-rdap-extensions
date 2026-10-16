@@ -186,7 +186,7 @@ other RDAP extension points (see (#summary_of_updates)).
 ### Multiple Identifiers in Single Extension
 
 Extension specifications MAY define more than one extension identifier.
-The servers MUST list all extension identifiers used to generate a response
+The server MUST list all extension identifiers used to generate a response
 in the "rdapConformance" array. The server MUST list all supported
 extension identifiers in the "rdapConformance" array of a response to a "/help" request.
 
@@ -215,11 +215,8 @@ identifier "example1". Likewise, if there were a pre-existing identifier of
 "example1_bar_buzz".  However, an extension could define "exampleThing" if there
 were a pre-existing definition of "exampleThingOther", and vice versa.
 
-This document updates the ABNF “name” rule in [@!RFC7480] to not allow the
-use of an underscore character in the RDAP extension identifier. The revised ABNF [@!RFC5234] “name” rule is:
-
-    name = ALPHA *( ALPHA / DIGIT )
-
+For this reason, this document updates the guidance of [@!RFC7480] regarding
+underscore characters: RDAP extensions MUST NOT use an underscore character in their RDAP extension identifier. 
 Implementers should be aware that existing extension identifiers do contain underscore characters.
 
 Extension identifiers containing the word "ietf" in any mixed capitalization
@@ -388,9 +385,37 @@ the JSON name from one extension will not collide with the JSON name
 from another extension.
 
 [@!RFC9083] states:
-    Clients of these JSON responses SHOULD ignore unrecognized JSON members in responses.
+
+> Clients of these JSON responses SHOULD ignore unrecognized JSON members in responses.
 
 This document updates this guidance: clients MUST ignore unknown JSON names.
+
+The example given in [@!RFC9083], which incorrectly ommits the "rdapConformance" array
+and "objectClassName" string, is as follows:
+
+    {
+     "handle": "ABC123",
+     "lunarNIC_beforeOneSmallStep": "TRUE THAT!",
+     "remarks":
+     [
+       {
+         "description":
+         [
+           "She sells sea shells down by the sea shore.",
+           "Originally written by Terry Sullivan."
+         ]
+       }
+     ],
+     "lunarNIC_harshMistressNotes":
+     [
+       "In space,",
+       "nobody can hear you scream."
+     ]
+    }
+
+In the example above, the extension identified by "lunarNIC" is prepended
+to the member names of both a JSON string ("lunarNic_beforeOneSmallStep")
+and a JSON array ("lunarNIC_harshMistressNotes").
 
 As [@!RFC9083, section 4.1] requires the use of the "rdapConformance"
 data structure, and the "objectClassName" string is required of all
@@ -416,10 +441,10 @@ object class instances, a complete example based on the example from
           ]
         }
       ],
-      "lunarNIC_spaceNotes":
+      "lunarNIC_harshMistressNotes":
       [
-        "Because space is so vast",
-        "you must use IPv6."
+        "In space,",
+        "nobody can hear you scream."
       ]
     }
 
@@ -729,7 +754,7 @@ extension that takes the place of another:
    the successor uses an extension identifier different from the one used by the predecessor. 
 
 Compatibility of revisions and superseders with their predecessors is
-taken from the rules in [!@RFC7480], [!@RFC9082], and [!@RFC9083] regarding
+taken from the rules in [@!RFC7480], [@!RFC9082], and [@!RFC9083] regarding
 the recognition of protocol elements, where a protocol element is 
 considered to be, but not limited to, JSON names, JSON values, query parameters, query paths, etc.
 Some of these rules are explicit, such as ignoring unknown query parameters and
@@ -836,7 +861,7 @@ Known strategies compatible with [@!RFC7480], [@!RFC9082], and [@!RFC9083] using
 
 Should an extension author desire to create a successor extension,
 one method is to create a superseder
-that replicates some or all the functionality of the predecessor.
+that replicates some or all of the functionality of the predecessor.
 
 Take for example this RDAP response for "example0":
 
@@ -1043,8 +1068,8 @@ of their extension by sending a request for review to regext@ietf.org or its
 successor.
 
 The registration template of this registry is found in [@!RFC7480] and is unchanged by this document.
-It is requested of the IANA that all registrations be copied to regext@ietf.org
-or its successor (i.e., requests from IETF and non-IETF origins).
+It is requested of the IANA that all registrations from both IETF and non-IETF origins be copied to regext@ietf.org
+or its successor.
 
 Extensions MUST be documented in a stable, non-changing, and
 readily available reference, in sufficient detail that
@@ -1160,7 +1185,7 @@ IANA is requested to register the following relationships into [@link-relations]
 
 **Relation Name:** rdap-base
 
-**Description:** Refers to the base URL of an RDAP service. This relations MUST NOT
+**Description:** Refers to the base URL of an RDAP service. This relation MUST NOT
 be used in HTTP redirects because the target URL is not expected to fully specify
 the location of an RDAP resource (see [@!RFC7480]).
 
@@ -1171,7 +1196,7 @@ the location of an RDAP resource (see [@!RFC7480]).
 **Relation Name:** rdap-base-top
 
 **Description:** Refers to the base URL of the RDAP service at the top of a hierarchy
-such as a hierarchy described in [@?RFC9910]. This relations MUST NOT
+of RDAP services. This relation MUST NOT
 be used in HTTP redirects because the target URL is not expected to fully specify
 the location of an RDAP resource (see [@!RFC7480]).
 
@@ -1182,7 +1207,7 @@ the location of an RDAP resource (see [@!RFC7480]).
 **Relation Name:** rdap-base-bottom
 
 **Description:** Refers to the base URL of the RDAP service at the bottom of a hierarchy
-such as a hierarchy described in [@?RFC9910]. This relations MUST NOT
+of RDAP services. This relation MUST NOT
 be used in HTTP redirects because the target URL is not expected to fully specify
 the location of an RDAP resource (see [@!RFC7480]).
 
@@ -1193,7 +1218,7 @@ the location of an RDAP resource (see [@!RFC7480]).
 **Relation Name:** rdap-base-up
 
 **Description:** Refers to the base URL of the RDAP service one level up in a hierarchy
-such as a hierarchy described in [@?RFC9910]. This relations MUST NOT
+of RDAP services. This relation MUST NOT
 be used in HTTP redirects because the target URL is not expected to fully specify
 the location of an RDAP resource (see [@!RFC7480]).
 
@@ -1204,7 +1229,7 @@ the location of an RDAP resource (see [@!RFC7480]).
 **Relation Name:** rdap-base-down
 
 **Description:** Refers to the base URL of the RDAP service one level down in a hierarchy
-such as a hierarchy described in [@?RFC9910]. This relations MUST NOT
+such as a hierarchy described in [@?RFC9910]. This relation MUST NOT
 be used in HTTP redirects because the target URL is not expected to fully specify
 the location of an RDAP resource (see [@!RFC7480]).
 
