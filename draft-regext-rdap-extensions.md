@@ -242,8 +242,9 @@ allowed.
 A "bare" extension identifier is one that is used without a prefix
 (e.g., "exampleExt" instead of "exampleExt_author").
 
-Section 6 of [@!RFC7480] establishes the ABNF "name" rule (see above) for
-"prefixes used in JSON data serialization and URI path segments".
+Section 6 of [@!RFC7480] establishes the ABNF "name" rule for
+"prefixes used in JSON data serialization and URI path segments"
+as well as for "production of JSON names".
 
 Section 2.1 of [@!RFC9083] states the following when using the names of
 JSON members:
@@ -304,11 +305,20 @@ While [@!RFC9083] is specific to JSON, the use of a bare extension identifier al
 to other identifiers of RDAP extensions (see [@!RFC7480]), such as query parameters and object class names.
 Identifiers of an RDAP extension which need a prefix to avoid name collision with identifiers
 of other RDAP extensions or RDAP as specified in [@!RFC7480], [@!RFC9082], and [@!RFC9083] are
-referred to as namespaced identifiers. Prefixed identifiers are clearly syntactically
-distinguishable from identifiers defined by the core RDAP specifications,
-which provides more flexibility to implementers and helps with debugging and operational issues. 
+referred to as namespaced identifiers.
 
-Implementers should be aware that existing extension elements use bare extension identifiers.
+Usage of a bare extension identifier conflicts with the guidance in Section 2.1 of [@!RFC9083]
+and their intended usage specified in Section 6 of [@!RFC7480].
+Previously, extension authors have used this pattern when only one query path, JSON name,
+and/or object class is being defined by the extension.
+
+Implementation experience has shown that an extension using a bare identifier can be interoperable,
+though more difficult to process and parse in some instances. Furthermore, prefixed identifiers
+are clearly syntactically distinguishable from identifiers defined by the core RDAP specifications,
+which provides more flexibility to implementers and helps with debugging and similar.
+Due to these considerations, the bare extension identifier pattern MUST NOT be used for any namespaced identifier.
+
+Implementers should be aware that some existing extensions use bare extension identifiers.
 
 ## Usage in Requests {#usage_in_requests}
 
@@ -1121,7 +1131,7 @@ Registrations into this registry may occur in IETF-defined RDAP extensions
 or via requests to the IANA. Authors of RDAP extensions not defined by the
 IETF MAY register values in this registry via requests to the IANA. IANA
 is requested to send a copy of all requests to
-regext@ietf.org or its successor (i.e. requests from both IETF and non-IETF origins).
+regext@ietf.org or its successor (i.e., requests from both IETF and non-IETF origins).
 
 This document does not change the [@rdap-json-values] nor its purpose.
 However, this document does update the procedures for registrations and the
@@ -1177,7 +1187,7 @@ Expert reviewers are to use the criteria defined in [@!RFC9083, section 10.2].
 As expert reviewers are considered to be subject-matter experts with regard to RDAP,
 they are also expected to use their good technical judgement when evaluating requests.
 
-## Link Relatations
+## Link Relations
 
 IANA is requested to register the following relationships into [@link-relations]:
 
@@ -1284,7 +1294,8 @@ constraints of query parameter usage as defined in (#redirects_author).
 
 The following individuals have provided feedback and contributions to the
 content and direction of this document: James Gould, Scott Hollenbeck,
-Ties de Kock, Pawel Kowalik, Daniel Keathley, and Mario Loffredo.
+Ties de Kock, Pawel Kowalik, Kaveh Ranjibar, Daniel Keathley, Mario Loffredo,
+and Sue Hares.
 
 {backmatter}
 
