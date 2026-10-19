@@ -1294,7 +1294,7 @@ constraints of query parameter usage as defined in (#redirects_author).
 
 The following individuals have provided feedback and contributions to the
 content and direction of this document: James Gould, Scott Hollenbeck,
-Ties de Kock, Pawel Kowalik, Kaveh Ranjibar, Daniel Keathley, Mario Loffredo,
+Ties de Kock, Pawel Kowalik, Kaveh Ranjbar, Daniel Keathley, Mario Loffredo,
 and Sue Hares.
 
 {backmatter}
