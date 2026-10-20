@@ -1187,7 +1187,7 @@ Expert reviewers are to use the criteria defined in [@!RFC9083, section 10.2].
 As expert reviewers are considered to be subject-matter experts with regard to RDAP,
 they are also expected to use their good technical judgement when evaluating requests.
 
-## Link Relations
+## Link Relations {#link-relations-registrations}
 
 IANA is requested to register the following relationships into [@link-relations]:
 
