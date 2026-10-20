@@ -8,10 +8,10 @@ updates = [7480, 9082, 9083]
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-ietf-regext-rdap-extensions-15"
+value = "draft-ietf-regext-rdap-extensions-16"
 stream = "IETF"
 status = "standard"
-date = 2026-08-13T00:00:00Z
+date = 2026-10-20T00:00:00Z
 
 [[author]]
 initials="A."
@@ -186,7 +186,7 @@ other RDAP extension points (see (#summary_of_updates)).
 ### Multiple Identifiers in Single Extension
 
 Extension specifications MAY define more than one extension identifier.
-The servers MUST list all extension identifiers used to generate a response
+The server MUST list all extension identifiers used to generate a response
 in the "rdapConformance" array. The server MUST list all supported
 extension identifiers in the "rdapConformance" array of a response to a "/help" request.
 
@@ -215,11 +215,8 @@ identifier "example1". Likewise, if there were a pre-existing identifier of
 "example1_bar_buzz".  However, an extension could define "exampleThing" if there
 were a pre-existing definition of "exampleThingOther", and vice versa.
 
-This document updates the ABNF “name” rule in [@!RFC7480] to not allow the
-use of an underscore character in the RDAP extension identifier.   The revised ABNF [@!RFC5234] “name” rule is:
-
-    name = ALPHA *( ALPHA / DIGIT )
-
+For this reason, this document updates the guidance of [@!RFC7480] regarding
+underscore characters: RDAP extensions MUST NOT use an underscore character in their RDAP extension identifier. 
 Implementers should be aware that existing extension identifiers do contain underscore characters.
 
 Extension identifiers containing the word "ietf" in any mixed capitalization
@@ -240,13 +237,41 @@ a mixed-case version of an existing identifier (see (#rdap_extensions_registry))
 with "lunarNic" (note the lowercase "ic" in "Nic") would not be
 allowed.
 
-The [@!RFC7480] ABNF "name" rule referenced JSON names, where there was no requirement
-to include the suffix for JSON members, and Section 2.1 of [@!RFC9083] included the
-language “JSON responses SHOULD have member names prefixed with a short identifier followed
-by an underscore followed by a meaningful name”.  This contradiction led to the use of a
-bare extension identifier, where a JSON member uses the extension identifier without
-the use of an underscore followed by a meaningful name.  That is, the extension identifier
-is used "bare" and not appended with an underscore character and subsequent names.
+### Bare Extension Identifiers
+
+A "bare" extension identifier is one that is used without a prefix
+(e.g., "exampleExt" instead of "exampleExt_author").
+
+Section 6 of [@!RFC7480] establishes the ABNF "name" rule for
+"prefixes used in JSON data serialization and URI path segments"
+as well as for "production of JSON names".
+
+Section 2.1 of [@!RFC9083] states the following when using the names of
+JSON members:
+
+>  Clients of these JSON responses SHOULD ignore unrecognized JSON
+>  members in responses.  Servers can insert members into the JSON
+>  responses, which are not specified in this document, but that does
+>  not constitute an error in the response.  Servers that insert such
+>  unspecified members into JSON responses SHOULD have member names
+>  prefixed with a short identifier followed by an underscore
+>  followed by a meaningful name.  It has been observed that these
+>  short identifiers aid software implementers with identifying the
+>  specification of the JSON member, and failure to use one could
+>  cause an implementer to assume the server is erroneously using a
+>  name from this specification.  This allowance does not apply to
+>  jCard [@!RFC7095] objects.  The full JSON name (the prefix plus the
+>  underscore plus the meaningful name) SHOULD adhere to the
+>  character and name limitations of the prefix registry described in
+>  [@!RFC7480].  Failure to use these limitations could result in
+>  slower adoption as these limitations have been observed to aid
+>  some client programming models.
+
+Despite this, some RDAP extensions define only one JSON value and do
+not prefix it with their RDAP extension identifier, instead using the
+extension identifier as the JSON name for that JSON value.  That is,
+the extension identifier is used "bare" and not appended with an
+underscore character and subsequent names.
 
 Consider the example in (#child_json_values). Using the bare extension identifier pattern,
 that example could be written as:
@@ -277,20 +302,23 @@ that example could be written as:
     }
 
 While [@!RFC9083] is specific to JSON, the use of a bare extension identifier also applies
-to other identifiers of RDAP extensions, such as query parameters and object class names.
+to other identifiers of RDAP extensions (see [@!RFC7480]), such as query parameters and object class names.
 Identifiers of an RDAP extension which need a prefix to avoid name collision with identifiers
 of other RDAP extensions or RDAP as specified in [@!RFC7480], [@!RFC9082], and [@!RFC9083] are
-referred to as namespaced identifiers. Prefixed identifiers are clearly syntactically
-distinguishable from identifiers defined by the core RDAP specifications,
-which provides more flexibility to implementers and helps with debugging and operational issues. 
+referred to as namespaced identifiers.
 
-The syntax for extension elements
-(JSON member, query parameters, object class name, HTTP headers, path segments, media type parameter, etc.)
-is defined by the "extension-element" ABNF rule:
+Usage of a bare extension identifier conflicts with the guidance in Section 2.1 of [@!RFC9083]
+and their intended usage specified in Section 6 of [@!RFC7480].
+Previously, extension authors have used this pattern when only one query path, JSON name,
+and/or object class is being defined by the extension.
 
-    extension-element = name "_" ALPHA *( ALPHA / DIGIT / "_" ) 
+Implementation experience has shown that an extension using a bare identifier can be interoperable,
+though more difficult to process and parse in some instances. Furthermore, prefixed identifiers
+are clearly syntactically distinguishable from identifiers defined by the core RDAP specifications,
+which provides more flexibility to implementers and helps with debugging and similar.
+Due to these considerations, the bare extension identifier pattern MUST NOT be used for any namespaced identifier.
 
-Implementers should be aware that existing extension elements use bare extension identifiers.
+Implementers should be aware that some existing extensions use bare extension identifiers.
 
 ## Usage in Requests {#usage_in_requests}
 
@@ -367,9 +395,37 @@ the JSON name from one extension will not collide with the JSON name
 from another extension.
 
 [@!RFC9083] states:
-    Clients of these JSON responses SHOULD ignore unrecognized JSON members in responses.
+
+> Clients of these JSON responses SHOULD ignore unrecognized JSON members in responses.
 
 This document updates this guidance: clients MUST ignore unknown JSON names.
+
+The example given in [@!RFC9083], which incorrectly omits the "rdapConformance" array
+and "objectClassName" string, is as follows:
+
+    {
+     "handle": "ABC123",
+     "lunarNIC_beforeOneSmallStep": "TRUE THAT!",
+     "remarks":
+     [
+       {
+         "description":
+         [
+           "She sells sea shells down by the sea shore.",
+           "Originally written by Terry Sullivan."
+         ]
+       }
+     ],
+     "lunarNIC_harshMistressNotes":
+     [
+       "In space,",
+       "nobody can hear you scream."
+     ]
+    }
+
+In the example above, the extension identified by "lunarNIC" is prepended
+to the member names of both a JSON string ("lunarNic_beforeOneSmallStep")
+and a JSON array ("lunarNIC_harshMistressNotes").
 
 As [@!RFC9083, section 4.1] requires the use of the "rdapConformance"
 data structure, and the "objectClassName" string is required of all
@@ -395,10 +451,10 @@ object class instances, a complete example based on the example from
           ]
         }
       ],
-      "lunarNIC_spaceNotes":
+      "lunarNIC_harshMistressNotes":
       [
-        "Because space is so vast",
-        "you must use IPv6."
+        "In space,",
+        "nobody can hear you scream."
       ]
     }
 
@@ -708,7 +764,7 @@ extension that takes the place of another:
    the successor uses an extension identifier different from the one used by the predecessor. 
 
 Compatibility of revisions and superseders with their predecessors is
-taken from the rules in [!@RFC7480], [!@RFC9082], and [!@RFC9083] regarding
+taken from the rules in [@!RFC7480], [@!RFC9082], and [@!RFC9083] regarding
 the recognition of protocol elements, where a protocol element is 
 considered to be, but not limited to, JSON names, JSON values, query parameters, query paths, etc.
 Some of these rules are explicit, such as ignoring unknown query parameters and
@@ -778,6 +834,7 @@ its predecessor.
  - New JSON members
  - New URL paths
  - New, optional query parameters
+ - New link relations
 
 The use of a new HTTP header (i.e., one previously not in-use with the predecessor),
 may either be a breaking change or a non-breaking change, depending on the usage of
@@ -814,7 +871,7 @@ Known strategies compatible with [@!RFC7480], [@!RFC9082], and [@!RFC9083] using
 
 Should an extension author desire to create a successor extension,
 one method is to create a superseder
-that replicates all the functionality of the predecessor.
+that replicates some or all of the functionality of the predecessor.
 
 Take for example this RDAP response for "example0":
 
@@ -848,7 +905,9 @@ equivalent structures.
 !---
 Figure: note "example1" replicates "example0" and adds new members
 
-During a transition period, both extensions could be in use.
+During a transition period, both extensions could be in use to have interoperability
+with clients with processing logic specific to the superseder and clients with processing logic only specific
+to the predecessor.
 
 !---
     {
@@ -865,6 +924,12 @@ During a transition period, both extensions could be in use.
     }
 !---
 Figure: note "example0" and "example1" both have "malwareReputationId"
+
+A non-overlapping superseder may replicate all the functionality of the predecessor,
+or it may replicate only parts of the predecessor. The specification for a superseder MUST
+specify how clients are to process the protocol elements from a predecessor. It is RECOMMENDED
+that the specifications for a superseder instruct clients to cease processing the predecessor
+and treat it as if it were an unknown RDAP extension.
 
 #### Overlapping Superseders {#overlapping_superseders}
 
@@ -1013,7 +1078,7 @@ of their extension by sending a request for review to regext@ietf.org or its
 successor.
 
 The registration template of this registry is found in [@!RFC7480] and is unchanged by this document.
-It is requested of the IANA that all registrations be copied to regext@ietf.org
+It is requested of the IANA that all registrations from both IETF and non-IETF origins be copied to regext@ietf.org
 or its successor.
 
 Extensions MUST be documented in a stable, non-changing, and
@@ -1059,11 +1124,14 @@ they are also expected to use their good technical judgement when evaluating req
 
 [@!RFC9083, section 10.2] defines the [@rdap-json-values].
 This registry contains values to be used in the JSON values of RDAP responses.
+
+### Registration Procedures
+
 Registrations into this registry may occur in IETF-defined RDAP extensions
 or via requests to the IANA. Authors of RDAP extensions not defined by the
 IETF MAY register values in this registry via requests to the IANA. IANA
-is requested to send a copy of any request not originating from the IETF to
-regext@ietf.org or its successor.
+is requested to send a copy of all requests to
+regext@ietf.org or its successor (i.e., requests from both IETF and non-IETF origins).
 
 This document does not change the [@rdap-json-values] nor its purpose.
 However, this document does update the procedures for registrations and the
@@ -1084,6 +1152,8 @@ states:
 All registrations SHOULD meet these requirements. However, there may be scenarios
 in which it is more appropriate for the values to follow other
 requirements, such as for values also used in other specifications or documents.
+In such cases, the registration MUST include the justification when these
+requirements are not followed.
 
 Registrations MUST NOT contain problematic code points as defined by [@!RFC9839, section 2.2].
 
@@ -1096,6 +1166,8 @@ In all cases, it should be understood that additional registrations of RDAP JSON
 after the specification of the value's type in the registry may not be
 recognized by clients, and therefore either ignored or passed on to users
 without processing.
+
+### Expert Review
 
 Designated experts MUST reject any registration that is a duplicate of an
 existing registration, and all registrations are to be considered case-insensitive.
@@ -1115,6 +1187,42 @@ Expert reviewers are to use the criteria defined in [@!RFC9083, section 10.2].
 As expert reviewers are considered to be subject-matter experts with regard to RDAP,
 they are also expected to use their good technical judgement when evaluating requests.
 
+## Link Relations
+
+IANA is requested to register the following relationships into [@link-relations]:
+
+### rdap-base
+
+**Relation Name:** rdap-base
+
+**Description:** Refers to the base URL of an RDAP service. This relation MUST NOT
+be used in HTTP redirects because the target URL is not expected to fully specify
+the location of an RDAP resource (see [@!RFC7480]).
+
+**Reference:** This document once published as an RFC.
+
+### rdap-base-up
+
+**Relation Name:** rdap-base-up
+
+**Description:** Refers to the base URL of the RDAP service one level up in a hierarchy
+of RDAP services. This relation MUST NOT
+be used in HTTP redirects because the target URL is not expected to fully specify
+the location of an RDAP resource (see [@!RFC7480]).
+
+**Reference:** This document once published as an RFC.
+
+### rdap-base-down
+
+**Relation Name:** rdap-base-down
+
+**Description:** Refers to the base URL of the RDAP service one level down in a hierarchy
+such as a hierarchy described in [@?RFC9910]. This relation MUST NOT
+be used in HTTP redirects because the target URL is not expected to fully specify
+the location of an RDAP resource (see [@!RFC7480]).
+
+**Reference:** This document once published as an RFC.
+
 # Operational Considerations
 
 ## Interpretation of IANA Registry Values
@@ -1129,7 +1237,7 @@ to handle scenarios in which servers incorrectly use the wrong case.
 ## Referral and Redirect Loops
 
 A redirect loop will occur if a server issues a redirect causing a client to follow
-redirects back to a previous server queried during the processing of the same query.
+redirects back to a previous resource queried during the processing of the same query.
 Clients MUST cancel any queries when a redirect loop is detected. Servers MUST NOT
 issue responses that cause redirect loops.
 
@@ -1164,7 +1272,8 @@ constraints of query parameter usage as defined in (#redirects_author).
 
 The following individuals have provided feedback and contributions to the
 content and direction of this document: James Gould, Scott Hollenbeck,
-Ties de Kock, Pawel Kowalik, Daniel Keathley, and Mario Loffredo.
+Ties de Kock, Pawel Kowalik, Kaveh Ranjbar, Daniel Keathley, Mario Loffredo,
+and Sue Hares.
 
 {backmatter}
 
