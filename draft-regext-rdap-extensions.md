@@ -8,10 +8,10 @@ updates = [7480, 9082, 9083]
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-ietf-regext-rdap-extensions-15"
+value = "draft-ietf-regext-rdap-extensions-16"
 stream = "IETF"
 status = "standard"
-date = 2026-08-13T00:00:00Z
+date = 2026-10-20T00:00:00Z
 
 [[author]]
 initials="A."
@@ -400,7 +400,7 @@ from another extension.
 
 This document updates this guidance: clients MUST ignore unknown JSON names.
 
-The example given in [@!RFC9083], which incorrectly ommits the "rdapConformance" array
+The example given in [@!RFC9083], which incorrectly omits the "rdapConformance" array
 and "objectClassName" string, is as follows:
 
     {
@@ -906,7 +906,7 @@ equivalent structures.
 Figure: note "example1" replicates "example0" and adds new members
 
 During a transition period, both extensions could be in use to have interoperability
-with clients with processing logic specific to the superseder and clients with processing logic only specifc
+with clients with processing logic specific to the superseder and clients with processing logic only specific
 to the predecessor.
 
 !---
@@ -1196,28 +1196,6 @@ IANA is requested to register the following relationships into [@link-relations]
 **Relation Name:** rdap-base
 
 **Description:** Refers to the base URL of an RDAP service. This relation MUST NOT
-be used in HTTP redirects because the target URL is not expected to fully specify
-the location of an RDAP resource (see [@!RFC7480]).
-
-**Reference:** This document once published as an RFC.
-
-### rdap-base-top
-
-**Relation Name:** rdap-base-top
-
-**Description:** Refers to the base URL of the RDAP service at the top of a hierarchy
-of RDAP services. This relation MUST NOT
-be used in HTTP redirects because the target URL is not expected to fully specify
-the location of an RDAP resource (see [@!RFC7480]).
-
-**Reference:** This document once published as an RFC.
-
-### rdap-base-bottom
-
-**Relation Name:** rdap-base-bottom
-
-**Description:** Refers to the base URL of the RDAP service at the bottom of a hierarchy
-of RDAP services. This relation MUST NOT
 be used in HTTP redirects because the target URL is not expected to fully specify
 the location of an RDAP resource (see [@!RFC7480]).
 
