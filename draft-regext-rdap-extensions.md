@@ -771,6 +771,15 @@ Some of these rules are explicit, such as ignoring unknown query parameters and
 JSON names, while others are implicit to the operation of HTTP and JSON, such as
 when a JSON name is specified to have a specific data type.
 
+RDAP, as defined by [@!RFC7480], [@!RFC9082], and [@!RFC9083], does not have mechanisms
+to enable a client to signal to a server the clients preferred extensions or versions of
+extensions, structures describing meta-data of extensions, discovery mechanisms
+enabling clients to obtain a priori knowledge of server capabilities, and other
+facilities that might enhance the interaction of clients and servers with regard to
+RDAP extensions. However, it is possible that future updates to the RDAP protocol,
+definitions of best current practices, and/or the specification of new capability-enhancing
+RDAP extensions could add such features.
+
 Because there is no relationship between an RDAP client and an RDAP
 server, there is no way to absolutely determine if a breaking change will have no
 impact on all clients. Therefore, breaking changes described in this document
@@ -865,7 +874,7 @@ are followed (see (#syntax)), but similar to compatibility of revisions
 there are some non-obvious compatibility issues with superseders regarding behaviors not protected
 by namespaces, such as with referrals (see (#referrals)).
 
-Known strategies compatible with [@!RFC7480], [@!RFC9082], and [@!RFC9083] using a superseder are described below.
+Some strategies using the mechanisms described in [@!RFC7480], [@!RFC9082], and [@!RFC9083] are described below.
 
 #### Non-overlapping Superseders {#non_overlapping_superseders}
 
