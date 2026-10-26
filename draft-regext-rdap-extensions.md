@@ -1217,7 +1217,7 @@ the location of an RDAP resource (see [@!RFC7480]).
 **Relation Name:** rdap-base-down
 
 **Description:** Refers to the base URL of the RDAP service one level down in a hierarchy
-such as a hierarchy described in [@?RFC9910]. This relation MUST NOT
+of RDAP services. This relation MUST NOT
 be used in HTTP redirects because the target URL is not expected to fully specify
 the location of an RDAP resource (see [@!RFC7480]).
 
