@@ -773,8 +773,8 @@ when a JSON name is specified to have a specific data type.
 
 RDAP, as defined by [@!RFC7480], [@!RFC9082], and [@!RFC9083], does not have mechanisms
 to enable a client to signal to a server the client's preferred extensions or versions of
-extensions, structures describing meta-data of extensions, required discovery mechanisms
-enabling clients to obtain a priori knowledge of server capabilities, and other
+extensions, structures describing meta-data of extensions, discovery mechanisms
+requiring clients to obtain a priori knowledge of server capabilities, and other
 facilities that might enhance the interaction of clients and servers with regard to
 RDAP extensions. However, it is possible that future updates to the RDAP protocol,
 definitions of best current practices, and/or the specification of new capability-enhancing
