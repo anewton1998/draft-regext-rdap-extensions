@@ -969,6 +969,40 @@ Note that because RDAP extension identifiers are opaque, an overlapping
 superseder is indistinguishable from one extension referencing another
 extension (see (#extension_referencing)).
 
+#### Non-coincidental Superseders
+
+When no transition considerations are required, a superseder can be served separately
+from its predecessor.
+
+!---
+    {
+      "rdapConformance": [
+        "rdap_level_0",
+        "example0"
+      ],
+      "objectClassName": "domain",
+      "ldhName": "example.com",
+      "example0_malwareReputationId": 1234
+    }
+!---
+Figure: only "example0" is served
+
+In the figure above, only "example0" is returned in a response. In the figure below,
+only "example1" is returned in a response. Neither coincide in the same response.
+
+!---
+    {
+      "rdapConformance": [
+        "rdap_level_0",
+        "example1"
+      ],
+      "objectClassName": "domain",
+      "ldhName": "example.com",
+      "example1_spamReputationId": 7890
+    }
+!---
+Figure: only "example1" is served
+
 ### Evolving Extensions without Describing Changes
 
 Because RDAP clients ignore unrecognized JSON names, and RDAP servers ignore unknown
