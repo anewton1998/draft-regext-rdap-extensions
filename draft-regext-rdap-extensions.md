@@ -1003,6 +1003,9 @@ only "example1" is returned in a response. Neither coincide in the same response
 !---
 Figure: only "example1" is served
 
+Given the examples above, clients implementing "example0" but not "example1" will experience
+a breaking change.
+
 ### Evolving Extensions without Describing Changes
 
 Because RDAP clients ignore unrecognized JSON names, and RDAP servers ignore unknown
