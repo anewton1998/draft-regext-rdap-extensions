@@ -41,7 +41,7 @@ email = "tomh@apnic.net"
 
 .# Abstract
 
-This document describes and clarifies the usage of extensions in RDAP.
+This document describes, clarifies and further specifies the usage of extensions in RDAP.
 
 {mainmatter}
 
@@ -786,7 +786,9 @@ impact on all clients. Therefore, breaking changes described in this document
 concern only interoperability and not policy. Changes in policy may
 result in breakage of interoperability. Such policy changes cannot be outright forbidden,
 and the description of breaking changes and non-breaking changes in this document
-serves to inform policy-makers of interoperability concerns.
+serves to inform policy-makers of interoperability concerns. The decision to use
+the methods described in the sections below and the transition practices for each
+are a matter of policy and not defined in this document.
 
 ### Breaking Changes in Revisions {#breaking_changes_revisions}
 
@@ -972,7 +974,8 @@ extension (see (#extension_referencing)).
 #### Non-coincidental Superseders
 
 When no transition considerations are required, a superseder can be served separately
-from its predecessor.
+from its predecessor. Such a non-coincidental superseder is the same as a non-overlapping superseder
+without a transition from its predecessor.
 
 !---
     {
@@ -1004,7 +1007,9 @@ only "example1" is returned in a response. Neither coincide in the same response
 Figure: only "example1" is served
 
 Given the examples above, clients implementing "example0" but not "example1" will experience
-a breaking change.
+a breaking change. Non-coincidental superseders introduce a breaking change unless the superseder
+and predecessor are profiles (see (#profile)) and both do not require other RDAP extensions that
+introduce breaking changes.
 
 ### Evolving Extensions without Describing Changes
 
