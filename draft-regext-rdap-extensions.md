@@ -855,7 +855,9 @@ the header with underlying HTTP software and infrastructure.
 
 A superseder is indistinguishable from a new, unrelated
 extension and is not backwards-compatible with its predecessor due to the rules of
-RDAP namespaced identifiers (see (#syntax)).
+RDAP namespaced identifiers (see (#syntax)) unless the superseder and its predecessor
+are profiles (see (#profiles)) and both do not require other RDAP extensions that
+introduce breaking changes.
 Implementers of such changes should consider the following:
 
  - Whether a superseder can be provided alongside
@@ -945,9 +947,6 @@ and treat it as if it were an unknown RDAP extension.
 A non-coincidental superseder is a boundary case of a non-overlapping superseder
 where no transition from the predecessor to the superseder is required by policy. That is, the
 predecessor and the superseder never coincide in the same RDAP service.
-Non-coincidental superseders introduce a breaking change unless the superseder
-and predecessor are profiles (see (#profile)) and both do not require other RDAP extensions that
-introduce breaking changes.
 
 #### Overlapping Superseders {#overlapping_superseders}
 
