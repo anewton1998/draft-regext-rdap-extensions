@@ -942,6 +942,13 @@ specify how clients are to process the protocol elements from a predecessor. It 
 that the specifications for a superseder instruct clients to cease processing the predecessor
 and treat it as if it were an unknown RDAP extension.
 
+A non-coincidental superseder is a boundary case of a non-overlapping superseder
+where no transition from the predecessor to the superseder is required by policy. That is, the
+predecessor and the superseder never coincide in the same RDAP service.
+Non-coincidental superseders introduce a breaking change unless the superseder
+and predecessor are profiles (see (#profile)) and both do not require other RDAP extensions that
+introduce breaking changes.
+
 #### Overlapping Superseders {#overlapping_superseders}
 
 If extension authors are concerned about the size of responses for
@@ -970,46 +977,6 @@ need the function provided by "example0" and may cease to reference it.
 Note that because RDAP extension identifiers are opaque, an overlapping
 superseder is indistinguishable from one extension referencing another
 extension (see (#extension_referencing)).
-
-#### Non-coincidental Superseders
-
-When no transition considerations are required, a superseder can be served separately
-from its predecessor. Such a non-coincidental superseder is the same as a non-overlapping superseder
-without a transition from its predecessor.
-
-!---
-    {
-      "rdapConformance": [
-        "rdap_level_0",
-        "example0"
-      ],
-      "objectClassName": "domain",
-      "ldhName": "example.com",
-      "example0_malwareReputationId": 1234
-    }
-!---
-Figure: only "example0" is served
-
-In the figure above, only "example0" is returned in a response. In the figure below,
-only "example1" is returned in a response. Neither coincide in the same response.
-
-!---
-    {
-      "rdapConformance": [
-        "rdap_level_0",
-        "example1"
-      ],
-      "objectClassName": "domain",
-      "ldhName": "example.com",
-      "example1_spamReputationId": 7890
-    }
-!---
-Figure: only "example1" is served
-
-Given the examples above, clients implementing "example0" but not "example1" will experience
-a breaking change. Non-coincidental superseders introduce a breaking change unless the superseder
-and predecessor are profiles (see (#profile)) and both do not require other RDAP extensions that
-introduce breaking changes.
 
 ### Evolving Extensions without Describing Changes
 
