@@ -129,16 +129,16 @@ identifiers to find extension definitions via [@rdap-extensions].
 While the RDAP extension mechanism was created to extend RDAP queries
 and/or responses, extensions can also be used to signal server policy
 (for example, specifying the conditions of use for existing response
-structures). Extensions that are primarily about signaling server
+structures). Extensions that signal server
 policy are called "profiles". Profile extensions are often used
 by a class of RDAP server operators, such as the [@icann-profile] used
 by gTLD registries and registrars and the [@nro-profile] used by RIRs.
 
 Profile extensions may do the following:
 
-* Specify some specific extensions (and versions thereof) as required.
-* Specify some specific optional queries, object classes, or JSON structures as required.
-* Limit or restrict the values of specific JSON structures.
+* Specify the required use of specific extensions (and versions thereof) and their usage.
+* Specify specific optional or required queries, object classes, or JSON structures defined in [@!RFC9082] and [@!RFC9083].
+* Limit, restrict, or require the values of specific data in queries and responses defined [@!RFC9082] and [@!RFC9083].
 
 Some profile extensions exist to denote the usage of values placed into an
 IANA registry, such as the IANA RDAP registries, or the usage of
