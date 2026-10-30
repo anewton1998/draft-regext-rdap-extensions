@@ -8,10 +8,10 @@ updates = [7480, 9082, 9083]
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-ietf-regext-rdap-extensions-17"
+value = "draft-ietf-regext-rdap-extensions-18"
 stream = "IETF"
 status = "standard"
-date = 2026-10-27T00:00:00Z
+date = 2026-10-29T00:00:00Z
 
 [[author]]
 initials="A."
@@ -41,7 +41,7 @@ email = "tomh@apnic.net"
 
 .# Abstract
 
-This document describes and clarifies the usage of extensions in RDAP.
+This document describes, clarifies and further specifies the usage of extensions in RDAP.
 
 {mainmatter}
 
@@ -129,16 +129,18 @@ identifiers to find extension definitions via [@rdap-extensions].
 While the RDAP extension mechanism was created to extend RDAP queries
 and/or responses, extensions can also be used to signal server policy
 (for example, specifying the conditions of use for existing response
-structures). Extensions that are primarily about signaling server
+structures). Extensions that signal server
 policy are called "profiles". Profile extensions are often used
 by a class of RDAP server operators, such as the [@icann-profile] used
 by gTLD registries and registrars and the [@nro-profile] used by RIRs.
 
-Profile extensions may do the following:
+Profile extensions MAY do the following:
 
-* Specify some specific extensions (and versions thereof) as required.
-* Specify some specific optional queries, object classes, or JSON structures as required.
-* Limit or restrict the values of specific JSON structures.
+* Specify the required use of specific extensions (and versions thereof) and their usage.
+* Specify specific optional or required queries, object classes, or JSON structures defined in [@!RFC9082] and [@!RFC9083].
+* Limit, restrict, or require the values of specific data in queries and responses defined [@!RFC9082] and [@!RFC9083].
+
+Profiles MUST NOT define new protocol elements.
 
 Some profile extensions exist to denote the usage of values placed into an
 IANA registry, such as the IANA RDAP registries, or the usage of
@@ -786,7 +788,9 @@ impact on all clients. Therefore, breaking changes described in this document
 concern only interoperability and not policy. Changes in policy may
 result in breakage of interoperability. Such policy changes cannot be outright forbidden,
 and the description of breaking changes and non-breaking changes in this document
-serves to inform policy-makers of interoperability concerns.
+serves to inform policy-makers of interoperability concerns. The decision to use
+the methods described in the sections below and the transition practices for each
+are a matter of policy and not defined in this document.
 
 ### Breaking Changes in Revisions {#breaking_changes_revisions}
 
@@ -939,6 +943,10 @@ or it may replicate only parts of the predecessor. The specification for a super
 specify how clients are to process the protocol elements from a predecessor. It is RECOMMENDED
 that the specifications for a superseder instruct clients to cease processing the predecessor
 and treat it as if it were an unknown RDAP extension.
+
+A non-coincidental superseder is a boundary case of a non-overlapping superseder
+where no transition from the predecessor to the superseder is required by policy. That is, the
+predecessor and the superseder never coincide in the same RDAP service.
 
 #### Overlapping Superseders {#overlapping_superseders}
 
