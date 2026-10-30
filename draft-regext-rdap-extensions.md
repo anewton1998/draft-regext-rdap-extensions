@@ -8,10 +8,10 @@ updates = [7480, 9082, 9083]
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-ietf-regext-rdap-extensions-17"
+value = "draft-ietf-regext-rdap-extensions-18"
 stream = "IETF"
 status = "standard"
-date = 2026-10-27T00:00:00Z
+date = 2026-10-29T00:00:00Z
 
 [[author]]
 initials="A."
@@ -857,9 +857,7 @@ the header with underlying HTTP software and infrastructure.
 
 A superseder is indistinguishable from a new, unrelated
 extension and is not backwards-compatible with its predecessor due to the rules of
-RDAP namespaced identifiers (see (#syntax)) unless the superseder and its predecessor
-are profiles (see (#profiles)) and both do not require other RDAP extensions that
-introduce breaking changes.
+RDAP namespaced identifiers (see (#syntax)).
 Implementers of such changes should consider the following:
 
  - Whether a superseder can be provided alongside
