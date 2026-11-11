@@ -8,10 +8,10 @@ updates = [7480, 9082, 9083]
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-ietf-regext-rdap-extensions-18"
+value = "draft-ietf-regext-rdap-extensions-19"
 stream = "IETF"
 status = "standard"
-date = 2026-10-29T00:00:00Z
+date = 2026-11-14T00:00:00Z
 
 [[author]]
 initials="A."
@@ -779,7 +779,7 @@ extensions, structures describing meta-data of extensions, discovery mechanisms
 requiring clients to obtain a priori knowledge of server capabilities, and other
 facilities that might enhance the interaction of clients and servers with regard to
 RDAP extensions. However, it is possible that future updates to the RDAP protocol,
-definitions of best current practices, and/or the specification of new capability-enhancing
+definitions of Best Current Practices, and/or the specification of new capability-enhancing
 RDAP extensions could add such features.
 
 Because there is no relationship between an RDAP client and an RDAP
@@ -871,14 +871,20 @@ Implementers of such changes should consider the following:
  - Whether the extension itself should define how versioning is
    handled within the extension documentation (see [@?I-D.ietf-regext-rdap-versioning] for an example of how this might work).
 
-When using a transition period between a predecessor and its superseder,
-the superseder must not conflict with the predecessor.
-Typically, this is not an issue when the rules of RDAP namespaced identifiers
-are followed (see (#syntax)), but similar to compatibility of revisions
-there are some non-obvious compatibility issues with superseders regarding behaviors not protected
-by namespaces, such as with referrals (see (#referrals)).
+If the predecessor and superseder can apply simultaneously to the same request or
+response, their processing requirements MUST NOT conflict in a way that prevents
+deterministic processing. Using the rules for RDAP namespaced identifiers
+(see Section 2.2) will typically prevent identifier collisions. However, namespaces
+do not prevent conflicts involving behavior or protocol elements outside those
+namespaces, such as referral processing (see Section 5.2). The specification
+defining the superseder MUST describe the methods for resolving such conflicts,
+which may include the use of mechanisms described in other specifications.
 
-Some strategies using the mechanisms described in [@!RFC7480], [@!RFC9082], and [@!RFC9083] are described below.
+Some strategies using the mechanisms already defined in RDAP are
+described below. Other strategies may be feasible, including those
+possible with updates to the RDAP protocol, definitions of Best Current
+Practices, and/or the specification of new capability-enhancing RDAP
+extensions.
 
 #### Non-overlapping Superseders {#non_overlapping_superseders}
 
@@ -943,10 +949,6 @@ or it may replicate only parts of the predecessor. The specification for a super
 specify how clients are to process the protocol elements from a predecessor. It is RECOMMENDED
 that the specifications for a superseder instruct clients to cease processing the predecessor
 and treat it as if it were an unknown RDAP extension.
-
-A non-coincidental superseder is a boundary case of a non-overlapping superseder
-where no transition from the predecessor to the superseder is required by policy. That is, the
-predecessor and the superseder never coincide in the same RDAP service.
 
 #### Overlapping Superseders {#overlapping_superseders}
 
