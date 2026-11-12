@@ -432,7 +432,7 @@ and "objectClassName" string, is as follows:
      ]
     }
 !---
-Figure: Example from RFC9083.
+Figure: Example from RFC 9083.
 
 In the example above, the extension identified by "lunarNIC" is prepended
 to the member names of both a JSON string ("lunarNic_beforeOneSmallStep")
@@ -470,7 +470,7 @@ object class instances, a complete example based on the example from
       ]
     }
 !---
-Figure: Corrected example from RFC9083.
+Figure: Corrected example from RFC 9083.
 
 ### Child JSON Values {#child_json_values}
 
@@ -931,7 +931,7 @@ Take for example this RDAP response for "example0":
       "example0_malwareReputationId": 1234
     }
 !---
-Figure: note "example0_malwareReputationId"
+Figure: Example with "example0_malwareReputationId".
 
 A superseder may define the same functionality with
 equivalent structures.
@@ -948,7 +948,7 @@ equivalent structures.
       "example1_spamReputationId": 7890
     }
 !---
-Figure: note "example1" replicates "example0" and adds new members
+Figure: Example where "example1" replicates "example0" and adds new members.
 
 During a transition period, both extensions could be in use to have interoperability
 with clients with processing logic specific to the superseder and clients with processing logic only specific
@@ -968,7 +968,7 @@ to the predecessor.
       "example1_spamReputationId": 7890
     }
 !---
-Figure: note "example0" and "example1" both have "malwareReputationId"
+Figure: Example where "example0" and "example1" both have "malwareReputationId".
 
 A non-overlapping superseder may replicate all the functionality of the predecessor,
 or it may replicate only parts of the predecessor. The specification for a superseder MUST
@@ -996,7 +996,7 @@ previous extension. For example:
       "example1_spamReputationId": 7890
     }
 !---
-Figure: note "example0" is required and "example1" adds the new member
+Figure: Example where "example0" is required and "example1" adds the new member.
 
 And at some future time, another overlapping superseder such as "example9" may no longer
 need the function provided by "example0" and may cease to reference it.
