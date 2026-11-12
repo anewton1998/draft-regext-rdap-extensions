@@ -874,9 +874,9 @@ Implementers of such changes should consider the following:
 If the predecessor and superseder can apply simultaneously to the same request or
 response, their processing requirements MUST NOT conflict in a way that prevents
 deterministic processing. Using the rules for RDAP namespaced identifiers
-(see Section 2.2) will typically prevent identifier collisions. However, namespaces
+(see (#syntax)) will typically prevent identifier collisions. However, namespaces
 do not prevent conflicts involving behavior or protocol elements outside those
-namespaces, such as referral processing (see Section 5.2). The specification
+namespaces, such as referral processing (see (#referrals)). The specification
 defining the superseder MUST describe the methods for resolving such conflicts,
 which may include the use of mechanisms described in other specifications.
 
