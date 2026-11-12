@@ -138,7 +138,7 @@ Profile extensions MAY do the following:
 
 * Specify the required use of specific extensions (and versions thereof) and their usage.
 * Specify specific optional or required queries, object classes, or JSON structures defined in [@!RFC9082] and [@!RFC9083].
-* Limit, restrict, or require the values of specific data in queries and responses defined [@!RFC9082] and [@!RFC9083].
+* Limit, restrict, or require the values of specific data in queries and responses defined in [@!RFC9082] and [@!RFC9083].
 
 Profiles MUST NOT define new protocol elements.
 
@@ -151,6 +151,7 @@ For example, an extension may be used to signal desired processing of
 a "rel" attribute in a "links" array, where the "rel" value is
 registered in the [@link-relations]:
 
+!---
     {
       "rdapConformance": [
         "rdap_level_0",
@@ -167,6 +168,8 @@ registered in the [@link-relations]:
         }
       ]
     }
+!---
+Figure: Example of "sideways" link relation.
 
 Profile extensions 
 leverage the appearance of their identifier in the "rdapConformance"
@@ -244,11 +247,11 @@ allowed.
 A "bare" extension identifier is one that is used without a prefix
 (e.g., "exampleExt" instead of "exampleExt_author").
 
-Section 6 of [@!RFC7480] establishes the ABNF "name" rule for
+[@!RFC7480, section 6] establishes the ABNF "name" rule for
 "prefixes used in JSON data serialization and URI path segments"
 as well as for "production of JSON names".
 
-Section 2.1 of [@!RFC9083] states the following when using the names of
+[@!RFC9083, section 2.1] states the following when using the names of
 JSON members:
 
 >  Clients of these JSON responses SHOULD ignore unrecognized JSON
@@ -278,6 +281,7 @@ underscore character and subsequent names.
 Consider the example in (#child_json_values). Using the bare extension identifier pattern,
 that example could be written as:
 
+!---
     {
       "rdapConformance": [
         "rdap_level_0",
@@ -302,6 +306,8 @@ that example could be written as:
         "lastName": "SomePerson"
       }
     }
+!---
+Figure: Example of a bare identifier.
 
 While [@!RFC9083] is specific to JSON, the use of a bare extension identifier also applies
 to other identifiers of RDAP extensions (see [@!RFC7480]), such as query parameters and object class names.
@@ -309,8 +315,8 @@ Identifiers of an RDAP extension which need a prefix to avoid name collision wit
 of other RDAP extensions or RDAP as specified in [@!RFC7480], [@!RFC9082], and [@!RFC9083] are
 referred to as namespaced identifiers.
 
-Usage of a bare extension identifier conflicts with the guidance in Section 2.1 of [@!RFC9083]
-and their intended usage specified in Section 6 of [@!RFC7480].
+Usage of a bare extension identifier conflicts with the guidance in [@!RFC9083, section 2.1]
+and the intended usage of extension identifiers specified in [@!RFC7480, section 6].
 Previously, extension authors have used this pattern when only one query path, JSON name,
 and/or object class is being defined by the extension.
 
@@ -405,6 +411,7 @@ This document updates this guidance: clients MUST ignore unknown JSON names.
 The example given in [@!RFC9083], which incorrectly omits the "rdapConformance" array
 and "objectClassName" string, is as follows:
 
+!---
     {
      "handle": "ABC123",
      "lunarNIC_beforeOneSmallStep": "TRUE THAT!",
@@ -424,6 +431,8 @@ and "objectClassName" string, is as follows:
        "nobody can hear you scream."
      ]
     }
+!---
+Figure: Example from RFC9083.
 
 In the example above, the extension identified by "lunarNIC" is prepended
 to the member names of both a JSON string ("lunarNic_beforeOneSmallStep")
@@ -434,6 +443,7 @@ data structure, and the "objectClassName" string is required of all
 object class instances, a complete example based on the example from
 [@!RFC9083] would be:
 
+!---
     {
       "rdapConformance": [
         "rdap_level_0",
@@ -459,6 +469,8 @@ object class instances, a complete example based on the example from
         "nobody can hear you scream."
       ]
     }
+!---
+Figure: Corrected example from RFC9083.
 
 ### Child JSON Values {#child_json_values}
 
@@ -467,6 +479,7 @@ a prefixed JSON object defined by an RDAP extension.
 
 The following example shows this use with a JSON object:
 
+!---
     {
       "rdapConformance": [
         "rdap_level_0",
@@ -491,6 +504,8 @@ The following example shows this use with a JSON object:
         "lastName": "SomePerson"
       }
     }
+!---
+Figure: Usage of child JSON members.
 
 Here the JSON name "exampleExt_author" will separate the JSON from other
 extensions that may have an "author" structure. But the JSON contained
@@ -511,6 +526,7 @@ value for the "objectClassName" MUST be prepended with the extension
 identifier, in the same way as for URL paths, query parameters, and
 JSON names:
 
+!---
     {
       "rdapConformance": [
         "rdap_level_0",
@@ -523,6 +539,8 @@ JSON names:
         "lastName": "SomePerson"
       }
     }
+!---
+Figure: Example object class name with extension identifier.
 
 Extension authors are encouraged to use the "camel case" style described
 in (#camel_casing).
@@ -547,6 +565,7 @@ If the search result contains object class instances
 defined by the extension, each instance MUST have an "objectClassName"
 string as defined in (#object_classes_in_extensions).  For example:
 
+!---
     {
       "rdapConformance": [
         "rdap_level_0",
@@ -571,7 +590,8 @@ string as defined in (#object_classes_in_extensions).  For example:
         }
       ]
     }
-
+!---
+Figure: Example search result name with extension identifier.
 
 ### rdapConformance Population
 
@@ -693,12 +713,15 @@ These are typically conveyed in the link structure defined in
 [@!RFC9083, section 4.2] and use the "application/rdap+json" media
 type.  For example:
 
+!---
     {
       "value": "https://regy.example/domain/foo.example",
       "rel": "related",
       "href": "https://regr.example/domain/foo.example",
       "type": "application/rdap+json"
     }
+!---
+Figure: Example of a referral in a link object.
 
 Extensions MUST explicitly define any required behavioral changes to
 the processing of referrals.  If an extension does not make any
@@ -730,6 +753,7 @@ in the dependent extension and MUST include an explicit description of the depen
 For example, the extension "exampleExt1" may require the usage of structures defined
 in "exampleExt2" instead of redefining new, equivalent structures:
 
+!---
     {
       "rdapConformance": [
         "rdap_level_0",
@@ -742,6 +766,8 @@ in "exampleExt2" instead of redefining new, equivalent structures:
       "exampleExt1_cones": [ 64498, 64499],
       "exampleExt2_adjacents": [ 64500, 64501 ]
     }
+!---
+Figure: Example of an extension using another extension.
 
 ## Extension Versioning {#versioning}
 
