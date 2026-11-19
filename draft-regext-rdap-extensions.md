@@ -79,8 +79,8 @@ used by clients to navigate them.
 This document updates [@!RFC7480], [@!RFC9082], and [@!RFC9083] for the
 purposes of constraining how extensions are defined and interpreted. This document does
 not update any core RDAP requests or responses nor does it update or obsolete
-any existing RDAP extensions. The updates in this document should require no changes
-to either client or server implementations.
+any existing RDAP extensions.
+This document gives guidance to implementations regarding the processing of RDAP extensions.
 
 This document describes the following methods for extending RDAP by registered extensions:
 
@@ -664,6 +664,25 @@ by the origin server (the server issuing the redirect) that the target server
 (the server referenced by the redirect) can process the query parameter and
 is a proper target for the contents of the query parameter.
 
+## Referral and Redirect Loops {#referral_and_redirect_loops}
+
+A redirect loop will occur if a server issues a redirect causing a client to follow
+redirects back to a previous resource queried during the processing of the same query.
+Clients MUST cancel any queries when a redirect loop is detected. Servers MUST NOT
+issue responses that cause redirect loops.
+
+The same is also true of referrals. Clients MUST cancel any query when a referral loop
+is detected. Servers MUST NOT issue responses that cause referral loops.
+
+## Interpretation of IANA Registry Values
+
+RDAP clients MUST match values of "rdapConformance" array with the values in the [@rdap-extensions] registry using
+case-insensitive matching to handle server implementations incorrectly
+using the wrong case.
+
+RDAP clients MUST match values in the [@rdap-json-values] registry using case-insensitive matching
+to handle scenarios in which servers incorrectly use the wrong case.
+
 # Extension Author Considerations {#extension_author_considerations}
 
 ## Redirects {#redirects_author}
@@ -705,6 +724,10 @@ parameter deconfliction, and URL encoding. The guidance given in
 [@!RFC7480, section 5.2] exists to simplify clients, especially those
 constructed with shell scripts and HTTP command-line utilities.
 
+Where extensions specify redirects, especially among servers operated
+by separate authorities, extensions MUST NOT create the conditions
+in which those servers cause a redirect loop. See (#referral_and_redirect_loops).
+
 ## Referrals {#referrals}
 
 It is common in the RDAP ecosystem to link from one RDAP resource to
@@ -742,6 +765,10 @@ be prepended with "rdap-".
 
 When defining the usage of link relations, extensions MUST specify
 the media types expected to be used with those link relations.
+
+Where extensions specify referrals, especially among servers operated
+by separate authorities, extensions MUST NOT create the conditions
+in which those servers cause a referral loop. See (#referral_and_redirect_loops).
 
 ## Extensions Referencing Other Extensions {#extension_referencing}
 
@@ -1231,63 +1258,6 @@ submitted registration.
 Expert reviewers are to use the criteria defined in [@!RFC9083, section 10.2].
 As expert reviewers are considered to be subject-matter experts with regard to RDAP,
 they are also expected to use their good technical judgement when evaluating requests.
-
-## Link Relations {#link-relations-registrations}
-
-IANA is requested to register the following relationships into [@link-relations]:
-
-### rdap-base
-
-**Relation Name:** rdap-base
-
-**Description:** Refers to the base URL of an RDAP service. This relation MUST NOT
-be used in HTTP redirects because the target URL is not expected to fully specify
-the location of an RDAP resource (see [@!RFC7480]).
-
-**Reference:** This document once published as an RFC.
-
-### rdap-base-up
-
-**Relation Name:** rdap-base-up
-
-**Description:** Refers to the base URL of the RDAP service one level up in a hierarchy
-of RDAP services. This relation MUST NOT
-be used in HTTP redirects because the target URL is not expected to fully specify
-the location of an RDAP resource (see [@!RFC7480]).
-
-**Reference:** This document once published as an RFC.
-
-### rdap-base-down
-
-**Relation Name:** rdap-base-down
-
-**Description:** Refers to the base URL of the RDAP service one level down in a hierarchy
-of RDAP services. This relation MUST NOT
-be used in HTTP redirects because the target URL is not expected to fully specify
-the location of an RDAP resource (see [@!RFC7480]).
-
-**Reference:** This document once published as an RFC.
-
-# Operational Considerations
-
-## Interpretation of IANA Registry Values
-
-RDAP clients SHOULD match values of "rdapConformance" array with the values in the [@rdap-extensions] registry using
-case-insensitive matching to handle server implementations incorrectly
-using the wrong case.
-
-RDAP clients SHOULD match values in the [@rdap-json-values] registry using case-insensitive matching
-to handle scenarios in which servers incorrectly use the wrong case.
-
-## Referral and Redirect Loops
-
-A redirect loop will occur if a server issues a redirect causing a client to follow
-redirects back to a previous resource queried during the processing of the same query.
-Clients MUST cancel any queries when a redirect loop is detected. Servers MUST NOT
-issue responses that cause redirect loops.
-
-The same is also true of referrals. Clients MUST cancel any query when a referral loop
-is detected. Servers MUST NOT issue responses that cause referral loops.
 
 # Security Considerations {#security_considerations}
 
